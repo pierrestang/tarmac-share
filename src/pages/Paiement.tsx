@@ -20,7 +20,7 @@ const Paiement = () => {
   const trajetId = searchParams.get("trajetId");
   const type = searchParams.get("type") || "envoi";
 
-  const { createDemande, acceptDemande, getDemandeById, saveDemandeSnapshot } = useDemandes();
+  const { createDemande, acceptDemande, getDemandeById, saveDemandeSnapshot, getPendingDemandeByTrajetIds } = useDemandes();
   const { getTrajetById, updateTrajet } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
   const { createConversation } = useMessages();
@@ -103,6 +103,14 @@ const Paiement = () => {
         if (!myProfile) {
           toast.error("Votre profil n'a pas été trouvé.");
           setIsLoading(false);
+          return;
+        }
+
+        // Check for existing pending demande to prevent duplicates
+        const existingDemande = getPendingDemandeByTrajetIds(myTrajet.id, voyageurTrajet.id);
+        if (existingDemande) {
+          toast.success("Demande déjà envoyée !");
+          navigate("/trajets");
           return;
         }
 
