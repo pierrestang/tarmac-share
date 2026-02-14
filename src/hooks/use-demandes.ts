@@ -48,12 +48,21 @@ export function useDemandes() {
         })
         .select()
         .single();
-      if (error) throw error;
+      if (error) {
+        // Handle unique constraint violation (duplicate pending demande)
+        if (error.code === "23505") {
+          const existing = demandes.find(
+            (d) => d.status === "pending" && d.fromTrajetId === data.fromTrajetId && d.toTrajetId === data.toTrajetId
+          );
+          if (existing) return existing;
+        }
+        throw error;
+      }
       const demande = mapRow(inserted);
       setDemandes((prev) => [demande, ...prev]);
       return demande;
     },
-    []
+    [demandes]
   );
 
   const updateDemandeStatus = useCallback(
