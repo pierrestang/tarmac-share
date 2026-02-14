@@ -125,14 +125,7 @@ const Messages = () => {
   }, [refreshKey, getConversationById]);
 
   if (!activeProfile) {
-    return (
-      <section aria-label="Messages">
-        <h1 className="text-[24px] font-semibold text-heading">Messages</h1>
-        <p className="text-[14px] text-muted-foreground mt-4">
-          Veuillez créer un profil pour accéder aux messages.
-        </p>
-      </section>
-    );
+    return null;
   }
 
   // Chat view
