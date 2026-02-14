@@ -1,51 +1,44 @@
 
 
-## Restructuration de l'authentification
+# Plan : Corriger les notifications et la robustesse du flux
 
-### Contexte
-La page `/auth` actuelle contient un systeme d'onglets (Connexion / Inscription) dans une seule page. L'objectif est de la remplacer par 3 pages distinctes, et de renommer le titre de `/compte`.
+## Probleme identifie
 
-**Note :** Je suppose que "S'inscrire sur EnRoute" doit rediriger vers `/inscription` et "J'ai deja un compte" vers `/connexion` (l'inverse de ce qui etait ecrit, car c'est la logique attendue).
+Depuis la mise en place de l'authentification par email/mot de passe, les **notifications INSERT echouaient** a cause des politiques RLS. La politique a ete corrigee dans la derniere migration, mais **plusieurs endroits du code n'ont pas de try/catch** autour des appels `createNotification`. Quand une notification echoue, elle casse tout le flux (la navigation ne se fait pas, les actions suivantes ne s'executent pas).
 
----
+Les endroits sans protection :
+1. **DemandeAccepter.tsx** - `handleRefuse` : pas de try/catch
+2. **ConfirmAnnulation.tsx** - `handleConfirm` : pas de try/catch (toute la chaine d'actions plante si la notification echoue)
+3. **use-demandes.ts** - `acceptDemande` : insertion directe de notification via `supabase.from("notifications").insert(...)` sans try/catch (ligne 106)
 
-### Changements prevus
+## Modifications prevues
 
-**1. Page `/auth` -- Page d'accueil simplifiee**
-- Garder le logo EnRoute en haut
-- Afficher uniquement deux boutons :
-  - "S'inscrire sur EnRoute" -> redirige vers `/inscription`
-  - "J'ai deja un compte" -> redirige vers `/connexion`
-- Supprimer les formulaires et onglets actuels
+### 1. DemandeAccepter.tsx - Proteger handleRefuse
+Entourer l'appel `createNotification` dans `handleRefuse` avec un try/catch, et s'assurer que `navigate("/trajets")` s'execute toujours.
 
-**2. Nouvelle page `/connexion`**
-- Style similaire a `/compte` : Card sans bordure, champs avec separateurs horizontaux, pas de bordures sur les inputs
-- Champs : Email, Mot de passe
-- Bouton "Se connecter" en bas de la Card (pleine largeur, colle au bas)
-- Lien retour vers `/auth`
+### 2. ConfirmAnnulation.tsx - Proteger handleConfirm
+Entourer l'appel `createNotification` avec un try/catch pour que le reste du flux (close conversation, system message, ratings, complete demande) s'execute meme si la notification echoue.
 
-**3. Nouvelle page `/inscription`**
-- Meme style que `/connexion`
-- Champs : Prenom, Nom, Email, Mot de passe
-- Bouton "Creer mon compte" en bas de la Card
-- Lien retour vers `/auth`
-- Ecran de confirmation email apres inscription reussie
+### 3. use-demandes.ts - Proteger acceptDemande
+Entourer l'insertion directe de notification (lignes 106-116, dans la boucle `for...of otherPending`) avec un try/catch pour eviter que le retrait automatique des autres demandes soit bloque.
 
-**4. Page `/compte` -- Changement de titre**
-- Remplacer "Mon profil." par "Mon compte"
+### 4. Verifier la politique RLS notifications
+La migration precedente a deja corrige la politique INSERT en PERMISSIVE avec `WITH CHECK (true)`. La base de donnees confirme que la politique est correcte. Aucune modification de base necessaire.
 
----
+## Details techniques
 
-### Details techniques
+Chaque modification suit le meme pattern :
 
-- **Fichiers crees :**
-  - `src/pages/Connexion.tsx` -- formulaire de connexion
-  - `src/pages/Inscription.tsx` -- formulaire d'inscription
+```typescript
+try {
+  await createNotification({ ... });
+} catch (e) {
+  console.error("Erreur notification:", e);
+}
+```
 
-- **Fichiers modifies :**
-  - `src/pages/Auth.tsx` -- simplifie en page d'accueil avec 2 boutons
-  - `src/pages/Compte.tsx` -- titre change en "Mon compte"
-  - `src/App.tsx` -- ajout des routes `/connexion` et `/inscription`
-
-- **Style des formulaires :** reprend le pattern de `/compte` avec Card sans bordure, inputs transparents sans bordure avec separateurs `h-px bg-border mx-4`, et bouton d'action pleine largeur en bas de la Card.
+Cela permet de :
+- Ne jamais bloquer le flux utilisateur a cause d'une notification
+- Logger l'erreur pour le debug
+- Garantir que la navigation et les actions suivantes s'executent toujours
 
