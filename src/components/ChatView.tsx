@@ -141,11 +141,7 @@ const ChatView = ({
                   disabled={isClosedByUser}
                 />
                 
-                {isClosedByUser ? (
-                  <p className="text-[14px] text-muted-foreground text-center mt-4">
-                    Vous avez clôturé cette conversation
-                  </p>
-                ) : (
+                {isClosedByUser ? null : (
                   <div className="mt-4">
                     <Button
                       variant="outline"
