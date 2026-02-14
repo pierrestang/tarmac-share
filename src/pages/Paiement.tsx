@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { useMessages } from "@/hooks/use-messages";
 import { useRepublications } from "@/hooks/use-republications";
 import { useNotifications } from "@/hooks/use-notifications";
 import { incrementUnreadMessages } from "@/hooks/use-unread-messages";
+import { toast } from "sonner";
 
 const Paiement = () => {
   const [searchParams] = useSearchParams();
@@ -50,26 +52,30 @@ const Paiement = () => {
     isFreeFromRepublication = isRepublished && canRepublishFree(myProfile.id);
   }
 
-  const handlePay = async () => {
-    // Consume the republication bonus if applicable
-    if (isFreeFromRepublication && userTrajetId && myProfile) {
-      useRepublication(myProfile.id);  // Consume the free credit
-      await updateTrajet(userTrajetId, { isRepublished: false });
-    }
+  const [isLoading, setIsLoading] = useState(false);
 
-    if (type === "acceptation" && demandeId) {
-      // Accept existing demande
-      const demande = getDemandeById(demandeId);
-      if (demande && myProfile) {
-        // CRITICAL: Save snapshot BEFORE acceptDemande to guarantee data capture
+  const handlePay = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      // Consume the republication bonus if applicable
+      if (isFreeFromRepublication && userTrajetId && myProfile) {
+        useRepublication(myProfile.id);
+        await updateTrajet(userTrajetId, { isRepublished: false });
+      }
+
+      if (type === "acceptation" && demandeId) {
+        const demande = getDemandeById(demandeId);
+        if (!demande || !myProfile) {
+          toast.error("Impossible de trouver la demande ou votre profil.");
+          setIsLoading(false);
+          return;
+        }
+
         await saveDemandeSnapshot(demandeId);
-        
         await acceptDemande(demandeId, getProfileById);
-        
-        // Create conversation
         await createConversation(demandeId, [demande.fromProfileId, demande.toProfileId]);
-        
-        // Create notification for the requester (demandeur A)
         await createNotification({
           profileId: demande.fromProfileId,
           type: "demande_accepted",
@@ -78,14 +84,28 @@ const Paiement = () => {
           demandeId: demande.id,
           relatedProfileId: myProfile.id,
         });
-      }
-      navigate("/messages");
-    } else if (type === "envoi" && voyageurId) {
-      // Create new demande
-      const voyageurTrajet = getTrajetById(voyageurId);
-      const myProfile = getActiveProfile();
 
-      if (voyageurTrajet && myTrajet && myProfile) {
+        navigate("/messages");
+      } else if (type === "envoi" && voyageurId) {
+        const voyageurTrajet = getTrajetById(voyageurId);
+        const myProfile = getActiveProfile();
+
+        if (!voyageurTrajet) {
+          toast.error("Le trajet du voyageur n'a pas été trouvé. Veuillez réessayer.");
+          setIsLoading(false);
+          return;
+        }
+        if (!myTrajet) {
+          toast.error("Votre trajet n'a pas été trouvé. Veuillez publier un trajet d'abord.");
+          setIsLoading(false);
+          return;
+        }
+        if (!myProfile) {
+          toast.error("Votre profil n'a pas été trouvé.");
+          setIsLoading(false);
+          return;
+        }
+
         const newDemande = await createDemande({
           type: "sent",
           fromProfileId: myProfile.id,
@@ -93,8 +113,7 @@ const Paiement = () => {
           fromTrajetId: myTrajet.id,
           toTrajetId: voyageurTrajet.id,
         });
-        
-        // Create notification for the recipient (destinataire B)
+
         await createNotification({
           profileId: voyageurTrajet.profileId,
           type: "demande_received",
@@ -103,10 +122,16 @@ const Paiement = () => {
           demandeId: newDemande.id,
           relatedProfileId: myProfile.id,
         });
+
+        navigate("/trajets");
+      } else {
+        navigate("/trajets");
       }
-      navigate("/trajets");
-    } else {
-      navigate("/trajets");
+    } catch (error: any) {
+      console.error("Erreur lors du paiement:", error);
+      toast.error(error?.message || "Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -143,8 +168,8 @@ const Paiement = () => {
             </p>
 
             <div className="flex gap-3">
-              <Button onClick={handlePay} className="flex-1 rounded-md">
-                {isFreeFromRepublication ? "Confirmer" : "Payer"}
+              <Button onClick={handlePay} className="flex-1 rounded-md" disabled={isLoading}>
+                {isLoading ? "Traitement..." : isFreeFromRepublication ? "Confirmer" : "Payer"}
               </Button>
               <Button onClick={handleCancel} variant="outline" className="flex-1 rounded-md">
                 Annuler
