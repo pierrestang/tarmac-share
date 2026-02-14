@@ -88,16 +88,21 @@ const DemandeConsulter = () => {
     if (!demande || !myProfile) return;
     const success = await withdrawDemande(demande.id);
     if (success) {
-      await createNotification({
-        profileId: demande.toProfileId,
-        type: "demande_withdrawn",
-        title: "Demande retirée",
-        message: `${myProfile.firstName} a retiré sa demande`,
-        demandeId: demande.id,
-        relatedProfileId: myProfile.id,
-      });
-      navigate("/trajets");
+      try {
+        await createNotification({
+          profileId: demande.toProfileId,
+          type: "demande_withdrawn",
+          title: "Demande retirée",
+          message: `${myProfile.firstName} a retiré sa demande`,
+          demandeId: demande.id,
+          relatedProfileId: myProfile.id,
+        });
+      } catch (e) {
+        console.error("Erreur notification:", e);
+      }
     }
+    // Always redirect to /trajets after withdraw attempt
+    navigate("/trajets");
   };
 
   if (!demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
