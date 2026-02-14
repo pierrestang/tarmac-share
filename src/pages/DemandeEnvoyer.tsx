@@ -65,14 +65,16 @@ const DemandeEnvoyer = () => {
     navigate(`/paiement?voyageurId=${voyageurId}&type=envoi`);
   };
 
-  if (!voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+  const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile;
+
+  if (isLoading) {
     return (
-      <section className="flex flex-col gap-4 pb-6">
-        <h1 className="text-[24px] font-semibold">Contacter</h1>
-        <Card>
+      <section className="flex flex-col gap-4 pb-6 items-center px-4">
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter</h1>
+        <Card className="w-full max-w-[42rem]">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">
-              Données introuvables. Veuillez publier un trajet d'abord.
+              Chargement...
             </p>
           </CardContent>
         </Card>

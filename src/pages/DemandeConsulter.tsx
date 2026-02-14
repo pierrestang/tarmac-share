@@ -107,16 +107,13 @@ const DemandeConsulter = () => {
 
   if (!demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
     return (
-      <section className="flex flex-col gap-4 pb-6">
-        <h1 className="text-[24px] font-semibold">Ma demande</h1>
-        <Card>
+      <section className="flex flex-col gap-4 pb-6 items-center px-4">
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Ma demande</h1>
+        <Card className="w-full max-w-[42rem]">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">
-              Demande introuvable.
+              Chargement...
             </p>
-            <Button onClick={handleBack} variant="outline" className="w-full">
-              Retour
-            </Button>
           </CardContent>
         </Card>
       </section>
