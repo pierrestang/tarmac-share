@@ -74,6 +74,16 @@ const Connexion = () => {
               />
             </div>
 
+            <div className="px-4 pb-2">
+              <button
+                type="button"
+                onClick={() => navigate("/forgot-password")}
+                className="text-xs text-muted-foreground underline"
+              >
+                Mot de passe oublié ?
+              </button>
+            </div>
+
             {error && (
               <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
             )}

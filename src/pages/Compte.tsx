@@ -102,7 +102,7 @@ const Compte = () => {
     <section className="flex flex-col gap-4 pb-6">
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">
-          Mon compte
+          Mon compte.
         </h1>
       </div>
 

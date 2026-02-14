@@ -9,6 +9,8 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Auth from "./pages/Auth";
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import CommentCaMarche from "./pages/CommentCaMarche";
 import Trajets from "./pages/Trajets";
 import Publier from "./pages/Publier";
@@ -36,6 +38,8 @@ const App = () => (
           <Route path="auth" element={<Auth />} />
           <Route path="connexion" element={<Connexion />} />
           <Route path="inscription" element={<Inscription />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="comment-ca-marche" element={<CommentCaMarche />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<AppShell />}>
