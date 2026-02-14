@@ -227,9 +227,10 @@ export function useMessages() {
   }, [conversations, hasUnreadMessages]);
 
   const resetMessages = useCallback(async (): Promise<void> => {
-    setConversations([]);
-    setMessages([]);
-  }, []);
+    await supabase.from("messages").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await supabase.from("conversations").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await fetchData();
+  }, [fetchData]);
 
   return useMemo(() => ({
     getConversations,

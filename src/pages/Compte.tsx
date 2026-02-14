@@ -50,12 +50,13 @@ const Compte = () => {
     }
   }, [profile]);
 
-  const handleResetData = () => {
-    resetTrajets();
-    resetDemandes();
-    resetMessages();
-    resetNotifications();
+  const handleResetData = async () => {
+    await resetDemandes();
+    await resetMessages();
+    await resetNotifications();
+    await resetTrajets();
     setShowResetConfirm(false);
+    navigate("/publier");
   };
 
   const compressImage = (file: File, maxSize = 100, quality = 0.7): Promise<string> => {

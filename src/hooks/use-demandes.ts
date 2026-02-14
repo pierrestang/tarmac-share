@@ -225,8 +225,9 @@ export function useDemandes() {
   );
 
   const resetDemandes = useCallback(async () => {
-    setDemandes([]);
-  }, []);
+    await supabase.from("demandes").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await fetchDemandes();
+  }, [fetchDemandes]);
 
   return {
     demandes,
