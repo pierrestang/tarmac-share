@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import type { Profile } from "@/types/profile";
 
-function mapRow(row: any): Profile {
+interface ProfileWithUserId extends Profile {
+  userId: string | null;
+}
+
+function mapRow(row: any): ProfileWithUserId {
   return {
     id: row.id,
     firstName: row.first_name,
@@ -10,11 +15,13 @@ function mapRow(row: any): Profile {
     description: row.description || "",
     photo: row.photo || null,
     createdAt: Number(row.created_at),
+    userId: row.user_id || null,
   };
 }
 
 export function useProfiles() {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profiles, setProfiles] = useState<ProfileWithUserId[]>([]);
+  const { user } = useAuth();
 
   const fetchProfiles = useCallback(async () => {
     const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: true });
@@ -37,9 +44,9 @@ export function useProfiles() {
   }, []);
 
   const getActiveProfile = useCallback((): Profile | null => {
-    // With auth, there's only one profile per user (the first one)
-    return profiles[0] || null;
-  }, [profiles]);
+    if (!user) return null;
+    return profiles.find((p) => p.userId === user.id) || null;
+  }, [profiles, user]);
 
   const getProfileById = useCallback((id: string): Profile | null => {
     return profiles.find((p) => p.id === id) || null;
