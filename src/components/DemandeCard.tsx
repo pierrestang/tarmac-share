@@ -113,11 +113,12 @@ export function DemandeCard({
                   et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
                 </span>
               )}
-              {getStatusBadge()}
-              {isCompleted && (
+              {isCompleted ? (
                 <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
                   Trajet annulé
                 </Badge>
+              ) : (
+                getStatusBadge()
               )}
             </div>
 
