@@ -81,6 +81,13 @@ export function NotificationList() {
     );
   }
 
+  // Check if a cancellation notification was already republished
+  const isAlreadyRepublished = (notification: Notification): boolean => {
+    if (notification.type !== "cancellation") return false;
+    const republished: string[] = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
+    return republished.includes(notification.demandeId);
+  };
+
   return (
     <div className="flex flex-col divide-y bg-card rounded-md">
       {notifications.map((notification) => (
@@ -89,6 +96,7 @@ export function NotificationList() {
           notification={notification}
           onClick={handleClick}
           muted={!isNotificationActionable(notification)}
+          badge={isAlreadyRepublished(notification) ? "Déjà republié" : undefined}
         />
       ))}
     </div>
