@@ -1,0 +1,159 @@
+import { useSearchParams, useNavigate } from "react-router-dom";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { VoyageurCard } from "@/components/VoyageurCard";
+import { useTrajets, calculateDistance, calculateMatchScore } from "@/hooks/use-trajets";
+import { useProfiles } from "@/hooks/use-profiles";
+import { format, parse } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { Baggage, EnrichedMatchedTraveler } from "@/types/trajet";
+
+function formatBaggage(baggage: Baggage): string {
+  const parts: string[] = [];
+  if (baggage.small > 0) parts.push(`${baggage.small} petit${baggage.small > 1 ? "s" : ""}`);
+  if (baggage.medium > 0) parts.push(`${baggage.medium} moyen${baggage.medium > 1 ? "s" : ""}`);
+  if (baggage.large > 0) parts.push(`${baggage.large} grand${baggage.large > 1 ? "s" : ""}`);
+  return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
+}
+
+const DemandeEnvoyer = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const voyageurId = searchParams.get("voyageurId");
+  
+  const { getTrajetById } = useTrajets();
+  const { getActiveProfile, getProfileById } = useProfiles();
+
+  // Get voyageur data
+  const voyageurTrajet = voyageurId ? getTrajetById(voyageurId) : null;
+  const voyageurProfile = voyageurTrajet ? getProfileById(voyageurTrajet.profileId) : null;
+
+  // Get current user data
+  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
+  const myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
+  const myProfile = getActiveProfile();
+
+  // Calculate distance and score
+  const distance = myTrajet && voyageurTrajet 
+    ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords)
+    : null;
+  
+  const compatibilityScore = myTrajet && voyageurTrajet
+    ? calculateMatchScore(myTrajet, voyageurTrajet)
+    : 0;
+
+  // Build EnrichedMatchedTraveler for VoyageurCard
+  const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
+    trajet: voyageurTrajet,
+    profile: voyageurProfile,
+    distance: distance ?? 0,
+    compatibilityScore,
+    receivedDemandeId: null,
+    sentDemandeId: null,
+  } : null;
+
+  const handleSendRequest = () => {
+    navigate(`/paiement?voyageurId=${voyageurId}&type=envoi`);
+  };
+
+  if (!voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+    return (
+      <section className="flex flex-col gap-4 pb-6">
+        <h1 className="text-[24px] font-semibold">Contacter</h1>
+        <Card>
+          <CardContent className="flex flex-col gap-4 p-4">
+            <p className="text-muted-foreground text-center py-8">
+              Données introuvables. Veuillez publier un trajet d'abord.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+    );
+  }
+
+  return (
+    <section className="flex flex-col gap-4 pb-6 items-center px-4">
+      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter</h1>
+
+      {/* Date */}
+      <p className="text-[16px] font-medium w-full max-w-[42rem]">
+        {(() => {
+          try {
+            const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
+            return format(parsed, "EEE d MMMM", { locale: fr }).replace(/^\w/, c => c.toUpperCase());
+          } catch {
+            return myTrajet.date;
+          }
+        })()}
+      </p>
+
+      {/* Mon trajet */}
+      <h2 className="text-[18px] font-semibold text-heading w-full max-w-[42rem]">Mon trajet</h2>
+      <Card className="w-full max-w-[42rem] border-0">
+        <CardContent className="flex flex-col gap-3 p-4">
+          {/* Profile row */}
+          <div className="flex items-center gap-3">
+            <Avatar className="h-12 w-12">
+              {myProfile.photo ? (
+                <AvatarImage src={myProfile.photo} alt={myProfile.firstName} />
+              ) : null}
+              <AvatarFallback className="text-[14px]">
+                {myProfile.firstName.charAt(0)}
+                {myProfile.lastName.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-[16px] font-medium">
+                {myProfile.firstName}
+                {myTrajet.companions > 1 && (
+                  <span className="text-muted-foreground font-normal">
+                    {" "}+{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                  </span>
+                )}
+              </span>
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="flex flex-col gap-1 text-[14px]">
+            <p>
+              <span className="text-muted-foreground">Départ : </span>
+              {myTrajet.departureStation} <span className="text-muted-foreground">à </span>{myTrajet.departureTime}
+            </p>
+            <p>
+              <span className="text-muted-foreground">Arrivée : </span>
+              {myTrajet.destination}
+            </p>
+            <p>
+              <span className="text-muted-foreground">Bagages : </span>
+              {formatBaggage(myTrajet.baggage)}
+            </p>
+            {myTrajet.additionalInfo && (
+              <p>
+                <span className="text-muted-foreground">Infos complémentaires : </span>
+                "{myTrajet.additionalInfo}"
+              </p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Voyageur(s) section */}
+      {voyageurMatch && (
+        <>
+          <h2 className="text-[18px] font-semibold text-heading w-full max-w-[42rem]">Voyageur(s)</h2>
+          <VoyageurCard 
+            match={voyageurMatch} 
+            showButton={true} 
+            buttonLabel="Contacter"
+            onButtonClick={handleSendRequest}
+          />
+        </>
+      )}
+    </section>
+  );
+};
+
+export default DemandeEnvoyer;

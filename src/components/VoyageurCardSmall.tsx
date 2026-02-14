@@ -1,0 +1,104 @@
+import { useNavigate } from "react-router-dom";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type { EnrichedMatchedTraveler } from "@/types/trajet";
+
+interface VoyageurCardSmallProps {
+  match: EnrichedMatchedTraveler;
+  showButton?: boolean;
+  title?: string;
+}
+
+function getInitials(firstName: string, lastName: string): string {
+  return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+}
+
+function getScoreColor(score: number): string {
+  if (score >= 90) return "#10B981";
+  if (score >= 70) return "#22C55E";
+  if (score >= 40) return "#F4A261";
+  return "#E63946";
+}
+
+export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurCardSmallProps) {
+  const navigate = useNavigate();
+  const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
+
+  const scoreColor = getScoreColor(compatibilityScore);
+
+  return (
+    <div className="rounded-md overflow-hidden flex flex-col">
+      <div className="p-4 flex flex-col gap-3 bg-card rounded-t-md">
+        {/* Optional title */}
+        {title && <h2 className="text-[18px] font-semibold text-card-foreground">{title}</h2>}
+        
+        {/* Top section: Avatar, info, and score */}
+        <div className="flex items-start gap-3">
+          {/* Avatar */}
+          <Avatar className="h-12 w-12">
+            {profile.photo && <AvatarImage src={profile.photo} alt={profile.firstName} />}
+            <AvatarFallback className="text-sm">
+              {getInitials(profile.firstName, profile.lastName)}
+            </AvatarFallback>
+          </Avatar>
+
+          {/* Info section */}
+          <div className="flex-1 flex flex-col gap-1">
+            {/* Name, companions and badge */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[16px] font-medium text-card-foreground">{profile.firstName}</span>
+              {trajet.companions > 1 && (
+                <span className="text-[12px] text-muted-foreground">
+                  et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
+                </span>
+              )}
+              {receivedDemandeId && (
+                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                  Demande reçue
+                </Badge>
+              )}
+              {sentDemandeId && !receivedDemandeId && (
+                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                  Demande envoyée
+                </Badge>
+              )}
+            </div>
+
+            {/* Distance */}
+            <span className="text-[12px] text-muted-foreground">
+              à {distance}km
+            </span>
+          </div>
+
+          {/* Compatibility score */}
+          <div 
+            className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
+            style={{ borderColor: scoreColor }}
+          >
+            <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
+              {compatibilityScore}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Button */}
+      {showButton && (
+        <Button
+          onClick={() => navigate(
+            receivedDemandeId 
+              ? `/demande-accepter?demandeId=${receivedDemandeId}`
+              : sentDemandeId
+                ? `/demande-consulter?demandeId=${sentDemandeId}`
+                : `/demande-envoyer?voyageurId=${trajet.id}`
+          )}
+          className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
+        >
+          Voir l'annonce
+        </Button>
+      )}
+    </div>
+  );
+}

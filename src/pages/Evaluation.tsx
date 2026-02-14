@@ -1,0 +1,105 @@
+import { useState, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useMessages } from "@/hooks/use-messages";
+import { useProfiles } from "@/hooks/use-profiles";
+import { useDemandes } from "@/hooks/use-demandes";
+
+
+const Evaluation = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const conversationId = searchParams.get("conversationId");
+  const ratedProfileId = searchParams.get("ratedProfileId");
+
+  const { getConversationById, closeConversation, addSystemMessage } = useMessages();
+  const { getActiveProfile } = useProfiles();
+  const { completeDemande, saveDemandeSnapshot } = useDemandes();
+
+  const activeProfile = getActiveProfile();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const hasRedirected = useRef(false);
+
+  if (!conversationId || !ratedProfileId) {
+    navigate("/messages", { replace: true });
+    return null;
+  }
+
+  const handleAnswer = async () => {
+    if (isSubmitting || hasRedirected.current) return;
+    if (!activeProfile) return;
+
+    const conversation = getConversationById(conversationId);
+    if (!conversation) {
+      navigate("/trajets", { replace: true });
+      return;
+    }
+
+    if (conversation.closedBy.includes(activeProfile.id)) {
+      navigate("/trajets", { replace: true });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    await closeConversation(conversationId, activeProfile.id);
+
+    // Check if both users have closed - re-fetch conversation
+    const freshConv = getConversationById(conversationId);
+    if (freshConv && freshConv.closedBy.length >= 2) {
+      await completeDemande(conversation.demandeId);
+      await addSystemMessage(conversationId, "La conversation est clôturée");
+    }
+
+    await saveDemandeSnapshot(conversation.demandeId);
+
+    hasRedirected.current = true;
+    navigate("/trajets", { replace: true });
+  };
+
+  return (
+    <div className="flex flex-col min-h-full">
+      <div className="flex items-center gap-3 px-4 pt-6 pb-4">
+        <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
+          Le trajet a-t-il eu lieu ?
+        </h1>
+      </div>
+
+      <div className="flex-1 px-4 pb-6">
+        <div className="max-w-[42rem] mx-auto">
+          <Card className="border-0 rounded-md">
+            <CardContent className="p-6 flex flex-col gap-6">
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => handleAnswer()}
+                  disabled={isSubmitting}
+                  className="flex-1 rounded-full text-[24px]"
+                >
+                  {isSubmitting ? "Envoi..." : "👍"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleAnswer()}
+                  disabled={isSubmitting}
+                  className="flex-1 rounded-full text-[24px]"
+                >
+                  👎
+                </Button>
+              </div>
+
+              {!activeProfile && (
+                <p className="text-sm text-destructive text-center">
+                  Profil non chargé. Veuillez patienter ou rafraîchir la page.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Evaluation;

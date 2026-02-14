@@ -1,0 +1,260 @@
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { DemandeCard } from "@/components/DemandeCard";
+import { MonTrajetCard } from "@/components/MonTrajetCard";
+import { useDemandes } from "@/hooks/use-demandes";
+import { useTrajets } from "@/hooks/use-trajets";
+import { useProfiles } from "@/hooks/use-profiles";
+import { format, parse } from "date-fns";
+import { fr } from "date-fns/locale";
+
+const Trajets = () => {
+  const navigate = useNavigate();
+  const { demandes, refuseDemande, hasDemandesForTrajet } = useDemandes();
+  const { trajets, getTrajetById, findMatches, deleteTrajet } = useTrajets();
+  const { profiles, getActiveProfile } = useProfiles();
+
+  const activeProfile = getActiveProfile();
+  const currentProfileId = activeProfile?.id || "";
+
+  // Get my published trajets (trajets I created)
+  const myPublishedTrajets = useMemo(() => {
+    return trajets.filter((t) => t.profileId === currentProfileId);
+  }, [trajets, currentProfileId]);
+
+  // Filter demandes for current profile
+  const myDemandes = useMemo(() => {
+    return demandes.filter(
+      (d) => d.fromProfileId === currentProfileId || d.toProfileId === currentProfileId
+    );
+  }, [demandes, currentProfileId]);
+
+  // Categorize demandes
+  const enCours = useMemo(() => {
+    return myDemandes.filter((d) => d.status === "accepted");
+  }, [myDemandes]);
+
+  const enAttenteDemandes = useMemo(() => {
+    return myDemandes.filter((d) => d.status === "pending");
+  }, [myDemandes]);
+
+  const historique = useMemo(() => {
+    return myDemandes.filter((d) => d.status === "refused" || d.status === "completed");
+  }, [myDemandes]);
+
+  // Get trajet IDs that have accepted demandes (exclude from "en attente" section)
+  const trajetsWithAcceptedDemandes = useMemo(() => {
+    const trajetIds = new Set<string>();
+    enCours.forEach((d) => {
+      trajetIds.add(d.fromTrajetId);
+      trajetIds.add(d.toTrajetId);
+    });
+    return trajetIds;
+  }, [enCours]);
+
+  // Get trajet IDs that have completed demandes (exclude from "en attente" section)
+  const trajetsWithCompletedDemandes = useMemo(() => {
+    const trajetIds = new Set<string>();
+    historique.filter((d) => d.status === "completed").forEach((d) => {
+      trajetIds.add(d.fromTrajetId);
+      trajetIds.add(d.toTrajetId);
+    });
+    return trajetIds;
+  }, [historique]);
+
+  // Vérifier si l'utilisateur a un trajet en cours (demande acceptée)
+  const hasActiveTrip = enCours.length > 0;
+
+  // Trajets publiés à afficher dans "En attente"
+  // Si l'utilisateur a un voyage en cours, seuls les trajets republiés sont affichés
+  const myPendingTrajets = useMemo(() => {
+    return myPublishedTrajets.filter((t) => {
+      // Toujours exclure les trajets directement liés à une demande accepted ou completed
+      if (trajetsWithAcceptedDemandes.has(t.id) || trajetsWithCompletedDemandes.has(t.id)) {
+        return false;
+      }
+      
+      // Si l'utilisateur a un voyage en cours, n'afficher que les trajets republiés
+      if (hasActiveTrip) {
+        return t.isRepublished === true;
+      }
+      
+      // Sinon, afficher tous les trajets non liés à une demande
+      return true;
+    });
+  }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, hasActiveTrip]);
+
+  // Get match count for each trajet
+  const getMatchCount = (trajetId: string) => {
+    return findMatches(trajetId).length;
+  };
+
+  // Get profile for a demande (the other person)
+  const getOtherProfile = (demande: typeof demandes[0]) => {
+    const otherId =
+      demande.fromProfileId === currentProfileId
+        ? demande.toProfileId
+        : demande.fromProfileId;
+    return profiles.find((p) => p.id === otherId) || null;
+  };
+
+  // Get trajet for display
+  const getTrajet = (demande: typeof demandes[0]) => {
+    // Show the trajet of the other person
+    const trajetId =
+      demande.fromProfileId === currentProfileId
+        ? demande.toTrajetId
+        : demande.fromTrajetId;
+    return getTrajetById(trajetId);
+  };
+
+  const handleRefuse = async (id: string) => {
+    await refuseDemande(id);
+  };
+
+  const renderDemandeList = (list: typeof demandes) => {
+    if (list.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="flex flex-col gap-3">
+        {list.map((demande) => (
+          <DemandeCard
+            key={demande.id}
+            demande={demande}
+            otherProfile={getOtherProfile(demande)}
+            trajet={getTrajet(demande)}
+            currentProfileId={currentProfileId}
+            onRefuse={handleRefuse}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteTrajet(id);
+  };
+
+  const hasEnAttenteContent = myPendingTrajets.length > 0;
+
+  return (
+    <section aria-label="Trajets" className="flex flex-col gap-4 pb-6">
+      <div className="flex justify-center px-4">
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Consulter mes trajets.</h1>
+      </div>
+
+      <div className="flex flex-col gap-4 items-center px-4">
+        {/* En cours */}
+        <Accordion type="multiple" defaultValue={enCours.length > 0 ? ["en-cours"] : []} className="w-full max-w-[42rem]">
+          <AccordionItem value="en-cours" className="border-0">
+            <div className="bg-card rounded-md overflow-hidden">
+              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+                En cours
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pt-3">
+              {enCours.length === 0 ? (
+                <div className="pb-2">
+                  <span className="text-[14px] text-white">
+                    Aucune demande pour le moment
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {renderDemandeList(enCours)}
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        {/* En attente */}
+        <Accordion type="multiple" defaultValue={hasEnAttenteContent ? ["en-attente"] : []} className="w-full max-w-[42rem]">
+          <AccordionItem value="en-attente" className="border-0">
+            <div className="bg-card rounded-md overflow-hidden">
+              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+                En attente
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pt-3 pb-0">
+              {!hasEnAttenteContent ? (
+                <div className="pb-2">
+                  <span className="text-[14px] text-white">
+                    Aucune demande pour le moment
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {/* Mes trajets publiés - groupés par date dans un accordéon */}
+                  {myPendingTrajets.map((trajet) => {
+                    const formattedDate = (() => {
+                      try {
+                        const parsed = parse(trajet.date, "dd/MM/yyyy", new Date());
+                        return format(parsed, "EEE d MMMM", { locale: fr }).replace(/^\w/, c => c.toUpperCase());
+                      } catch {
+                        return trajet.date;
+                      }
+                    })();
+                    
+                    return (
+                      <Accordion key={trajet.id} type="multiple" defaultValue={[`date-${trajet.id}`]} className="w-full">
+                        <AccordionItem value={`date-${trajet.id}`} className="border-0">
+                          <AccordionTrigger className="text-[18px] font-semibold hover:no-underline text-heading px-0">
+                            {formattedDate}
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-3 pb-0 flex flex-col gap-4">
+                            <MonTrajetCard
+                              trajet={trajet}
+                              profile={activeProfile!}
+                              canEditOrDelete={!hasDemandesForTrajet(trajet.id)}
+                              onDelete={handleDelete}
+                            />
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    );
+                  })}
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        {/* Historique */}
+        <Accordion type="multiple" className="w-full max-w-[42rem]">
+          <AccordionItem value="historique" className="border-0">
+            <div className="bg-card rounded-md overflow-hidden">
+              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+                Historique
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pt-3">
+              {historique.length === 0 ? (
+                <div className="pb-2">
+                  <span className="text-[14px] text-white">
+                    Aucune demande pour le moment
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {renderDemandeList(historique)}
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+    </section>
+  );
+};
+
+export default Trajets;
