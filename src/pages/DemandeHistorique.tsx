@@ -1,4 +1,5 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -124,7 +125,12 @@ const DemandeHistorique = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center px-4">
-      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
+      <div className="flex items-center gap-2 w-full max-w-[42rem]">
+        <h1 className="text-[24px] font-semibold">Historique</h1>
+        <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+          Trajet annulé
+        </Badge>
+      </div>
 
       {/* Date */}
       <p className="text-[16px] font-medium w-full max-w-[42rem]">
@@ -217,21 +223,6 @@ const DemandeHistorique = () => {
                   </span>
                 )}
               </div>
-            </div>
-            <div 
-              className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
-              style={{ 
-                borderColor: compatibilityScore >= 80 ? "#10B981" : compatibilityScore >= 60 ? "#F4A261" : "#E63946" 
-              }}
-            >
-              <span 
-                className="text-[14px] font-semibold" 
-                style={{ 
-                  color: compatibilityScore >= 80 ? "#10B981" : compatibilityScore >= 60 ? "#F4A261" : "#E63946" 
-                }}
-              >
-                {compatibilityScore}%
-              </span>
             </div>
           </div>
 
