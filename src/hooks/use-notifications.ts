@@ -84,8 +84,9 @@ export function useNotifications() {
   }, []);
 
   const resetNotifications = useCallback(async (): Promise<void> => {
-    setNotifications([]);
-  }, []);
+    await supabase.from("notifications").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await fetchNotifications();
+  }, [fetchNotifications]);
 
   return {
     notifications,

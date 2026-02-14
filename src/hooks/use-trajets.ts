@@ -240,9 +240,9 @@ export function useTrajets() {
   );
 
   const resetTrajets = useCallback(async () => {
-    const { error } = await supabase.from("trajets").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-    if (!error) setTrajets([]);
-  }, []);
+    await supabase.from("trajets").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    await fetchTrajets();
+  }, [fetchTrajets]);
 
   return {
     trajets,
