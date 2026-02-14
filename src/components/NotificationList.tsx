@@ -36,6 +36,18 @@ export function NotificationList() {
       const republished: string[] = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
       return !republished.includes(notification.demandeId);
     }
+    // For demande_received, only actionable if demande is still pending
+    if (notification.type === "demande_received") {
+      const demande = getDemandeById(notification.demandeId);
+      return demande !== null && demande.status === "pending";
+    }
+    // For demande_accepted, only actionable if demande is still accepted and conversation exists
+    if (notification.type === "demande_accepted") {
+      const demande = getDemandeById(notification.demandeId);
+      if (!demande || demande.status !== "accepted") return false;
+      const conversation = getConversationByDemandeId(notification.demandeId);
+      return conversation !== null;
+    }
     // For other types, check if the demande still exists
     const demande = getDemandeById(notification.demandeId);
     return demande !== null;
@@ -88,17 +100,31 @@ export function NotificationList() {
     return republished.includes(notification.demandeId);
   };
 
-  return (
-    <div className="flex flex-col divide-y bg-card rounded-md">
-      {notifications.map((notification) => (
-        <NotificationItem
-          key={notification.id}
-          notification={notification}
-          onClick={handleClick}
-          muted={!isNotificationActionable(notification)}
-          badge={isAlreadyRepublished(notification) ? "Déjà republié" : undefined}
-        />
-      ))}
-    </div>
-  );
+    const getBadge = (notification: Notification): string | undefined => {
+      if (isAlreadyRepublished(notification)) return "Déjà republié";
+      if (notification.type === "demande_received") {
+        const demande = getDemandeById(notification.demandeId);
+        if (demande && demande.status === "accepted") return "Demande acceptée";
+        if (demande && demande.status === "refused") return "Demande refusée";
+      }
+      if (notification.type === "demande_accepted") {
+        const demande = getDemandeById(notification.demandeId);
+        if (demande && demande.status === "completed") return "Trajet annulé";
+      }
+      return undefined;
+    };
+
+    return (
+      <div className="flex flex-col divide-y bg-card rounded-md">
+        {notifications.map((notification) => (
+          <NotificationItem
+            key={notification.id}
+            notification={notification}
+            onClick={handleClick}
+            muted={!isNotificationActionable(notification)}
+            badge={getBadge(notification)}
+          />
+        ))}
+      </div>
+    );
 }
