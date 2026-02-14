@@ -23,7 +23,7 @@ const DemandeEnvoyer = () => {
   const navigate = useNavigate();
   const voyageurId = searchParams.get("voyageurId");
   
-  const { getTrajetById } = useTrajets();
+  const { trajets, getTrajetById } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
 
   // Get voyageur data
@@ -31,9 +31,16 @@ const DemandeEnvoyer = () => {
   const voyageurProfile = voyageurTrajet ? getProfileById(voyageurTrajet.profileId) : null;
 
   // Get current user data
-  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
-  const myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
   const myProfile = getActiveProfile();
+  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
+  let myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
+  
+  // Fallback: find user's trajet that matches the voyageur's date & station
+  if (!myTrajet && myProfile && voyageurTrajet) {
+    myTrajet = trajets.find(
+      (t) => t.profileId === myProfile.id && t.date === voyageurTrajet.date && t.departureStation.toLowerCase() === voyageurTrajet.departureStation.toLowerCase()
+    ) || null;
+  }
 
   // Calculate distance and score
   const distance = myTrajet && voyageurTrajet 

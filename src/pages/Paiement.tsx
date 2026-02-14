@@ -21,19 +21,29 @@ const Paiement = () => {
   const type = searchParams.get("type") || "envoi";
 
   const { createDemande, acceptDemande, getDemandeById, saveDemandeSnapshot, getPendingDemandeByTrajetIds } = useDemandes();
-  const { getTrajetById, updateTrajet } = useTrajets();
+  const { trajets, getTrajetById, updateTrajet } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
   const { createConversation } = useMessages();
   const { canRepublishFree, useRepublication } = useRepublications();
   const { createNotification } = useNotifications();
 
-  // Get my trajet to check if it's republished
-  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
-  const myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
+  const myProfile = getActiveProfile();
 
+  // Find my trajet: try localStorage first, then find by matching profile + voyageur context
+  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
+  let myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
+  
+  // Fallback: find user's trajet that matches the voyageur's date & station
+  if (!myTrajet && myProfile && voyageurId && type === "envoi") {
+    const voyageurTrajet = getTrajetById(voyageurId);
+    if (voyageurTrajet) {
+      myTrajet = trajets.find(
+        (t) => t.profileId === myProfile.id && t.date === voyageurTrajet.date && t.departureStation.toLowerCase() === voyageurTrajet.departureStation.toLowerCase()
+      ) || null;
+    }
+  }
   // For acceptation, get the demande and find user's trajet
   const demande = demandeId ? getDemandeById(demandeId) : null;
-  const myProfile = getActiveProfile();
   
   // Determine if the user's trajet is republished AND they have free credits
   let isFreeFromRepublication = false;
@@ -88,7 +98,6 @@ const Paiement = () => {
         navigate("/messages");
       } else if (type === "envoi" && voyageurId) {
         const voyageurTrajet = getTrajetById(voyageurId);
-        const myProfile = getActiveProfile();
 
         if (!voyageurTrajet) {
           toast.error("Le trajet du voyageur n'a pas été trouvé. Veuillez réessayer.");
