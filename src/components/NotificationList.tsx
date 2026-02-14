@@ -100,31 +100,37 @@ export function NotificationList() {
     return republished.includes(notification.demandeId);
   };
 
-    const getBadge = (notification: Notification): string | undefined => {
-      if (isAlreadyRepublished(notification)) return "Déjà republié";
+    const getBadge = (notification: Notification): { text: string; variant: "default" | "green" | "red" } | undefined => {
+      if (isAlreadyRepublished(notification)) return { text: "Déjà republié", variant: "default" };
       if (notification.type === "demande_received") {
         const demande = getDemandeById(notification.demandeId);
-        if (demande && demande.status === "accepted") return "Demande acceptée";
-        if (demande && demande.status === "refused") return "Demande refusée";
+        if (demande && demande.status === "accepted") return { text: "Demande acceptée", variant: "green" };
+        if (demande && demande.status === "refused") return { text: "Demande refusée", variant: "red" };
       }
       if (notification.type === "demande_accepted") {
         const demande = getDemandeById(notification.demandeId);
-        if (demande && demande.status === "completed") return "Trajet annulé";
+        if (demande && demande.status === "completed") return { text: "Trajet annulé", variant: "red" };
       }
       return undefined;
     };
 
+    const badgeData = (n: Notification) => getBadge(n);
+
     return (
       <div className="flex flex-col divide-y bg-card rounded-md">
-        {notifications.map((notification) => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            onClick={handleClick}
-            muted={!isNotificationActionable(notification)}
-            badge={getBadge(notification)}
-          />
-        ))}
+        {notifications.map((notification) => {
+          const b = badgeData(notification);
+          return (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              onClick={handleClick}
+              muted={!isNotificationActionable(notification)}
+              badge={b?.text}
+              badgeVariant={b?.variant}
+            />
+          );
+        })}
       </div>
     );
 }
