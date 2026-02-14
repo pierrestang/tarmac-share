@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTrajets, calculateDistance, calculateMatchScore, getArchivedTrajet } from "@/hooks/use-trajets";
+import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { format, parse } from "date-fns";
@@ -26,6 +27,7 @@ const DemandeHistorique = () => {
   const { getTrajetById } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
   const { getDemandeById } = useDemandes();
+  const { notifications } = useNotifications();
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -95,6 +97,15 @@ const DemandeHistorique = () => {
     navigate("/trajets");
   };
 
+  // Determine who cancelled by checking cancellation notification
+  const cancellerProfileId = (() => {
+    if (!demande) return null;
+    const cancellationNotif = notifications.find(
+      (n) => n.type === "cancellation" && n.demandeId === demande.id
+    );
+    return cancellationNotif?.relatedProfileId || null;
+  })();
+
   if (!demande) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center px-4">
@@ -125,12 +136,7 @@ const DemandeHistorique = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center px-4">
-      <div className="flex items-center gap-2 w-full max-w-[42rem]">
-        <h1 className="text-[24px] font-semibold">Historique</h1>
-        <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
-          Trajet annulé
-        </Badge>
-      </div>
+      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
 
       {/* Date */}
       <p className="text-[16px] font-medium w-full max-w-[42rem]">
@@ -159,14 +165,21 @@ const DemandeHistorique = () => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-[16px] font-medium">
-                {myProfile.firstName}
-                {myTrajet.companions > 1 && (
-                  <span className="text-muted-foreground font-normal">
-                    {" "}+{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
-                  </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[16px] font-medium">
+                  {myProfile.firstName}
+                </span>
+                {cancellerProfileId === currentProfileId && (
+                  <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                    Trajet annulé
+                  </Badge>
                 )}
-              </span>
+              </div>
+              {myTrajet.companions > 1 && (
+                <span className="text-[12px] text-muted-foreground">
+                  +{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                </span>
+              )}
             </div>
           </div>
 
@@ -208,14 +221,21 @@ const DemandeHistorique = () => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col flex-1">
-              <span className="text-[16px] font-medium">
-                {voyageurProfile.firstName}
-                {voyageurTrajet.companions > 1 && (
-                  <span className="text-muted-foreground font-normal">
-                    {" "}+{voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
-                  </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[16px] font-medium">
+                  {voyageurProfile.firstName}
+                </span>
+                {cancellerProfileId === voyageurProfileId && (
+                  <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                    Trajet annulé
+                  </Badge>
                 )}
-              </span>
+              </div>
+              {voyageurTrajet.companions > 1 && (
+                <span className="text-[12px] text-muted-foreground">
+                  +{voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
+                </span>
+              )}
               <div className="flex items-center gap-2">
                 {distance !== null && (
                   <span className="text-[12px] text-muted-foreground">
