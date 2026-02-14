@@ -5,6 +5,7 @@ interface NotificationItemProps {
   notification: Notification;
   onClick: (notification: Notification) => void;
   muted?: boolean;
+  badge?: string;
 }
 
 function formatRelativeTime(timestamp: number): string {
@@ -21,7 +22,7 @@ function formatRelativeTime(timestamp: number): string {
   return `Il y a ${days} jours`;
 }
 
-export function NotificationItem({ notification, onClick, muted = false }: NotificationItemProps) {
+export function NotificationItem({ notification, onClick, muted = false, badge }: NotificationItemProps) {
   return (
     <button
       onClick={() => onClick(notification)}
@@ -41,8 +42,13 @@ export function NotificationItem({ notification, onClick, muted = false }: Notif
           )}>
             {notification.title}
           </span>
-          {!notification.read && (
+          {!notification.read && !muted && (
             <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+          )}
+          {badge && (
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium flex-shrink-0">
+              {badge}
+            </span>
           )}
         </div>
         <p className="text-[13px] text-card-foreground line-clamp-2 mt-0.5">
