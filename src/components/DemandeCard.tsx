@@ -129,15 +129,17 @@ export function DemandeCard({
             </div>
           </div>
 
-          {/* Compatibility score */}
-          <div 
-            className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
-            style={{ borderColor: scoreColor }}
-          >
-            <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
-              {compatibilityScore}%
-            </span>
-          </div>
+          {/* Compatibility score - hidden for completed */}
+          {!isCompleted && (
+            <div 
+              className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
+              style={{ borderColor: scoreColor }}
+            >
+              <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
+                {compatibilityScore}%
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Status badges for refused */}
