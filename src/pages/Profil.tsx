@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings } from "lucide-react";
+import { Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { useProfiles } from "@/hooks/use-profiles";
 const Profil = () => {
   const navigate = useNavigate();
   const { getActiveProfile, updateProfile } = useProfiles();
+  const { signOut } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeProfile = getActiveProfile();
@@ -174,6 +176,18 @@ const Profil = () => {
           </Button>
         </div>
       </Card>
+
+      <Button
+        variant="outline"
+        className="w-full max-w-[42rem] mt-2 justify-start text-[14px] font-semibold bg-card text-destructive border-0 rounded-md hover:bg-card/90 h-auto px-4 py-4"
+        onClick={async () => {
+          await signOut();
+          navigate("/auth", { replace: true });
+        }}
+      >
+        <LogOut size={18} className="mr-2" />
+        Déconnexion
+      </Button>
     </section>
   );
 };
