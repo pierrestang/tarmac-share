@@ -29,10 +29,12 @@ export function NotificationList() {
       const conversation = getConversationByDemandeId(notification.demandeId);
       return conversation !== null;
     }
-    // For cancellation, always actionable if demande exists
+    // For cancellation, actionable only if demande exists AND not already republished
     if (notification.type === "cancellation") {
       const demande = getDemandeById(notification.demandeId);
-      return demande !== null;
+      if (!demande) return false;
+      const republished: string[] = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
+      return !republished.includes(notification.demandeId);
     }
     // For other types, check if the demande still exists
     const demande = getDemandeById(notification.demandeId);

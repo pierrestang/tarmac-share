@@ -63,6 +63,13 @@ const RepublierAnnonce = () => {
     // Update lastPublishedTrajetId to point to new trajet
     localStorage.setItem("lastPublishedTrajetId", newTrajet.id);
 
+    // Mark this demande as already republished
+    const republished = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
+    if (!republished.includes(demandeId)) {
+      republished.push(demandeId);
+      localStorage.setItem("republishedDemandeIds", JSON.stringify(republished));
+    }
+
     navigate("/trajets", { replace: true });
   };
 
