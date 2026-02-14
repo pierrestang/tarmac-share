@@ -7,6 +7,8 @@ import NotFound from "./pages/NotFound";
 import { AppShell } from "@/components/layout/AppShell";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Auth from "./pages/Auth";
+import Connexion from "./pages/Connexion";
+import Inscription from "./pages/Inscription";
 import CommentCaMarche from "./pages/CommentCaMarche";
 import Trajets from "./pages/Trajets";
 import Publier from "./pages/Publier";
@@ -32,6 +34,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="auth" element={<Auth />} />
+          <Route path="connexion" element={<Connexion />} />
+          <Route path="inscription" element={<Inscription />} />
           <Route path="comment-ca-marche" element={<CommentCaMarche />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<AppShell />}>
