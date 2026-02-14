@@ -3,10 +3,7 @@ import { Camera, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { useProfiles } from "@/hooks/use-profiles";
-import { useTrajets } from "@/hooks/use-trajets";
-import { useDemandes } from "@/hooks/use-demandes";
-import { useMessages } from "@/hooks/use-messages";
-import { useNotifications } from "@/hooks/use-notifications";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
@@ -27,10 +24,6 @@ const Compte = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { getActiveProfile, updateProfile } = useProfiles();
-  const { resetTrajets } = useTrajets();
-  const { resetDemandes } = useDemandes();
-  const { resetMessages } = useMessages();
-  const { resetNotifications } = useNotifications();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const profile = getActiveProfile();
 
@@ -51,12 +44,14 @@ const Compte = () => {
   }, [profile]);
 
   const handleResetData = async () => {
-    await resetDemandes();
-    await resetMessages();
-    await resetNotifications();
-    await resetTrajets();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await supabase.functions.invoke("reset-all-data", {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
     setShowResetConfirm(false);
     navigate("/publier");
+    window.location.reload();
   };
 
   const compressImage = (file: File, maxSize = 100, quality = 0.7): Promise<string> => {
