@@ -57,8 +57,8 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         ) : (
           <div className="w-8 flex-shrink-0" />
         )}
-        <div className="max-w-[75%] bg-card border border-border px-4 py-2 rounded-2xl">
-          <p className="text-[14px] text-card-foreground">{message.content}</p>
+        <div className="max-w-[75%] w-fit bg-card border border-border px-4 py-2 rounded-2xl">
+          <p className="text-[14px] text-card-foreground whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
       {showTimestamp && (
