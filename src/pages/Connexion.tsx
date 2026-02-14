@@ -32,7 +32,7 @@ const Connexion = () => {
           : error.message
       );
     } else {
-      navigate("/trajets", { replace: true });
+      navigate("/publier", { replace: true });
     }
     setLoading(false);
   };
