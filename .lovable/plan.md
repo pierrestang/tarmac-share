@@ -1,84 +1,51 @@
 
 
-## Ajouter l'authentification par email/mot de passe
+## Restructuration de l'authentification
 
-### Objectif
-Creer une page de connexion (email + mot de passe) et d'inscription avec envoi d'un mail de confirmation. Les utilisateurs non connectes seront rediriges vers cette page.
+### Contexte
+La page `/auth` actuelle contient un systeme d'onglets (Connexion / Inscription) dans une seule page. L'objectif est de la remplacer par 3 pages distinctes, et de renommer le titre de `/compte`.
 
-### Ce qui change
+**Note :** Je suppose que "S'inscrire sur EnRoute" doit rediriger vers `/inscription` et "J'ai deja un compte" vers `/connexion` (l'inverse de ce qui etait ecrit, car c'est la logique attendue).
 
-**1. Migration base de donnees**
+---
 
-- Ajouter une colonne `user_id` (uuid, reference vers `auth.users`) a la table `profiles`
-- Creer un trigger qui cree automatiquement un profil vide a l'inscription
-- Mettre a jour les policies RLS sur toutes les tables pour restreindre l'acces aux utilisateurs authentifies (chaque utilisateur ne voit/modifie que ses propres donnees)
+### Changements prevus
 
-**2. Nouvelle page `/auth`**
+**1. Page `/auth` -- Page d'accueil simplifiee**
+- Garder le logo EnRoute en haut
+- Afficher uniquement deux boutons :
+  - "S'inscrire sur EnRoute" -> redirige vers `/inscription`
+  - "J'ai deja un compte" -> redirige vers `/connexion`
+- Supprimer les formulaires et onglets actuels
 
-Une page avec deux onglets :
-- **Connexion** : champs email + mot de passe + bouton "Se connecter"
-- **Inscription** : champs prenom, nom, email, mot de passe + bouton "Creer mon compte"
-- Message de confirmation affiche apres inscription ("Verifiez votre boite mail")
-- Design coherent avec le style existant de l'application (cards, boutons arrondis)
+**2. Nouvelle page `/connexion`**
+- Style similaire a `/compte` : Card sans bordure, champs avec separateurs horizontaux, pas de bordures sur les inputs
+- Champs : Email, Mot de passe
+- Bouton "Se connecter" en bas de la Card (pleine largeur, colle au bas)
+- Lien retour vers `/auth`
 
-**3. Protection des routes**
+**3. Nouvelle page `/inscription`**
+- Meme style que `/connexion`
+- Champs : Prenom, Nom, Email, Mot de passe
+- Bouton "Creer mon compte" en bas de la Card
+- Lien retour vers `/auth`
+- Ecran de confirmation email apres inscription reussie
 
-- Creer un composant `ProtectedRoute` qui verifie la session utilisateur
-- Rediriger vers `/auth` si l'utilisateur n'est pas connecte
-- La page `/auth` redirige vers `/trajets` si deja connecte
+**4. Page `/compte` -- Changement de titre**
+- Remplacer "Mon profil." par "Mon compte"
 
-**4. Adaptation des hooks existants**
-
-- `use-profiles.ts` : le profil actif sera celui de l'utilisateur connecte (plus besoin de localStorage pour le profil actif)
-- Les autres hooks (`use-trajets`, `use-demandes`, etc.) continueront de fonctionner car ils utilisent deja le `profile_id` -- la difference sera que les policies RLS filtreront cote serveur
-
-**5. Mise a jour du header et de la page Compte**
-
-- Le header affichera un bouton "Deconnexion" au lieu du menu actuel
-- La page Compte sera simplifiee : modification du profil de l'utilisateur connecte uniquement (plus de multi-comptes)
+---
 
 ### Details techniques
 
-**Migration SQL prevue :**
+- **Fichiers crees :**
+  - `src/pages/Connexion.tsx` -- formulaire de connexion
+  - `src/pages/Inscription.tsx` -- formulaire d'inscription
 
-```text
--- Ajouter user_id a profiles
-ALTER TABLE profiles ADD COLUMN user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE;
-CREATE UNIQUE INDEX profiles_user_id_idx ON profiles(user_id);
+- **Fichiers modifies :**
+  - `src/pages/Auth.tsx` -- simplifie en page d'accueil avec 2 boutons
+  - `src/pages/Compte.tsx` -- titre change en "Mon compte"
+  - `src/App.tsx` -- ajout des routes `/connexion` et `/inscription`
 
--- Trigger auto-creation profil
-CREATE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
-BEGIN
-  INSERT INTO public.profiles (id, user_id, first_name, last_name, created_at)
-  VALUES (gen_random_uuid(), NEW.id, '', '', extract(epoch from now()) * 1000);
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+- **Style des formulaires :** reprend le pattern de `/compte` avec Card sans bordure, inputs transparents sans bordure avec separateurs `h-px bg-border mx-4`, et bouton d'action pleine largeur en bas de la Card.
 
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
--- RLS policies mises a jour (exemple pour profiles)
-DROP POLICY IF EXISTS "Allow all select" ON profiles;
-CREATE POLICY "Users read own profile" ON profiles
-  FOR SELECT TO authenticated
-  USING (user_id = auth.uid());
-
-CREATE POLICY "Users update own profile" ON profiles
-  FOR UPDATE TO authenticated
-  USING (user_id = auth.uid());
--- (idem pour les autres tables, filtrees par profile_id -> user_id)
-```
-
-**Nouveaux fichiers :**
-- `src/pages/Auth.tsx` -- page connexion/inscription
-- `src/components/ProtectedRoute.tsx` -- garde de route
-- `src/hooks/use-auth.ts` -- hook pour gerer la session (login, signup, logout, session state)
-
-**Fichiers modifies :**
-- `src/App.tsx` -- ajout route `/auth` + protection des routes
-- `src/hooks/use-profiles.ts` -- profil actif = profil de l'utilisateur connecte
-- `src/components/layout/TopHeader.tsx` -- bouton deconnexion
-- `src/pages/Compte.tsx` -- simplification (un seul profil)
