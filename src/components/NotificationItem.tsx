@@ -6,6 +6,7 @@ interface NotificationItemProps {
   onClick: (notification: Notification) => void;
   muted?: boolean;
   badge?: string;
+  badgeVariant?: "default" | "green" | "red";
 }
 
 function formatRelativeTime(timestamp: number): string {
@@ -22,7 +23,12 @@ function formatRelativeTime(timestamp: number): string {
   return `Il y a ${days} jours`;
 }
 
-export function NotificationItem({ notification, onClick, muted = false, badge }: NotificationItemProps) {
+export function NotificationItem({ notification, onClick, muted = false, badge, badgeVariant = "default" }: NotificationItemProps) {
+  const badgeClasses = {
+    default: "bg-muted text-muted-foreground",
+    green: "bg-green-100 text-green-700 border border-green-300",
+    red: "bg-red-100 text-red-700 border border-red-300",
+  };
   return (
     <button
       onClick={() => onClick(notification)}
@@ -46,7 +52,7 @@ export function NotificationItem({ notification, onClick, muted = false, badge }
             <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
           )}
           {badge && (
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium flex-shrink-0">
+            <span className={cn("text-[11px] px-2 py-0.5 rounded-full font-medium flex-shrink-0", badgeClasses[badgeVariant])}>
               {badge}
             </span>
           )}
