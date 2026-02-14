@@ -68,14 +68,18 @@ const DemandeAccepter = () => {
       await refuseDemande(demandeId);
       
       // Create notification for the requester (demandeur A)
-      await createNotification({
-        profileId: demande.fromProfileId,
-        type: "demande_refused",
-        title: "Demande refusée",
-        message: `${myProfile.firstName} a refusé votre demande`,
-        demandeId: demande.id,
-        relatedProfileId: myProfile.id,
-      });
+      try {
+        await createNotification({
+          profileId: demande.fromProfileId,
+          type: "demande_refused",
+          title: "Demande refusée",
+          message: `${myProfile.firstName} a refusé votre demande`,
+          demandeId: demande.id,
+          relatedProfileId: myProfile.id,
+        });
+      } catch (e) {
+        console.error("Erreur notification:", e);
+      }
       
       navigate("/trajets");
     }

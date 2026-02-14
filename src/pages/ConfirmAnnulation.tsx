@@ -35,14 +35,18 @@ const ConfirmAnnulation = () => {
     await sendMessage(conversationId, activeProfile.id, "Je dois annuler");
 
     // Send notification to the other person
-    await createNotification({
-      profileId: otherProfileId,
-      type: "cancellation",
-      title: "Trajet annulé",
-      message: "Votre voyageur a annulé. Souhaitez-vous republier votre annonce ?",
-      demandeId: conversation.demandeId,
-      relatedProfileId: activeProfile.id,
-    });
+    try {
+      await createNotification({
+        profileId: otherProfileId,
+        type: "cancellation",
+        title: "Trajet annulé",
+        message: "Votre voyageur a annulé. Souhaitez-vous republier votre annonce ?",
+        demandeId: conversation.demandeId,
+        relatedProfileId: activeProfile.id,
+      });
+    } catch (e) {
+      console.error("Erreur notification:", e);
+    }
 
     // Close conversation for both participants
     await closeConversation(conversationId, activeProfile.id);
