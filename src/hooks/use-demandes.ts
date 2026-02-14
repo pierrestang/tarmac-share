@@ -103,16 +103,20 @@ export function useDemandes() {
         
         for (const d of otherPending) {
           // Create withdrawn notification
-          await supabase.from("notifications").insert({
-            profile_id: d.toProfileId,
-            type: "demande_withdrawn",
-            title: "Demande retirée",
-            message: `${senderName} a retiré sa demande`,
-            demande_id: d.id,
-            related_profile_id: demande.fromProfileId,
-            read: false,
-            created_at: Date.now(),
-          });
+          try {
+            await supabase.from("notifications").insert({
+              profile_id: d.toProfileId,
+              type: "demande_withdrawn",
+              title: "Demande retirée",
+              message: `${senderName} a retiré sa demande`,
+              demande_id: d.id,
+              related_profile_id: demande.fromProfileId,
+              read: false,
+              created_at: Date.now(),
+            });
+          } catch (e) {
+            console.error("Erreur notification:", e);
+          }
         }
 
         // Delete the other pending demands
