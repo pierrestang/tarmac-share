@@ -68,23 +68,6 @@ const Trajets = () => {
     return trajetIds;
   }, [historique]);
 
-  // Get trajet IDs linked to refused demandes
-  const trajetsWithRefusedDemandes = useMemo(() => {
-    const trajetIds = new Set<string>();
-    historique.filter((d) => d.status === "refused").forEach((d) => {
-      trajetIds.add(d.fromTrajetId);
-      trajetIds.add(d.toTrajetId);
-    });
-    return trajetIds;
-  }, [historique]);
-
-  // My trajets that belong to historique (linked to completed or refused demandes)
-  const myHistoriqueTrajets = useMemo(() => {
-    return myPublishedTrajets.filter((t) =>
-      trajetsWithCompletedDemandes.has(t.id) || trajetsWithRefusedDemandes.has(t.id)
-    );
-  }, [myPublishedTrajets, trajetsWithCompletedDemandes, trajetsWithRefusedDemandes]);
-
   // Vérifier si l'utilisateur a un trajet en cours (demande acceptée)
   const hasActiveTrip = enCours.length > 0;
 
@@ -254,7 +237,7 @@ const Trajets = () => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="pt-3">
-              {historique.length === 0 && myHistoriqueTrajets.length === 0 ? (
+              {historique.length === 0 ? (
                 <div className="pb-2">
                   <span className="text-[14px] text-white">
                     Aucune demande pour le moment
@@ -262,15 +245,6 @@ const Trajets = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  {myHistoriqueTrajets.map((trajet) => (
-                    <MonTrajetCard
-                      key={trajet.id}
-                      trajet={trajet}
-                      profile={activeProfile!}
-                      canEditOrDelete={false}
-                      onDelete={handleDelete}
-                    />
-                  ))}
                   {renderDemandeList(historique)}
                 </div>
               )}
