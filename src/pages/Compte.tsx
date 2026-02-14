@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Camera, X } from "lucide-react";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useTrajets } from "@/hooks/use-trajets";
@@ -36,6 +36,15 @@ const Compte = () => {
   const [photo, setPhoto] = useState<string | null>(profile?.photo || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setFirstName(profile.firstName);
+      setLastName(profile.lastName);
+      setDescription(profile.description);
+      setPhoto(profile.photo);
+    }
+  }, [profile]);
 
   const handleResetData = () => {
     resetTrajets();
