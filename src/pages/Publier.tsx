@@ -225,23 +225,10 @@ const Publier = () => {
         <Card className="bg-card w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <CardContent className="flex flex-col p-0">
 
-          {/* Départ */}
+           {/* Départ (fixe) */}
           <div className="flex items-center px-4 py-4 gap-3">
-            <Circle className={cn(
-              "h-4 w-4 flex-shrink-0",
-              form.departureStation ? "text-card-foreground" : "text-muted-foreground"
-            )} strokeWidth={3} />
-            <div className="flex-1">
-              <PlacesAutocomplete
-                id="departureStation"
-                value={form.departureStation}
-                onChange={(value, coords) =>
-                  setForm((prev) => ({ ...prev, departureStation: value, departureStationCoords: coords }))
-                }
-                placeholder="Départ"
-                className="border-0 h-auto p-0 bg-transparent"
-              />
-            </div>
+            <Circle className="h-4 w-4 flex-shrink-0 text-card-foreground" strokeWidth={3} />
+            <span className="text-base font-semibold md:text-sm">Aéroport de Bordeaux</span>
           </div>
 
           <div className="h-px bg-border mx-4" />

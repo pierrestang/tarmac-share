@@ -31,6 +31,8 @@ const Connexion = () => {
           ? "Email ou mot de passe incorrect."
           : error.message
       );
+    } else {
+      navigate("/trajets", { replace: true });
     }
     setLoading(false);
   };
