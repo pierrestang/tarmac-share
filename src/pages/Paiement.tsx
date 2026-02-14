@@ -86,14 +86,18 @@ const Paiement = () => {
         await saveDemandeSnapshot(demandeId);
         await acceptDemande(demandeId, getProfileById);
         await createConversation(demandeId, [demande.fromProfileId, demande.toProfileId]);
-        await createNotification({
-          profileId: demande.fromProfileId,
-          type: "demande_accepted",
-          title: "Demande acceptée",
-          message: `${myProfile.firstName} a accepté votre demande`,
-          demandeId: demande.id,
-          relatedProfileId: myProfile.id,
-        });
+        try {
+          await createNotification({
+            profileId: demande.fromProfileId,
+            type: "demande_accepted",
+            title: "Demande acceptée",
+            message: `${myProfile.firstName} a accepté votre demande`,
+            demandeId: demande.id,
+            relatedProfileId: myProfile.id,
+          });
+        } catch (e) {
+          console.error("Erreur notification:", e);
+        }
 
         navigate("/messages");
       } else if (type === "envoi" && voyageurId) {
@@ -131,14 +135,18 @@ const Paiement = () => {
           toTrajetId: voyageurTrajet.id,
         });
 
-        await createNotification({
-          profileId: voyageurTrajet.profileId,
-          type: "demande_received",
-          title: "Nouvelle demande",
-          message: `${myProfile.firstName} souhaite voyager avec vous`,
-          demandeId: newDemande.id,
-          relatedProfileId: myProfile.id,
-        });
+        try {
+          await createNotification({
+            profileId: voyageurTrajet.profileId,
+            type: "demande_received",
+            title: "Nouvelle demande",
+            message: `${myProfile.firstName} souhaite voyager avec vous`,
+            demandeId: newDemande.id,
+            relatedProfileId: myProfile.id,
+          });
+        } catch (e) {
+          console.error("Erreur notification:", e);
+        }
 
         navigate("/trajets");
       } else {
