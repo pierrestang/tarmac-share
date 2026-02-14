@@ -14,7 +14,7 @@ const RepublierAnnonce = () => {
 
   const { getActiveProfile } = useProfiles();
   const { getDemandeById, saveDemandeSnapshot } = useDemandes();
-  const { getTrajetById, deleteTrajet, createTrajet } = useTrajets();
+  const { getTrajetById, createTrajet } = useTrajets();
   const { getFreeRepublications } = useRepublications();
 
   const activeProfile = getActiveProfile();
@@ -50,13 +50,14 @@ const RepublierAnnonce = () => {
       return;
     }
 
-    // CRITICAL: Save snapshot BEFORE deleting the trajet
+    // Save snapshot to preserve historical data
     await saveDemandeSnapshot(demandeId);
 
-    // Republication is always free - just recreate the trajet with isRepublished flag
-    await deleteTrajet(originalTrajet.id);
+    // Create a new trajet copy with isRepublished flag
+    // Keep the original trajet so the completed demande (and historique) remains intact
+    const { id: _oldId, createdAt: _oldCreatedAt, ...trajetData } = originalTrajet;
     const newTrajet = await createTrajet({
-      ...originalTrajet,
+      ...trajetData,
       isRepublished: true,
     });
     // Update lastPublishedTrajetId to point to new trajet
