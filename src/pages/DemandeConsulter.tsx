@@ -84,12 +84,11 @@ const DemandeConsulter = () => {
     navigate("/trajets");
   };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
     if (!demande || !myProfile) return;
-    const success = withdrawDemande(demande.id);
+    const success = await withdrawDemande(demande.id);
     if (success) {
-      // Send notification to the recipient
-      createNotification({
+      await createNotification({
         profileId: demande.toProfileId,
         type: "demande_withdrawn",
         title: "Demande retirée",
