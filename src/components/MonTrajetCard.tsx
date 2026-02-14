@@ -37,8 +37,6 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Titre Mon trajet (blanc sur fond bleu) */}
-      <h2 className="text-[18px] font-semibold text-heading">Mon trajet</h2>
 
       <Card className="w-full border-0 overflow-hidden">
         <CardContent className="flex flex-col gap-3 p-4 relative">
