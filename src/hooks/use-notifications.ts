@@ -45,7 +45,6 @@ export function useNotifications() {
     demandeId: string;
     relatedProfileId: string;
   }): Promise<Notification> => {
-    console.log("[NOTIF] Creating notification:", { profileId: data.profileId, type: data.type, demandeId: data.demandeId });
     const { data: inserted, error } = await supabase
       .from("notifications")
       .insert({
@@ -60,11 +59,7 @@ export function useNotifications() {
       })
       .select()
       .single();
-    if (error) {
-      console.error("[NOTIF] INSERT failed:", error);
-      throw error;
-    }
-    console.log("[NOTIF] INSERT success:", inserted);
+    if (error) throw error;
     const notification = mapRow(inserted);
     setNotifications((prev) => [notification, ...prev]);
     return notification;
