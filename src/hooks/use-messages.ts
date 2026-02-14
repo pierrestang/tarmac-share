@@ -222,7 +222,9 @@ export function useMessages() {
   }, [messages]);
 
   const getTotalUnreadCount = useCallback((profileId: string): number => {
-    const userConvs = conversations.filter((c) => c.participants.includes(profileId));
+    const userConvs = conversations.filter((c) => 
+      c.participants.includes(profileId) && !c.closedBy.includes(profileId)
+    );
     return userConvs.filter((c) => hasUnreadMessages(c.id, profileId)).length;
   }, [conversations, hasUnreadMessages]);
 
