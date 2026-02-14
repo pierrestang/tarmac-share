@@ -7,14 +7,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProfiles } from "@/hooks/use-profiles";
-import { resetLocalData } from "@/hooks/use-unread-messages";
-import { Settings } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function TopHeader() {
   const { getActiveProfile } = useProfiles();
+  const { signOut } = useAuth();
   const activeProfile = getActiveProfile();
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth", { replace: true });
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b bg-white">
@@ -44,14 +50,10 @@ export function TopHeader() {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-48">
-              <DropdownMenuItem onSelect={() => navigate("/compte")}>Changer de compte</DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  resetLocalData();
-                  navigate("/trajets");
-                }}
-              >
-                Réinitialiser
+              <DropdownMenuItem onSelect={() => navigate("/compte")}>Mon profil</DropdownMenuItem>
+              <DropdownMenuItem onSelect={handleSignOut}>
+                <LogOut size={16} className="mr-2" />
+                Déconnexion
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
