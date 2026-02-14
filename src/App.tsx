@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { AppShell } from "@/components/layout/AppShell";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import Auth from "./pages/Auth";
 import CommentCaMarche from "./pages/CommentCaMarche";
 import Trajets from "./pages/Trajets";
 import Publier from "./pages/Publier";
@@ -30,24 +32,27 @@ const App = () => (
       <Toaster />
       <BrowserRouter>
         <Routes>
+          <Route path="auth" element={<Auth />} />
           <Route path="comment-ca-marche" element={<CommentCaMarche />} />
-          <Route path="/" element={<AppShell />}>
-            <Route index element={<Index />} />
-            <Route path="trajets" element={<Trajets />} />
-            <Route path="publier" element={<Publier />} />
-            <Route path="messages" element={<Messages />} />
-            <Route path="profil" element={<Profil />} />
-            <Route path="compte" element={<Compte />} />
-            <Route path="matches" element={<Matches />} />
-            <Route path="demande-envoyer" element={<DemandeEnvoyer />} />
-            <Route path="demande-accepter" element={<DemandeAccepter />} />
-            <Route path="demande-consulter" element={<DemandeConsulter />} />
-            <Route path="demande-historique" element={<DemandeHistorique />} />
-            <Route path="paiement" element={<Paiement />} />
-            <Route path="evaluation" element={<Evaluation />} />
-            <Route path="republier-annonce" element={<RepublierAnnonce />} />
-            <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
-            <Route path="numero" element={<Numero />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<AppShell />}>
+              <Route index element={<Index />} />
+              <Route path="trajets" element={<Trajets />} />
+              <Route path="publier" element={<Publier />} />
+              <Route path="messages" element={<Messages />} />
+              <Route path="profil" element={<Profil />} />
+              <Route path="compte" element={<Compte />} />
+              <Route path="matches" element={<Matches />} />
+              <Route path="demande-envoyer" element={<DemandeEnvoyer />} />
+              <Route path="demande-accepter" element={<DemandeAccepter />} />
+              <Route path="demande-consulter" element={<DemandeConsulter />} />
+              <Route path="demande-historique" element={<DemandeHistorique />} />
+              <Route path="paiement" element={<Paiement />} />
+              <Route path="evaluation" element={<Evaluation />} />
+              <Route path="republier-annonce" element={<RepublierAnnonce />} />
+              <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
+              <Route path="numero" element={<Numero />} />
+            </Route>
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

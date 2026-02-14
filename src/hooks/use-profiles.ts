@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Profile } from "@/types/profile";
 
-const ACTIVE_PROFILE_KEY = "activeProfileId";
-
 function mapRow(row: any): Profile {
   return {
     id: row.id,
@@ -27,37 +25,6 @@ export function useProfiles() {
     fetchProfiles();
   }, [fetchProfiles]);
 
-  const createProfile = useCallback(async (data: Omit<Profile, "id" | "createdAt">): Promise<Profile> => {
-    // Check for existing profile with same name
-    const { data: existing } = await supabase
-      .from("profiles")
-      .select("*")
-      .ilike("first_name", data.firstName.trim())
-      .ilike("last_name", data.lastName.trim())
-      .limit(1);
-
-    if (existing && existing.length > 0) {
-      return mapRow(existing[0]);
-    }
-
-    const { data: inserted, error } = await supabase
-      .from("profiles")
-      .insert({
-        first_name: data.firstName.trim(),
-        last_name: data.lastName.trim(),
-        description: data.description,
-        photo: data.photo,
-        created_at: Date.now(),
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-    const profile = mapRow(inserted);
-    setProfiles((prev) => [...prev, profile]);
-    return profile;
-  }, []);
-
   const updateProfile = useCallback(async (id: string, data: Partial<Omit<Profile, "id" | "createdAt">>): Promise<void> => {
     const updates: any = {};
     if (data.firstName !== undefined) updates.first_name = data.firstName;
@@ -69,24 +36,9 @@ export function useProfiles() {
     setProfiles((prev) => prev.map((p) => (p.id === id ? { ...p, ...data } : p)));
   }, []);
 
-  const deleteProfile = useCallback(async (id: string): Promise<void> => {
-    await supabase.from("profiles").delete().eq("id", id);
-    setProfiles((prev) => prev.filter((p) => p.id !== id));
-    if (localStorage.getItem(ACTIVE_PROFILE_KEY) === id) {
-      localStorage.removeItem(ACTIVE_PROFILE_KEY);
-    }
-  }, []);
-
-  const setActiveProfile = useCallback((id: string): void => {
-    localStorage.setItem(ACTIVE_PROFILE_KEY, id);
-    // Force re-render
-    setProfiles((prev) => [...prev]);
-  }, []);
-
   const getActiveProfile = useCallback((): Profile | null => {
-    const id = localStorage.getItem(ACTIVE_PROFILE_KEY);
-    if (!id) return null;
-    return profiles.find((p) => p.id === id) || null;
+    // With auth, there's only one profile per user (the first one)
+    return profiles[0] || null;
   }, [profiles]);
 
   const getProfileById = useCallback((id: string): Profile | null => {
@@ -95,11 +47,9 @@ export function useProfiles() {
 
   return {
     profiles,
-    createProfile,
     updateProfile,
-    deleteProfile,
-    setActiveProfile,
     getActiveProfile,
     getProfileById,
+    refetch: fetchProfiles,
   };
 }
