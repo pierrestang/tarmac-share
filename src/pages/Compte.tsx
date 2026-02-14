@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Camera, X } from "lucide-react";
+import { Camera, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useDemandes } from "@/hooks/use-demandes";
@@ -22,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const Compte = () => {
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
   const { getActiveProfile, updateProfile } = useProfiles();
   const { resetTrajets } = useTrajets();
   const { resetDemandes } = useDemandes();
@@ -173,6 +177,21 @@ const Compte = () => {
           onClick={() => setShowResetConfirm(true)}
         >
           Réinitialiser les trajets
+        </Button>
+      </div>
+
+      {/* Déconnexion */}
+      <div className="flex justify-center px-4">
+        <Button
+          variant="outline"
+          className="w-full max-w-[42rem] justify-start text-[14px] font-semibold bg-card text-destructive border-0 rounded-md hover:bg-card/90 h-auto px-4 py-4"
+          onClick={async () => {
+            await signOut();
+            navigate("/auth", { replace: true });
+          }}
+        >
+          <LogOut size={18} className="mr-2" />
+          Déconnexion
         </Button>
       </div>
 

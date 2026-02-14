@@ -11,7 +11,6 @@ import CommentCaMarche from "./pages/CommentCaMarche";
 import Trajets from "./pages/Trajets";
 import Publier from "./pages/Publier";
 import Messages from "./pages/Messages";
-import Profil from "./pages/Profil";
 import Compte from "./pages/Compte";
 import Matches from "./pages/Matches";
 import DemandeEnvoyer from "./pages/DemandeEnvoyer";
@@ -40,7 +39,6 @@ const App = () => (
               <Route path="trajets" element={<Trajets />} />
               <Route path="publier" element={<Publier />} />
               <Route path="messages" element={<Messages />} />
-              <Route path="profil" element={<Profil />} />
               <Route path="compte" element={<Compte />} />
               <Route path="matches" element={<Matches />} />
               <Route path="demande-envoyer" element={<DemandeEnvoyer />} />
