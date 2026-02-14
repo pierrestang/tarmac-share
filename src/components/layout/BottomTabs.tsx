@@ -9,7 +9,7 @@ const tabs: Array<{ label: string; to: string; hasBadge?: boolean; icon: React.E
   { label: "Trajets", to: "/trajets", icon: Route },
   { label: "Publier", to: "/publier", icon: PlusCircle },
   { label: "Messages", to: "/messages", hasBadge: true, icon: MessageCircle },
-  { label: "Profil", to: "/profil", icon: User },
+  { label: "Compte", to: "/compte", icon: User },
 ];
 
 export function BottomTabs() {
