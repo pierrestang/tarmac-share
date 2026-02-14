@@ -150,8 +150,6 @@ const DemandeHistorique = () => {
         })()}
       </p>
 
-      {/* Mes informations Card */}
-      <h2 className="text-[18px] font-semibold text-white w-full max-w-[42rem]">Mon trajet</h2>
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
           <div className="flex items-center gap-3">

@@ -119,7 +119,7 @@ const DemandeAccepter = () => {
       {/* Mes informations Card */}
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
-          <h2 className="text-[18px] font-semibold">Mon trajet</h2>
+          
           
           {/* Profile row */}
           <div className="flex items-center gap-3">

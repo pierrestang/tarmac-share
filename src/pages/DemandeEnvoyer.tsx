@@ -98,8 +98,6 @@ const DemandeEnvoyer = () => {
         })()}
       </p>
 
-      {/* Mon trajet */}
-      <h2 className="text-[18px] font-semibold text-heading w-full max-w-[42rem]">Mon trajet</h2>
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
           {/* Profile row */}

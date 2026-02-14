@@ -144,8 +144,6 @@ const DemandeConsulter = () => {
         })()}
       </h1>
 
-      {/* Titre Mon trajet (blanc sur fond bleu) */}
-      <h2 className="text-[18px] font-semibold text-heading w-full max-w-[42rem]">Mon trajet</h2>
 
       {/* Carte Mon trajet */}
       <Card className="w-full max-w-[42rem] border-0">

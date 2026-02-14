@@ -145,7 +145,7 @@ const Matches = () => {
                       </button>
                     </div>
 
-                    <h2 className="text-[18px] font-semibold">Mon trajet</h2>
+                    
                     
                     {/* Profile row */}
                     <div className="flex items-center gap-3">
@@ -239,7 +239,7 @@ const Matches = () => {
           <AccordionContent className="pt-3 flex flex-col gap-4">
             
             {/* Titre Mon trajet (blanc sur fond bleu) */}
-            <h2 className="text-[18px] font-semibold text-heading">Mon trajet</h2>
+            
             
             {/* Carte Mon trajet */}
             <div className="bg-card rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-4 flex flex-col gap-3">
