@@ -101,7 +101,7 @@ export function NotificationList() {
   };
 
     const getBadge = (notification: Notification): { text: string; variant: "default" | "green" | "red" } | undefined => {
-      if (isAlreadyRepublished(notification)) return { text: "Déjà republié", variant: "default" };
+      if (isAlreadyRepublished(notification)) return { text: "Déjà republié", variant: "green" };
       if (notification.type === "demande_received") {
         const demande = getDemandeById(notification.demandeId);
         if (demande && demande.status === "accepted") return { text: "Demande acceptée", variant: "green" };
