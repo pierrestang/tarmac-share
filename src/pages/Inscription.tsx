@@ -68,7 +68,7 @@ const Inscription = () => {
   }
 
   return (
-    <section className="flex flex-col gap-6 pb-6">
+    <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Inscription.</h1>
       </div>
