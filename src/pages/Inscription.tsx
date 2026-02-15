@@ -79,7 +79,7 @@ const Inscription = () => {
         Retour
       </button>
 
-      <img src={erLogo} alt="Logo" className="mb-8 h-12 w-auto" />
+      <h1 className="mb-8 text-3xl font-bold text-white">Tarmac</h1>
 
       <div className="flex justify-center w-full">
         <Card className="w-full max-w-sm border-0 rounded-md overflow-hidden">
