@@ -216,7 +216,9 @@ const Inscription = () => {
             </div>
 
             {error && (
-              <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
+              <div className="fixed bottom-0 left-0 right-0 bg-destructive text-destructive-foreground text-sm text-center py-3 px-4 z-50">
+                {error}
+              </div>
             )}
 
             <Button
