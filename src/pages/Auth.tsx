@@ -17,7 +17,7 @@ const Auth = () => {
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 className="text-5xl font-bold text-white mb-8">Tarmac</h1>
         <h2 className="text-2xl font-semibold text-foreground text-left w-full">Votre trajet depuis l'aéroport, à moitié prix.</h2>
-        <p className="text-base text-white text-left mt-4 w-full">Ne payez plus le prix fort : trouvez un partenaire de route sur Tarmac et partagez les frais vers la ville.</p>
+        <p className="text-base text-white text-left mt-4 w-full">Ne payez plus le prix fort : trouvez un partenaire de route sur <span className="font-bold">Tarmac</span> et partagez les frais vers la ville.</p>
       </div>
 
       <div className="flex w-full max-w-sm flex-col gap-3 pb-8">
