@@ -1,4 +1,4 @@
-import erLogo from "@/assets/er.png";
+import erLogo from "@/assets/logo-tarmac.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
