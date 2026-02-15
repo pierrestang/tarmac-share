@@ -189,16 +189,16 @@ const Compte = () => {
       </div>
 
       <AlertDialog open={showResetConfirm} onOpenChange={setShowResetConfirm}>
-        <AlertDialogContent>
+        <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Réinitialiser les trajets ?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="text-white">
               Cette action supprimera tous les trajets et demandes.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={handleResetData}>Réinitialiser</AlertDialogAction>
+          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
+            <AlertDialogAction onClick={handleResetData} className="rounded-md">Réinitialiser</AlertDialogAction>
+            <AlertDialogCancel className="rounded-md">Annuler</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
