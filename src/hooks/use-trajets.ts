@@ -99,7 +99,7 @@ export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet): number {
   if (distance !== null && distance < 0.5) distance = 0;
 
   let score = 40;
-  score += Math.max(0, 30 - timeDiff);
+  score += timeDiff === 0 ? 30 : 15;
   if (distance === 0) score += 30;
   else if (distance !== null) score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
   return Math.min(100, score);
@@ -212,7 +212,7 @@ export function useTrajets() {
         if (distance < 0.5) distance = 0;
 
         let score = 40;
-        score += Math.max(0, 30 - timeDiff);
+        score += timeDiff === 0 ? 30 : 15;
         if (distance === 0) score += 30;
         else score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
         score = Math.min(100, score);
