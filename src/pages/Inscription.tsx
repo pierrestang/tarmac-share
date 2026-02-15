@@ -17,7 +17,7 @@ import {
   isDateInputComplete,
   formatDateShort,
 } from "@/lib/date-time-utils";
-import { parse, format } from "date-fns";
+import { parse, format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
 
 const Inscription = () => {
@@ -45,6 +45,16 @@ const Inscription = () => {
     setError(null);
     if (firstName.trim().length < 2 || lastName.trim().length < 2) {
       setError("Le prénom et le nom doivent contenir au moins 2 caractères.");
+      return;
+    }
+    if (birthDate) {
+      const parsed = parse(birthDate, "dd/MM/yyyy", new Date());
+      if (differenceInYears(new Date(), parsed) < 18) {
+        setError("Vous devez avoir au moins 18 ans pour vous inscrire.");
+        return;
+      }
+    } else {
+      setError("Veuillez renseigner votre date de naissance.");
       return;
     }
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
