@@ -55,7 +55,7 @@ const Connexion = () => {
             <div className="px-4 py-4 flex items-center gap-2">
               <Input
                 type="email"
-                placeholder="Adresse email"
+                placeholder="E-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -104,7 +104,7 @@ const Connexion = () => {
       <button
         type="button"
         onClick={() => navigate("/forgot-password")}
-        className="text-sm text-white/70 font-semibold"
+        className="text-sm text-white font-semibold"
       >
         Mot de passe oublié ?
       </button>
