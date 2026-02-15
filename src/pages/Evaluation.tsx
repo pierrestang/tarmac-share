@@ -14,7 +14,7 @@ const Evaluation = () => {
   const conversationId = searchParams.get("conversationId");
   const ratedProfileId = searchParams.get("ratedProfileId");
 
-  const { getConversationById, closeConversation, addSystemMessage } = useMessages();
+  const { closeConversation, addSystemMessage } = useMessages();
   const { getActiveProfile } = useProfiles();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
 
@@ -31,13 +31,20 @@ const Evaluation = () => {
     if (isSubmitting || hasRedirected.current) return;
     if (!activeProfile) return;
 
-    const conversation = getConversationById(conversationId);
-    if (!conversation) {
+    // Fetch conversation directly from DB to get fresh state
+    const { data: convRow } = await supabase
+      .from("conversations")
+      .select("*")
+      .eq("id", conversationId)
+      .single();
+
+    if (!convRow) {
       navigate("/trajets", { replace: true });
       return;
     }
 
-    if (conversation.closedBy.includes(activeProfile.id)) {
+    const closedBy: string[] = convRow.closed_by || [];
+    if (closedBy.includes(activeProfile.id)) {
       navigate("/trajets", { replace: true });
       return;
     }
@@ -56,11 +63,11 @@ const Evaluation = () => {
     const bothClosed = freshRow && Array.isArray(freshRow.closed_by) && freshRow.closed_by.length >= 2;
 
     if (bothClosed) {
-      await completeDemande(conversation.demandeId);
+      await completeDemande(convRow.demande_id);
       await addSystemMessage(conversationId, "La conversation est clôturée");
     }
 
-    await saveDemandeSnapshot(conversation.demandeId);
+    await saveDemandeSnapshot(convRow.demande_id);
 
     hasRedirected.current = true;
     navigate("/trajets", { replace: true });
