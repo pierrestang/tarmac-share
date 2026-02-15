@@ -12,7 +12,8 @@ import {
   isDateInputComplete,
   formatDateShort,
 } from "@/lib/date-time-utils";
-import { parse } from "date-fns";
+import { parse, format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const Inscription = () => {
   const navigate = useNavigate();
@@ -149,12 +150,12 @@ const Inscription = () => {
                     setIsEditingBirth(true);
                     setTimeout(() => birthInputRef.current?.focus(), 0);
                   }}
-                  className="text-[14px] font-semibold cursor-pointer text-card-foreground"
+                  className="text-[14px] cursor-pointer text-card-foreground"
                 >
                   {(() => {
                     try {
                       const parsed = parse(birthDate, "dd/MM/yyyy", new Date());
-                      return formatDateShort(parsed);
+                      return format(parsed, "d MMM yyyy", { locale: fr });
                     } catch {
                       return birthDate;
                     }
