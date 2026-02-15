@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import erLogo from "@/assets/er.png";
+import erLogo from "@/assets/logo-tarmac.png";
 
 type Phase = "enter" | "visible" | "exit";
 

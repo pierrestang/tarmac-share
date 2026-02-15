@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
-import erLogo from "@/assets/er.png";
+import erLogo from "@/assets/logo-tarmac.png";
 import { Button } from "@/components/ui/button";
 
 const Auth = () => {
