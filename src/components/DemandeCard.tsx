@@ -140,8 +140,8 @@ export function DemandeCard({
             </div>
           </div>
 
-          {/* Compatibility score - hidden for completed */}
-          {!isCompleted && (
+          {/* Compatibility score - hidden for completed and accepted */}
+          {!isCompleted && !isAccepted && (
             <div 
               className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
               style={{ borderColor: scoreColor }}
