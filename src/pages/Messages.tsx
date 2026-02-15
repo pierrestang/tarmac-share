@@ -40,9 +40,30 @@ const Messages = () => {
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
 
-  // Scroll to top on mount
+  // Prevent automatic scroll down
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
+  }, []);
+
+  // Prevent Tabs re-renders from scrolling the page
+  useEffect(() => {
+    const savedScroll = { top: 0 };
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target?.getAttribute?.("role") === "tab") {
+        e.preventDefault();
+        window.scrollTo({ top: savedScroll.top });
+      }
+    };
+    const handleScroll = () => {
+      savedScroll.top = window.scrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("focusin", handleFocusIn);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("focusin", handleFocusIn);
+    };
   }, []);
 
   // Refresh conversations periodically
