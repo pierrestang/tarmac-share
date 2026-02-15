@@ -250,7 +250,7 @@ const Messages = () => {
   // List view
   return (
     <section aria-label="Messages" className="flex flex-col items-center px-4">
-      <h1 className="text-[24px] font-semibold mb-4 w-full max-w-[42rem] text-heading">Messages.</h1>
+      <h1 className="text-[24px] font-semibold mb-4 w-full max-w-[42rem] text-heading">Mes messages.</h1>
       
       <Tabs defaultValue="messages" className="w-full max-w-[42rem]">
         <TabsList className="w-full grid grid-cols-2 mb-4 bg-transparent border-0 h-auto p-0">
