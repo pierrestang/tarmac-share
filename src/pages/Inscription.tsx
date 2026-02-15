@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -98,14 +98,14 @@ const Inscription = () => {
         </div>
 
         <div className="flex justify-center px-4">
-          <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Vérifiez votre boîte mail</h1>
+          <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Vérifiez votre boîte mail.</h1>
         </div>
 
         <div className="flex justify-center px-4">
           <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
             <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
-              <Mail size={40} className="text-primary" />
               <p className="text-sm text-muted-foreground">
+                Un email de confirmation a été envoyé à <strong>{email}</strong>.
                 Un email de confirmation a été envoyé à <strong>{email}</strong>.
                 Cliquez sur le lien pour activer votre compte.
               </p>
