@@ -37,8 +37,9 @@ const ResetPassword = () => {
       setError("Veuillez renseigner votre mot de passe.");
       return;
     }
-    if (password.length < 10) {
-      setError("Le mot de passe doit contenir au moins 10 caractères.");
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.");
       return;
     }
     if (!confirm) {
