@@ -43,8 +43,24 @@ const Inscription = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (!firstName.trim()) {
+      setError("Veuillez renseigner votre prénom.");
+      return;
+    }
+    if (!lastName.trim()) {
+      setError("Veuillez renseigner votre nom.");
+      return;
+    }
     if (firstName.trim().length < 2 || lastName.trim().length < 2) {
       setError("Le prénom et le nom doivent contenir au moins 2 caractères.");
+      return;
+    }
+    if (!email.trim()) {
+      setError("Veuillez renseigner votre adresse email.");
+      return;
+    }
+    if (!password) {
+      setError("Veuillez renseigner votre mot de passe.");
       return;
     }
     if (birthDate) {
@@ -110,13 +126,13 @@ const Inscription = () => {
 
       <div className="flex justify-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
-          <form onSubmit={handleSignUp} className="flex flex-col">
+          <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             <div className="px-4 py-4">
               <Input
                 placeholder="Prénom"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                required
+                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -128,7 +144,7 @@ const Inscription = () => {
                 placeholder="Nom"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                required
+                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -188,7 +204,7 @@ const Inscription = () => {
                 placeholder="Adresse email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -201,8 +217,7 @@ const Inscription = () => {
                 placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
+                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
               />
               <Popover>
