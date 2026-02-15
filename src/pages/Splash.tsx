@@ -33,7 +33,7 @@ const Splash = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
+    <div className="flex min-h-screen items-center justify-center bg-card">
       <img
         src={erLogo}
         alt="Logo ER"
