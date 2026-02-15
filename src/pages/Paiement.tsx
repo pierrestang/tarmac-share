@@ -9,7 +9,7 @@ import { useMessages } from "@/hooks/use-messages";
 import { useRepublications } from "@/hooks/use-republications";
 import { useNotifications } from "@/hooks/use-notifications";
 import { incrementUnreadMessages } from "@/hooks/use-unread-messages";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 
 const Paiement = () => {
   const [searchParams] = useSearchParams();
@@ -78,7 +78,7 @@ const Paiement = () => {
       if (type === "acceptation" && demandeId) {
         const demande = getDemandeById(demandeId);
         if (!demande || !myProfile) {
-          toast.error("Impossible de trouver la demande ou votre profil.");
+          toast({ title: "Impossible de trouver la demande ou votre profil.", variant: "destructive" });
           setIsLoading(false);
           return;
         }
@@ -104,17 +104,17 @@ const Paiement = () => {
         const voyageurTrajet = getTrajetById(voyageurId);
 
         if (!voyageurTrajet) {
-          toast.error("Le trajet du voyageur n'a pas été trouvé. Veuillez réessayer.");
+          toast({ title: "Le trajet du voyageur n'a pas été trouvé. Veuillez réessayer.", variant: "destructive" });
           setIsLoading(false);
           return;
         }
         if (!myTrajet) {
-          toast.error("Votre trajet n'a pas été trouvé. Veuillez publier un trajet d'abord.");
+          toast({ title: "Votre trajet n'a pas été trouvé. Veuillez publier un trajet d'abord.", variant: "destructive" });
           setIsLoading(false);
           return;
         }
         if (!myProfile) {
-          toast.error("Votre profil n'a pas été trouvé.");
+          toast({ title: "Votre profil n'a pas été trouvé.", variant: "destructive" });
           setIsLoading(false);
           return;
         }
@@ -122,7 +122,7 @@ const Paiement = () => {
         // Check for existing pending demande to prevent duplicates
         const existingDemande = getPendingDemandeByTrajetIds(myTrajet.id, voyageurTrajet.id);
         if (existingDemande) {
-          toast.success("Demande déjà envoyée !");
+          toast({ title: "Demande déjà envoyée !" });
           navigate("/trajets");
           return;
         }
@@ -154,7 +154,7 @@ const Paiement = () => {
       }
     } catch (error: any) {
       console.error("Erreur lors du paiement:", error);
-      toast.error(error?.message || "Une erreur est survenue. Veuillez réessayer.");
+      toast({ title: error?.message || "Une erreur est survenue. Veuillez réessayer.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
