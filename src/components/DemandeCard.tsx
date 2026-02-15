@@ -128,9 +128,9 @@ export function DemandeCard({
                 <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
                   Trajet terminé
                 </Badge>
-              ) : (
+              ) : !isAccepted ? (
                 getStatusBadge()
-              )}
+              ) : null}
             </div>
 
             <div className="flex items-center gap-2">
