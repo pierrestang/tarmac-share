@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -44,22 +44,12 @@ const ChatView = ({
   onCancelTrip,
 }: ChatViewProps) => {
   const navigate = useNavigate();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const prevMessagesLengthRef = useRef(messages.length);
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
     messages.some(m => m.senderId === participantId && m.content === "Je suis arrivé au point de rencontre")
   );
-
-  // Scroll to bottom only when a new message is added
-  useEffect(() => {
-    if (messages.length > prevMessagesLengthRef.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-    prevMessagesLengthRef.current = messages.length;
-  }, [messages.length]);
 
   const showAvatar = (index: number): boolean => {
     const current = messages[index];
@@ -109,7 +99,7 @@ const ChatView = ({
                 />
               );
             })}
-            <div ref={messagesEndRef} />
+            
           </div>
         )}
       </div>
