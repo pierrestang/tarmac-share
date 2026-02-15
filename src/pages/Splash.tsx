@@ -12,7 +12,7 @@ const Splash = () => {
     // Timeline: 0-0.5s enter, 0.5-1.5s visible, 1.5-2.1s exit, 2.1s redirect
     const t1 = setTimeout(() => setPhase("visible"), 500);
     const t2 = setTimeout(() => setPhase("exit"), 1500);
-    const t3 = setTimeout(() => navigate("/publier"), 2100);
+    const t3 = setTimeout(() => navigate("/comment-ca-marche"), 2100);
 
     return () => {
       clearTimeout(t1);
