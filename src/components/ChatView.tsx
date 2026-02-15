@@ -68,9 +68,9 @@ const ChatView = ({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b mb-4">
-        <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 p-0 border-0 hover:bg-transparent rounded-full">
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center">
           <ArrowLeft className="h-5 w-5" />
-        </Button>
+        </button>
         <span className="text-[18px] font-semibold">{otherProfile.firstName}</span>
       </div>
 
