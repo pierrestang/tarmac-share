@@ -14,8 +14,10 @@ const Auth = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between bg-background px-4 py-12">
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center gap-4">
         <img src={erLogo} alt="Logo" className="h-36 w-auto" />
+        <h1 className="text-2xl font-semibold text-foreground text-center">Votre trajet commence ici.</h1>
+        <p className="text-base text-foreground/80 text-center">Trouvez votre partenaire de route en un clic.</p>
       </div>
 
       <div className="flex w-full max-w-sm flex-col gap-3 pb-8">
