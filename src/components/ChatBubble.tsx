@@ -17,15 +17,16 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
   if (message.type === "system") {
     const isCancellation = message.content.includes("a annulé le trajet");
     const isCompleted = message.content === "Le trajet est terminé";
+    const isBothReady = message.content.includes("Vous êtes arrivés au point de rencontre");
     return (
       <div className="flex justify-center my-2">
         <div className={cn(
           "px-4 py-2 rounded-md",
-          isCancellation ? "bg-[#e34454]/15" : isCompleted ? "bg-success" : "bg-muted"
+          isCancellation ? "bg-[#e34454]/15" : (isCompleted || isBothReady) ? "bg-success" : "bg-muted"
         )}>
           <p className={cn(
             "text-[14px] text-center",
-            isCancellation ? "text-[#e34454]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
+            isCancellation ? "text-[#e34454]" : (isCompleted || isBothReady) ? "text-success-foreground" : "text-muted-foreground"
           )}>
             {message.content}
           </p>
