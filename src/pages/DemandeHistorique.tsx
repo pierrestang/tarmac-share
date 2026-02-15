@@ -180,7 +180,7 @@ const DemandeHistorique = () => {
               </div>
               {myTrajet.companions > 1 && (
                 <span className="text-[12px] text-muted-foreground">
-                  +{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                  et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
                 </span>
               )}
             </div>
@@ -241,7 +241,7 @@ const DemandeHistorique = () => {
               </div>
               {voyageurTrajet.companions > 1 && (
                 <span className="text-[12px] text-muted-foreground">
-                  +{voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
+                  et {voyageurTrajet.companions === 2 ? "un" : voyageurTrajet.companions === 3 ? "deux" : voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
                 </span>
               )}
               <div className="flex items-center gap-2">
