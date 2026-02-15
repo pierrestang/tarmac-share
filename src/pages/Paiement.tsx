@@ -172,9 +172,9 @@ const Paiement = () => {
     amount = "0 €";
     explanatoryText = "Suite à la republication de votre annonce, cette demande est offerte.";
   } else if (type === "acceptation") {
-    explanatoryText = "En acceptant cette demande, vous acceptez que 1,99 € soit débité de votre compte.";
+    explanatoryText = "En acceptant cette demande, vous acceptez d'être débité de 1,99 € seulement si le voyageur accepte votre proposition.";
   } else {
-    explanatoryText = "En envoyant cette demande, vous acceptez qu'un prélèvement de 1,99 € soit effectué sur votre compte si le voyageur accepte votre proposition.";
+    explanatoryText = "En envoyant cette demande, vous acceptez d'être débité de 1,99 € seulement si le voyageur accepte votre proposition.";
   }
 
   return (
