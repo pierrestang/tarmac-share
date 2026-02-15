@@ -95,6 +95,17 @@ const Messages = () => {
   const handleSendMessage = async (content: string) => {
     if (selectedConversation && profileId) {
       await sendMessage(selectedConversation.id, profileId, content);
+      
+      // Check if both participants are now ready after this message
+      if (content === "Je suis prêt à partir") {
+        const msgs = getMessages(selectedConversation.id);
+        const otherParticipant = selectedConversation.participants.find(p => p !== profileId);
+        const otherReady = msgs.some(m => m.senderId === otherParticipant && m.content === "Je suis prêt à partir");
+        if (otherReady) {
+          await addSystemMessage(selectedConversation.id, "Vous êtes tous les deux prêts. Montrez ce code pour vous reconnaître au point de rendez-vous.");
+        }
+      }
+      
       const updated = getConversationById(selectedConversation.id);
       if (updated) setSelectedConversation(updated);
     }
