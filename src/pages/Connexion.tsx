@@ -104,7 +104,7 @@ const Connexion = () => {
       <button
         type="button"
         onClick={() => navigate("/forgot-password")}
-        className="text-sm text-white/70 underline"
+        className="text-sm text-white/70 font-semibold"
       >
         Mot de passe oublié ?
       </button>
