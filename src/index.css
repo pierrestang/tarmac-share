@@ -29,23 +29,23 @@ DESIGN SYSTEM RULES (mobile-first):
     
     /* Headings: #F2F5F9 */
     --heading: 40 18% 93%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 207 22% 39%;
 
     --popover: 40 18% 93%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 207 22% 39%;
 
     /* Button border: #2563EB */
     --primary: 221 83% 53%;
     --primary-foreground: 222 47% 11%;
 
     --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary-foreground: 207 22% 39%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted-foreground: 207 22% 39%;
 
     --accent: 210 20% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent-foreground: 207 22% 39%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
