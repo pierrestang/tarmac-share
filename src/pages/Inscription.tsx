@@ -71,15 +71,7 @@ const Inscription = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
-      <button
-        onClick={() => navigate("/auth")}
-        className="absolute left-4 top-4 flex items-center gap-1 text-sm text-muted-foreground"
-      >
-        <ArrowLeft size={16} />
-        Retour
-      </button>
-
-      <h1 className="mb-8 text-3xl font-bold text-white">Tarmac</h1>
+      <h1 className="mb-8 text-2xl font-semibold text-white">Inscription.</h1>
 
       <div className="flex justify-center w-full">
         <Card className="w-full max-w-sm border-0 rounded-md overflow-hidden">
@@ -147,6 +139,14 @@ const Inscription = () => {
           </form>
         </Card>
       </div>
+
+      <button
+        onClick={() => navigate("/auth")}
+        className="mt-6 flex items-center gap-1 text-sm text-white/70"
+      >
+        <ArrowLeft size={16} />
+        Retour
+      </button>
     </div>
   );
 };
