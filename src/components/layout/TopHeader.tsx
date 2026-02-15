@@ -23,7 +23,7 @@ export function TopHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-white">
+    <header className="sticky top-0 z-40 border-b bg-card">
       <div className="container relative flex h-14 items-center justify-center">
         <div className="absolute left-0 flex items-center">
           <Avatar className="h-8 w-8">

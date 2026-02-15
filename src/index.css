@@ -24,14 +24,14 @@ DESIGN SYSTEM RULES (mobile-first):
     /* Texte #F2F5F9 pour lisibilité sur fond bleu */
     --foreground: 214 32% 96%;
 
-    /* Cards: #F2F5F9 (gris-bleu clair) */
-    --card: 214 32% 96%;
+    /* Cards: #F0EEE9 (beige clair) */
+    --card: 40 18% 93%;
     
     /* Headings: #F2F5F9 */
-    --heading: 214 32% 96%;
+    --heading: 40 18% 93%;
     --card-foreground: 222 47% 11%;
 
-    --popover: 214 32% 96%;
+    --popover: 40 18% 93%;
     --popover-foreground: 222 47% 11%;
 
     /* Button border: #2563EB */
