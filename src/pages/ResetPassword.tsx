@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ArrowLeft } from "lucide-react";
 
 const ResetPassword = () => {
@@ -141,10 +142,18 @@ const ResetPassword = () => {
       <div className="flex justify-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <form onSubmit={handleSubmit} noValidate className="flex flex-col">
-            <div className="px-4 py-3">
-              <p className="text-sm text-muted-foreground">
-                Choisissez un nouveau mot de passe (10 caractères min.)
+            <div className="px-4 py-3 flex items-center gap-2">
+              <p className="text-sm text-muted-foreground flex-1">
+                Choisissez un nouveau mot de passe (8 caractères min.)
               </p>
+              <Popover>
+                <PopoverTrigger type="button" className="flex items-center justify-center w-5 h-5 rounded-full border border-muted-foreground text-muted-foreground text-xs font-medium shrink-0">
+                  ?
+                </PopoverTrigger>
+                <PopoverContent side="left" className="max-w-[220px] text-xs p-3">
+                  Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="h-px bg-border mx-4" />
