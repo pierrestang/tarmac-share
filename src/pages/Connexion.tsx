@@ -37,7 +37,7 @@ const Connexion = () => {
   };
 
   return (
-    <section className="flex flex-col flex-1 justify-center gap-6 pb-6">
+    <section className="flex flex-col gap-6 pb-6">
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Connexion.</h1>
       </div>
