@@ -13,7 +13,7 @@ const CommentCaMarche = () => {
 
       <div className="flex justify-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
-          <CardContent className="p-4 space-y-6 text-heading text-[14px] leading-relaxed">
+          <CardContent className="p-4 space-y-6 text-card-foreground text-[14px] leading-relaxed">
             <div>
               <p className="text-[18px] font-semibold">1. Publiez votre trajet</p>
               <p>Indiquez votre heure de départ et votre destination. <strong>C'est gratuit !</strong></p>
