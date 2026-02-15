@@ -52,7 +52,7 @@ const ConversationItem = ({
         </span>
 
         {status === "cancelled" && (
-          <Badge className="ml-auto bg-red-100 text-red-600 border-0 hover:bg-red-100">
+          <Badge className="ml-auto bg-[#e34454]/15 text-[#e34454] border-0 hover:bg-[#e34454]/15">
             Trajet annulé
           </Badge>
         )}
