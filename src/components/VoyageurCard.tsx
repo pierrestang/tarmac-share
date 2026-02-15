@@ -28,11 +28,8 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   if (baggage.large > 0) parts.push(`${baggage.large} grand${baggage.large > 1 ? "s" : ""}`);
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
-function getScoreColor(score: number): string {
-  if (score >= 90) return "#10B981";
-  if (score >= 70) return "#22C55E";
-  if (score >= 40) return "#F4A261";
-  return "#E63946";
+function getScoreColor(_score: number): string {
+  return "#D3E4D1";
 }
 
 export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse }: VoyageurCardProps) {

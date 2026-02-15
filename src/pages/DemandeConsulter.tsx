@@ -31,10 +31,8 @@ function formatBaggage(baggage: Baggage): string {
   if (baggage.large > 0) parts.push(`${baggage.large} grand${baggage.large > 1 ? "s" : ""}`);
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
-function getScoreColor(score: number): string {
-  if (score >= 80) return "text-green-600 border-green-600";
-  if (score >= 60) return "text-yellow-600 border-yellow-600";
-  return "text-orange-600 border-orange-600";
+function getScoreColor(_score: number): string {
+  return "text-[#D3E4D1] border-[#D3E4D1]";
 }
 
 const DemandeConsulter = () => {
