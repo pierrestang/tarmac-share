@@ -121,7 +121,7 @@ const ChatView = ({
 
       {/* Input */}
       <div className="border-t pt-4">
-        {!isFullyClosed && (
+      {!isFullyClosed && !isClosedByUser && (
           <>
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
@@ -131,15 +131,13 @@ const ChatView = ({
                 >
                   Afficher le code
                 </Button>
-                {!isClosedByUser && (
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-full"
-                    onClick={onCloseConversation}
-                  >
-                    Le trajet a-t-il eu lieu ?
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  className="w-full rounded-full"
+                  onClick={onCloseConversation}
+                >
+                  Le trajet a-t-il eu lieu ?
+                </Button>
               </div>
             ) : (
               <>
@@ -151,20 +149,17 @@ const ChatView = ({
                       onSendMessage(msg);
                     }
                   }}
-                  disabled={isClosedByUser}
                 />
                 
-                {isClosedByUser ? null : (
-                  <div className="mt-4">
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-full"
-                      onClick={onCloseConversation}
-                    >
-                      Le trajet a-t-il eu lieu ?
-                    </Button>
-                  </div>
-                )}
+                <div className="mt-4">
+                  <Button
+                    variant="outline"
+                    className="w-full rounded-full"
+                    onClick={onCloseConversation}
+                  >
+                    Le trajet a-t-il eu lieu ?
+                  </Button>
+                </div>
               </>
             )}
           </>
