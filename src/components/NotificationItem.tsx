@@ -27,7 +27,7 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
   const badgeClasses = {
     default: "bg-muted text-muted-foreground",
     green: "bg-success text-success-foreground border border-success-foreground/20",
-    red: "bg-red-100 text-red-700 border border-red-300",
+    red: "bg-[#e34454]/15 text-[#e34454] border border-[#e34454]/30",
   };
   return (
     <button

@@ -10,7 +10,7 @@ const QUICK_MESSAGES = [
   
   { emoji: <Clock className="h-4 w-4" />, text: "J'arrive dans 5 minutes" },
   { emoji: <CircleCheck className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", customBg: "bg-[#D3E4D1]", customText: "text-[#4E657A]" },
-  { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", customBg: "bg-[#A25B5B]", customText: "text-white" },
+  { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", customBg: "bg-[#e34454]", customText: "text-white" },
 ];
 
 const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {

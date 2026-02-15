@@ -118,7 +118,7 @@ export function DemandeCard({
                 </span>
               )}
               {isCompleted && isCancelled ? (
-                <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
                   Trajet annulé
                 </Badge>
               ) : isCompleted ? (
