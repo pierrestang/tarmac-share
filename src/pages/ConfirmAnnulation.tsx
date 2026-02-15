@@ -89,7 +89,7 @@ const ConfirmAnnulation = () => {
 
       <div className="flex-1 px-4 pb-6">
         <div className="max-w-[42rem] mx-auto">
-          <Card className="border-0 rounded-md">
+          <Card className="border-0 rounded-md shadow-none">
             <CardContent className="p-6 flex flex-col gap-6">
               <p className="text-[16px] text-card-foreground text-center">
                 Êtes-vous sûr de vouloir annuler ce trajet ?
