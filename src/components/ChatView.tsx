@@ -45,26 +45,21 @@ const ChatView = ({
 }: ChatViewProps) => {
   const navigate = useNavigate();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const prevMessagesLengthRef = useRef(messages.length);
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
     messages.some(m => m.senderId === participantId && m.content === "Je suis arrivé au point de rencontre")
   );
 
-  // Scroll to bottom when messages change
+  // Scroll to bottom only when a new message is added
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, refreshKey]);
-
-  // Refresh messages periodically to get new ones
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRefreshKey((k) => k + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (messages.length > prevMessagesLengthRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+    prevMessagesLengthRef.current = messages.length;
+  }, [messages.length]);
 
   const showAvatar = (index: number): boolean => {
     const current = messages[index];
