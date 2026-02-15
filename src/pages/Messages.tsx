@@ -42,8 +42,16 @@ const Messages = () => {
 
   // Prevent automatic scroll down
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0 });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
   }, []);
+
+  // Keep scroll position stable during refreshKey updates
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, left: 0, behavior: "instant" as ScrollBehavior });
+    });
+  }, [refreshKey]);
 
   // Prevent Tabs re-renders from scrolling the page
   useEffect(() => {
