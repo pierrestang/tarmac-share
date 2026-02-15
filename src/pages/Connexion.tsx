@@ -99,7 +99,6 @@ const Connexion = () => {
           onClick={() => navigate("/auth")}
           className="flex items-center gap-1 text-sm text-white/70"
         >
-          <ArrowLeft size={16} />
           Retour
         </button>
       </div>
