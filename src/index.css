@@ -19,8 +19,8 @@ DESIGN SYSTEM RULES (mobile-first):
 
 @layer base {
   :root {
-    /* Global background: #B5C7D3 */
-    --background: 204 26% 77%;
+    /* Global background: #89B1D6 */
+    --background: 210 46% 69%;
     /* Texte #F0EEE9 pour lisibilité sur fond bleu */
     --foreground: 40 18% 93%;
 
