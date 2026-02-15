@@ -1,4 +1,4 @@
-import { Briefcase, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Briefcase, Clock, CircleCheck, XCircle } from "lucide-react";
 
 interface QuickMessagesProps {
   onSend: (message: string) => void;
@@ -9,7 +9,7 @@ const QUICK_MESSAGES = [
   { emoji: <Briefcase className="h-4 w-4" />, text: "J'attends mes bagages" },
   
   { emoji: <Clock className="h-4 w-4" />, text: "J'arrive dans 5 minutes" },
-  { emoji: <CheckCircle className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", primary: true },
+  { emoji: <CircleCheck className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", primary: true },
   { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", destructive: true },
 ];
 
