@@ -180,8 +180,7 @@ const Messages = () => {
       console.error("Erreur notification:", e);
     }
 
-    await closeConversation(selectedConversation.id, profileId);
-    await closeConversation(selectedConversation.id, otherProfileId);
+    await closeConversation(selectedConversation.id, profileId, otherProfileId);
     await addSystemMessage(selectedConversation.id, `${activeProfile.firstName} a annulé le trajet. Le trajet est considéré comme terminé.`);
 
     const ratingBase = {

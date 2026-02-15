@@ -137,16 +137,19 @@ export function useMessages() {
     return msg;
   }, []);
 
-  const closeConversation = useCallback(async (conversationId: string, profileId: string): Promise<void> => {
-    const conv = conversations.find((c) => c.id === conversationId);
-    if (!conv || conv.closedBy.includes(profileId)) return;
+  const closeConversation = useCallback(async (conversationId: string, ...profileIds: string[]): Promise<void> => {
+    // Fetch current closed_by from DB to avoid stale state issues
+    const { data: current } = await supabase.from("conversations").select("closed_by").eq("id", conversationId).single();
+    const currentClosedBy: string[] = (current?.closed_by as string[]) || [];
+    const newClosedBy = [...new Set([...currentClosedBy, ...profileIds])];
 
-    const newClosedBy = [...conv.closedBy, profileId];
+    if (newClosedBy.length === currentClosedBy.length) return;
+
     await supabase.from("conversations").update({ closed_by: newClosedBy, updated_at: Date.now() }).eq("id", conversationId);
     setConversations((prev) =>
       prev.map((c) => (c.id === conversationId ? { ...c, closedBy: newClosedBy, updatedAt: Date.now() } : c))
     );
-  }, [conversations]);
+  }, []);
 
   const isConversationClosedByUser = useCallback((conversation: Conversation, profileId: string): boolean => {
     return conversation.closedBy.includes(profileId);
