@@ -19,11 +19,8 @@ interface DemandeCardProps {
   onRefuse?: (id: string) => void;
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 90) return "#10B981";
-  if (score >= 70) return "#22C55E";
-  if (score >= 40) return "#F4A261";
-  return "#E63946";
+function getScoreColor(_score: number): string {
+  return "#D3E4D1";
 }
 
 export function DemandeCard({

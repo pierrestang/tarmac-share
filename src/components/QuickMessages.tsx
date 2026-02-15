@@ -9,8 +9,8 @@ const QUICK_MESSAGES = [
   { emoji: <Briefcase className="h-4 w-4" />, text: "J'attends mes bagages" },
   
   { emoji: <Clock className="h-4 w-4" />, text: "J'arrive dans 5 minutes" },
-  { emoji: <CircleCheck className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", primary: true },
-  { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", destructive: true },
+  { emoji: <CircleCheck className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", customBg: "bg-[#D3E4D1]", customText: "text-[#4E657A]" },
+  { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", customBg: "bg-[#A25B5B]", customText: "text-white" },
 ];
 
 const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
@@ -24,12 +24,9 @@ const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
           className={`
             flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity whitespace-nowrap
             disabled:opacity-50 disabled:pointer-events-none
-            ${msg.primary
-              ? "py-3 bg-success border-0 text-success-foreground text-[14px]"
-              : msg.destructive
-                ? "py-3 bg-red-100 border-0 text-red-500 text-[14px]"
-                : "py-3 bg-card border-0 text-card-foreground text-[14px]"
-            }
+            py-3 border-0 text-[14px]
+            ${msg.customBg ? msg.customBg : "bg-card"}
+            ${msg.customText ? msg.customText : "text-card-foreground"}
           `}
         >
           {msg.emoji}
