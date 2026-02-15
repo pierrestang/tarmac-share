@@ -32,7 +32,7 @@ const Connexion = () => {
           : error.message
       );
     } else {
-      navigate("/publier", { replace: true });
+      navigate("/comment-ca-marche", { replace: true });
     }
     setLoading(false);
   };
