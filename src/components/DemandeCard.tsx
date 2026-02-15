@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Demande } from "@/types/demande";
 import type { Profile } from "@/types/profile";
 import type { Trajet } from "@/types/trajet";
+import { useNotifications } from "@/hooks/use-notifications";
 
 interface DemandeCardProps {
   demande: Demande;
@@ -36,12 +37,18 @@ export function DemandeCard({
   onRefuse,
 }: DemandeCardProps) {
   const navigate = useNavigate();
+  const { notifications } = useNotifications();
   
   const isReceived = demande.toProfileId === currentProfileId;
   const isPending = demande.status === "pending";
   const isAccepted = demande.status === "accepted";
   const isRefused = demande.status === "refused";
   const isCompleted = demande.status === "completed";
+  
+  // Check if this completed demande was a cancellation
+  const isCancelled = isCompleted && notifications.some(
+    (n) => n.type === "cancellation" && n.demandeId === demande.id
+  );
 
   
   const scoreColor = getScoreColor(compatibilityScore);
@@ -113,9 +120,13 @@ export function DemandeCard({
                   et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
                 </span>
               )}
-              {isCompleted ? (
+              {isCompleted && isCancelled ? (
                 <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
                   Trajet annulé
+                </Badge>
+              ) : isCompleted ? (
+                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                  Trajet terminé
                 </Badge>
               ) : (
                 getStatusBadge()
