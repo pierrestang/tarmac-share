@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import ChatBubble from "./ChatBubble";
 import QuickMessages from "./QuickMessages";
 import type { Message, Conversation } from "@/types/message";
@@ -18,6 +28,7 @@ interface ChatViewProps {
   onBack: () => void;
   onSendMessage: (content: string) => void;
   onCloseConversation: () => void;
+  onCancelTrip: () => void;
 }
 
 const ChatView = ({
@@ -30,10 +41,12 @@ const ChatView = ({
   onBack,
   onSendMessage,
   onCloseConversation,
+  onCancelTrip,
 }: ChatViewProps) => {
   const navigate = useNavigate();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
@@ -133,7 +146,7 @@ const ChatView = ({
                 <QuickMessages
                   onSend={(msg) => {
                     if (msg === "Je dois annuler") {
-                      navigate(`/confirm-annulation?conversationId=${conversation.id}`);
+                      setShowCancelDialog(true);
                     } else {
                       onSendMessage(msg);
                     }
@@ -157,6 +170,23 @@ const ChatView = ({
           </>
         )}
       </div>
+      {/* Cancel Trip Dialog */}
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent className="rounded-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-white">
+              Êtes-vous sûr de vouloir annuler ce trajet ?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
+            <AlertDialogAction onClick={onCancelTrip} className="rounded-md">
+              Oui
+            </AlertDialogAction>
+            <AlertDialogCancel className="rounded-md">Non</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
