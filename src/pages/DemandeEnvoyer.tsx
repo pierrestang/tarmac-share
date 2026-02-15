@@ -127,7 +127,7 @@ const DemandeEnvoyer = () => {
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {myTrajet.departureStation} <span className="text-muted-foreground">à </span>{myTrajet.departureTime}
+              {myTrajet.departureStation}, {myTrajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>
