@@ -163,7 +163,7 @@ const Matches = () => {
                           {activeProfile?.firstName}
                           {t.companions > 1 && (
                             <span className="text-muted-foreground font-normal">
-                              {" "}+{t.companions - 1} voyageur{t.companions > 2 ? "s" : ""}
+                              {" "}et {t.companions === 2 ? "un" : t.companions === 3 ? "deux" : t.companions - 1} voyageur{t.companions > 2 ? "s" : ""}
                             </span>
                           )}
                         </span>
@@ -259,7 +259,7 @@ const Matches = () => {
                     {profile.firstName}
                     {trajet.companions > 1 && (
                       <span className="text-muted-foreground font-normal">
-                        {" "}+{trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
+                        {" "}et {trajet.companions === 2 ? "un" : trajet.companions === 3 ? "deux" : trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
                       </span>
                     )}
                   </span>

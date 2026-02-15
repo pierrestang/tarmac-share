@@ -164,7 +164,7 @@ const DemandeConsulter = () => {
                 {myProfile.firstName}
                 {myTrajet.companions > 1 && (
                   <span className="text-muted-foreground font-normal">
-                    {" "}+{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                    {" "}et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
                   </span>
                 )}
               </span>
