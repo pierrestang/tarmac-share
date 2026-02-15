@@ -66,8 +66,8 @@ function calculateBaggageVolume(baggage: Baggage): number {
 }
 
 function parseTime(timeStr: string): number | null {
-  // Support slot format "10h00-10h30" by extracting the first time
-  const slotMatch = timeStr.match(/^(\d{1,2})h(\d{2})\s*-/);
+  // Support slot format "10:00-10:30" or "10h00-10h30" by extracting the first time
+  const slotMatch = timeStr.match(/^(\d{1,2})[h:](\d{2})\s*-/);
   if (slotMatch) {
     return parseInt(slotMatch[1]) * 60 + parseInt(slotMatch[2]);
   }
