@@ -195,7 +195,7 @@ const Messages = () => {
     await completeDemande(selectedConversation.demandeId);
     await saveDemandeSnapshot(selectedConversation.demandeId);
 
-    setSelectedConversation(null);
+    // Stay in the current conversation view
   };
 
   // Get current messages for selected conversation
