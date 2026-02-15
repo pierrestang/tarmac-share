@@ -64,7 +64,7 @@ const Evaluation = () => {
 
     if (bothClosed) {
       await completeDemande(convRow.demande_id);
-      await addSystemMessage(conversationId, "La conversation est clôturée");
+      await addSystemMessage(conversationId, "Le trajet est terminé");
     }
 
     await saveDemandeSnapshot(convRow.demande_id);
