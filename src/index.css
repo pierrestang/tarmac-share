@@ -142,6 +142,14 @@ DESIGN SYSTEM RULES (mobile-first):
     @apply bg-background text-foreground;
   }
 
+  /* Remove all focus outlines globally */
+  *:focus,
+  *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    ring: none;
+  }
+
   /* Global rounded corners for inputs and interactive elements */
   input, textarea, select, button {
     @apply rounded-lg;
