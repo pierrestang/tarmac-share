@@ -69,6 +69,12 @@ const Inscription = () => {
 
   return (
     <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
+      <div className="px-4">
+        <button onClick={() => navigate("/auth")} className="text-heading">
+          <ArrowLeft size={24} />
+        </button>
+      </div>
+
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Inscription.</h1>
       </div>
@@ -140,12 +146,6 @@ const Inscription = () => {
         </Card>
       </div>
 
-      <button
-        onClick={() => navigate("/auth")}
-        className="flex items-center justify-center gap-1 text-sm text-white/70"
-      >
-        Retour
-      </button>
     </section>
   );
 };
