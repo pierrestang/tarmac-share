@@ -168,8 +168,7 @@ const Compte = () => {
       {/* Réinitialiser */}
       <div className="flex justify-center px-4">
         <Button
-          variant="outline"
-          className="w-full max-w-[42rem] justify-start text-[14px] font-semibold bg-card text-card-foreground border-0 rounded-md hover:bg-card/90 h-auto px-4 py-4"
+          className="w-full max-w-[42rem] justify-start text-[14px] font-semibold border-0 rounded-md h-auto px-4 py-4"
           onClick={() => setShowResetConfirm(true)}
         >
           Réinitialiser les trajets
@@ -179,8 +178,7 @@ const Compte = () => {
       {/* Déconnexion */}
       <div className="flex justify-center px-4">
         <Button
-          variant="outline"
-          className="w-full max-w-[42rem] justify-start text-[14px] font-semibold bg-card text-destructive border-0 rounded-md hover:bg-card/90 h-auto px-4 py-4"
+          className="w-full max-w-[42rem] justify-start text-[14px] font-semibold border-0 rounded-md h-auto px-4 py-4"
           onClick={async () => {
             await signOut();
             navigate("/auth", { replace: true });
