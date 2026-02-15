@@ -54,13 +54,13 @@ DESIGN SYSTEM RULES (mobile-first):
     --input: 214 32% 91%;
     --ring: 221 83% 53%;
 
-    /* Buttons: #2563EB avec texte blanc */
-    --button-bg: 217 91% 53%;
-    --button-border: 217 91% 53%;
+    /* Buttons: #3B71D8 avec texte blanc */
+    --button-bg: 220 65% 54%;
+    --button-border: 220 65% 54%;
     --button-fg: 0 0% 100%;
     
     /* Primary aussi en bleu pour cohérence */
-    --primary: 217 91% 53%;
+    --primary: 220 65% 54%;
     --primary-foreground: 0 0% 100%;
 
     /* Rating star color: amber */
