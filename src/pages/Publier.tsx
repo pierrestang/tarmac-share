@@ -217,7 +217,7 @@ const Publier = () => {
     <section className="flex flex-col flex-1 justify-center gap-6 pb-6">
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading text-center">
-          {editTrajetId ? "Modifier le trajet." : "Vous gérez la course, nous gérons la rencontre."}
+          {editTrajetId ? "Modifier le trajet." : "Partagez le trajet, divisez les frais."}
         </h1>
       </div>
 
