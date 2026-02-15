@@ -41,14 +41,14 @@ export function TrajetCard({ trajet, matchCount, canEditOrDelete = false, onDele
             <div className="flex flex-col gap-1">
               <div className="text-[14px]">
                 <span className="font-medium">Départ : </span>
-                <span>{trajet.departureStation}, {trajet.departureTime}</span>
+                <span>{trajet.departureStation}</span>
               </div>
               <div className="text-[14px]">
                 <span className="font-medium">Arrivée : </span>
                 <span>{trajet.destination}</span>
               </div>
               <div className="text-[14px] text-muted-foreground">
-                {trajet.date}
+                {trajet.date} à {trajet.departureTime}
               </div>
             </div>
             <div className="flex flex-col items-end gap-1">
