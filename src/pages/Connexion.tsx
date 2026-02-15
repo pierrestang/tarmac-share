@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Eye, EyeOff, X } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, X } from "lucide-react";
 
 const Connexion = () => {
   const navigate = useNavigate();
@@ -39,6 +39,12 @@ const Connexion = () => {
 
   return (
     <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
+      <div className="px-4">
+        <button onClick={() => navigate("/auth")} className="text-heading">
+          <ArrowLeft size={24} />
+        </button>
+      </div>
+
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Connectez-vous.</h1>
       </div>
@@ -103,12 +109,6 @@ const Connexion = () => {
         Mot de passe oublié ?
       </button>
 
-      <button
-        onClick={() => navigate("/auth")}
-        className="flex items-center justify-center gap-1 text-sm text-white/70"
-      >
-        Retour
-      </button>
     </section>
   );
 };
