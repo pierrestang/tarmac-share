@@ -22,7 +22,7 @@ const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
           onClick={() => onSend(msg.text)}
           disabled={disabled}
           className={`
-            flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity
+            flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity whitespace-nowrap
             disabled:opacity-50 disabled:pointer-events-none
             ${msg.primary
               ? "py-3 bg-green-100 border-0 text-green-600 text-[14px]"
