@@ -88,7 +88,7 @@ const Inscription = () => {
       </div>
 
       <div className="flex justify-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Inscription.</h1>
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Nouveau ici ?</h1>
       </div>
 
       <div className="flex justify-center px-4">
