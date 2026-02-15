@@ -66,6 +66,11 @@ function calculateBaggageVolume(baggage: Baggage): number {
 }
 
 function parseTime(timeStr: string): number | null {
+  // Support slot format "10h00 - 10h30" by extracting the first time
+  const slotMatch = timeStr.match(/^(\d{1,2})h(\d{2})\s*-/);
+  if (slotMatch) {
+    return parseInt(slotMatch[1]) * 60 + parseInt(slotMatch[2]);
+  }
   const match = timeStr.match(/(\d{1,2})[h:](\d{2})/i);
   if (!match) return null;
   return parseInt(match[1]) * 60 + parseInt(match[2]);
@@ -89,15 +94,15 @@ export function calculateDistance(coords1?: Coordinates, coords2?: Coordinates):
 export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet): number {
   const time1 = parseTime(trajet1.departureTime);
   const time2 = parseTime(trajet2.departureTime);
-  const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 15;
+  const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 30;
   let distance = calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
   if (distance !== null && distance < 0.5) distance = 0;
 
   let score = 40;
-  score += Math.max(0, 15 - timeDiff);
+  score += Math.max(0, 30 - timeDiff);
   if (distance === 0) score += 30;
   else if (distance !== null) score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
-  return Math.round((score / 85) * 100);
+  return Math.min(100, score);
 }
 
 export function getArchivedTrajet(_id: string): Trajet | null {
@@ -193,7 +198,7 @@ export function useTrajets() {
         const trajetTime = parseTime(trajet.departureTime);
         if (currentTime === null || trajetTime === null) continue;
         const timeDiff = Math.abs(currentTime - trajetTime);
-        if (timeDiff > 15) continue;
+        if (timeDiff > 30) continue;
 
         const trajetPersons = trajet.companions;
         if (currentPersons + trajetPersons > 4) continue;
@@ -207,10 +212,10 @@ export function useTrajets() {
         if (distance < 0.5) distance = 0;
 
         let score = 40;
-        score += Math.max(0, 15 - timeDiff);
+        score += Math.max(0, 30 - timeDiff);
         if (distance === 0) score += 30;
         else score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
-        score = Math.round((score / 85) * 100);
+        score = Math.min(100, score);
 
         // Profile will be resolved by the caller (Matches page) using useProfiles
         matches.push({
