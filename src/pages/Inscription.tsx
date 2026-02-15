@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Mail } from "lucide-react";
+import {
+  formatDateInput,
+  dateInputToStorageFormat,
+  storageDateToInputFormat,
+  isDateInputComplete,
+  formatDateShort,
+} from "@/lib/date-time-utils";
+import { parse } from "date-fns";
 
 const Inscription = () => {
   const navigate = useNavigate();
@@ -14,6 +22,9 @@ const Inscription = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [birthInput, setBirthInput] = useState("");
+  const [isEditingBirth, setIsEditingBirth] = useState(false);
+  const birthInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [confirmationSent, setConfirmationSent] = useState(false);
@@ -108,14 +119,48 @@ const Inscription = () => {
             <div className="h-px bg-border mx-4" />
 
             <div className="px-4 py-4">
-              <Input
-                type="date"
-                placeholder="Date de naissance"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                required
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
-              />
+              {isEditingBirth || !birthDate ? (
+                <Input
+                  ref={birthInputRef}
+                  type="text"
+                  inputMode="numeric"
+                  value={birthInput}
+                  onChange={(e) => {
+                    const formatted = formatDateInput(e.target.value);
+                    setBirthInput(formatted);
+                    if (isDateInputComplete(formatted)) {
+                      const storageDate = dateInputToStorageFormat(formatted);
+                      if (storageDate) {
+                        setBirthDate(storageDate);
+                        setIsEditingBirth(false);
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    if (birthDate) setIsEditingBirth(false);
+                  }}
+                  placeholder="Date de naissance"
+                  className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                />
+              ) : (
+                <div
+                  onClick={() => {
+                    setBirthInput(storageDateToInputFormat(birthDate));
+                    setIsEditingBirth(true);
+                    setTimeout(() => birthInputRef.current?.focus(), 0);
+                  }}
+                  className="text-[14px] font-semibold cursor-pointer text-card-foreground"
+                >
+                  {(() => {
+                    try {
+                      const parsed = parse(birthDate, "dd/MM/yyyy", new Date());
+                      return formatDateShort(parsed);
+                    } catch {
+                      return birthDate;
+                    }
+                  })()}
+                </div>
+              )}
             </div>
 
             <div className="h-px bg-border mx-4" />
