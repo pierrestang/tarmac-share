@@ -229,6 +229,12 @@ const Messages = () => {
             getLastMessage={getLastMessage}
             hasUnreadMessages={(conversationId) => profileId ? hasUnreadMessages(conversationId, profileId) : false}
             onSelectConversation={handleSelectConversation}
+            getConversationStatus={(conversation) => {
+              if (!isConversationFullyClosed(conversation)) return null;
+              const msgs = getMessages(conversation.id);
+              const hasCancelMessage = msgs.some(m => m.content === "Je dois annuler" && m.type !== "system");
+              return hasCancelMessage ? "cancelled" : "completed";
+            }}
           />
         </TabsContent>
         

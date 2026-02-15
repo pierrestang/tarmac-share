@@ -9,6 +9,7 @@ interface ConversationListProps {
   getLastMessage: (conversationId: string) => Message | undefined;
   hasUnreadMessages: (conversationId: string) => boolean;
   onSelectConversation: (conversation: Conversation) => void;
+  getConversationStatus?: (conversation: Conversation) => "cancelled" | "completed" | null;
 }
 
 const ConversationList = ({
@@ -17,6 +18,7 @@ const ConversationList = ({
   getLastMessage,
   hasUnreadMessages,
   onSelectConversation,
+  getConversationStatus,
 }: ConversationListProps) => {
   if (conversations.length === 0) {
     return (
@@ -34,6 +36,7 @@ const ConversationList = ({
         const otherProfile = getOtherProfile(conversation);
         const lastMessage = getLastMessage(conversation.id);
         const isUnread = hasUnreadMessages(conversation.id);
+        const status = getConversationStatus?.(conversation) ?? null;
         
         if (!otherProfile) return null;
         
@@ -45,6 +48,7 @@ const ConversationList = ({
             lastMessageContent={lastMessage?.content}
             lastMessageTime={lastMessage?.createdAt}
             isUnread={isUnread}
+            status={status}
             onClick={() => onSelectConversation(conversation)}
           />
         );

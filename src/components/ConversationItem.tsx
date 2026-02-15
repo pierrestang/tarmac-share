@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { Conversation } from "@/types/message";
@@ -10,6 +11,7 @@ interface ConversationItemProps {
   lastMessageContent?: string;
   lastMessageTime?: number;
   isUnread?: boolean;
+  status?: "cancelled" | "completed" | null;
   onClick: () => void;
 }
 
@@ -19,6 +21,7 @@ const ConversationItem = ({
   lastMessageContent,
   lastMessageTime,
   isUnread = false,
+  status,
   onClick,
 }: ConversationItemProps) => {
   const initials = otherProfile.firstName.charAt(0).toUpperCase();
@@ -47,6 +50,17 @@ const ConversationItem = ({
         )}>
           {otherProfile.firstName}
         </span>
+
+        {status === "cancelled" && (
+          <Badge className="ml-auto bg-red-100 text-red-600 border-0 hover:bg-red-100">
+            Trajet annulé
+          </Badge>
+        )}
+        {status === "completed" && (
+          <Badge className="ml-auto bg-green-100 text-green-600 border-0 hover:bg-green-100">
+            Trajet terminé
+          </Badge>
+        )}
       </CardContent>
     </Card>
   );
