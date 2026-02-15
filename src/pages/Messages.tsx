@@ -182,7 +182,7 @@ const Messages = () => {
 
     await closeConversation(selectedConversation.id, profileId);
     await closeConversation(selectedConversation.id, otherProfileId);
-    await addSystemMessage(selectedConversation.id, "La conversation est clôturée");
+    await addSystemMessage(selectedConversation.id, `${activeProfile.firstName} a annulé le trajet. Le trajet est considéré comme terminé.`);
 
     const ratingBase = {
       conversationId: selectedConversation.id,

@@ -53,7 +53,7 @@ const ConfirmAnnulation = () => {
     await closeConversation(conversationId, otherProfileId);
 
     // Add system message
-    await addSystemMessage(conversationId, "La conversation est clôturée");
+    await addSystemMessage(conversationId, `${activeProfile.firstName} a annulé le trajet. Le trajet est considéré comme terminé.`);
 
     const ratingBase = {
       conversationId,
