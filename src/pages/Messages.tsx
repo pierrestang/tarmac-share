@@ -39,11 +39,16 @@ const Messages = () => {
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, []);
+
   // Refresh conversations periodically
   useEffect(() => {
     const interval = setInterval(() => {
       setRefreshKey((k) => k + 1);
-    }, 1000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
