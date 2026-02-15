@@ -198,7 +198,7 @@ export function useTrajets() {
         const trajetTime = parseTime(trajet.departureTime);
         if (currentTime === null || trajetTime === null) continue;
         const timeDiff = Math.abs(currentTime - trajetTime);
-        if (timeDiff > 30) continue;
+        if (timeDiff >= 60) continue;
 
         const trajetPersons = trajet.companions;
         if (currentPersons + trajetPersons > 4) continue;
