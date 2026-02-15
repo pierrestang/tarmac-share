@@ -63,7 +63,7 @@ const initialForm: TrajetForm = {
   date: getTodayStorageFormat(),
   departureStation: "Aéroport de Bordeaux",
   departureStationCoords: { lat: 44.8283, lng: -0.7156 },
-  departureTime: "10:00-10:30",
+  departureTime: "10h00 - 10h30",
   destination: "Bordeaux",
   destinationCoords: { lat: 44.8378, lng: -0.5792 },
   companions: "1",
@@ -98,11 +98,11 @@ const Publier = () => {
       const hh = String(h).padStart(2, "0");
       const nextH30 = h;
       const nextH00 = h + 1;
-      slots.push(`${hh}:00-${hh}:30`);
+      slots.push(`${hh}h00 - ${hh}h30`);
       if (nextH00 < 24) {
-        slots.push(`${hh}:30-${String(nextH00).padStart(2, "0")}:00`);
+        slots.push(`${hh}h30 - ${String(nextH00).padStart(2, "0")}h00`);
       } else {
-        slots.push(`${hh}:30-00:00`);
+        slots.push(`${hh}h30 - 00h00`);
       }
     }
     return slots;

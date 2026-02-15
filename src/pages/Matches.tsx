@@ -163,7 +163,7 @@ const Matches = () => {
                           {activeProfile?.firstName}
                           {t.companions > 1 && (
                             <span className="text-muted-foreground font-normal">
-                              {" "}et {t.companions === 2 ? "un" : t.companions === 3 ? "deux" : t.companions - 1} voyageur{t.companions > 2 ? "s" : ""}
+                              {" "}+{t.companions - 1} voyageur{t.companions > 2 ? "s" : ""}
                             </span>
                           )}
                         </span>
@@ -174,7 +174,7 @@ const Matches = () => {
                     <div className="flex flex-col gap-1 text-[14px]">
                       <p>
                         <span className="text-muted-foreground">Départ : </span>
-                        {t.departureStation}, {t.departureTime}
+                        {t.departureStation} <span className="text-muted-foreground">à </span>{t.departureTime}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Arrivée : </span>
@@ -259,7 +259,7 @@ const Matches = () => {
                     {profile.firstName}
                     {trajet.companions > 1 && (
                       <span className="text-muted-foreground font-normal">
-                        {" "}et {trajet.companions === 2 ? "un" : trajet.companions === 3 ? "deux" : trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
+                        {" "}+{trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
                       </span>
                     )}
                   </span>
@@ -270,7 +270,7 @@ const Matches = () => {
               <div className="flex flex-col gap-1 text-[14px] text-card-foreground">
                 <p>
                   <span className="text-muted-foreground">Départ : </span>
-                  {trajet.departureStation}, {trajet.departureTime}
+                  {trajet.departureStation} <span className="text-muted-foreground">à </span>{trajet.departureTime}
                 </p>
                 <p>
                   <span className="text-muted-foreground">Arrivée : </span>

@@ -52,10 +52,6 @@ export default {
           shadow: "var(--card-shadow)",
         },
         star: "hsl(var(--star))",
-        success: {
-          DEFAULT: "hsl(var(--success))",
-          foreground: "hsl(var(--success-foreground))",
-        },
         warning: "hsl(var(--warning))",
         heading: "hsl(var(--heading))",
         sidebar: {

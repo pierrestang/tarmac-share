@@ -26,8 +26,8 @@ function formatRelativeTime(timestamp: number): string {
 export function NotificationItem({ notification, onClick, muted = false, badge, badgeVariant = "default" }: NotificationItemProps) {
   const badgeClasses = {
     default: "bg-muted text-muted-foreground",
-    green: "bg-success text-success-foreground border border-success-foreground/20",
-    red: "bg-[#e34454]/15 text-[#e34454] border border-[#e34454]/30",
+    green: "bg-green-100 text-green-700 border border-green-300",
+    red: "bg-red-100 text-red-700 border border-red-300",
   };
   return (
     <button
