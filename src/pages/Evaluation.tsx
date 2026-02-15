@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useMessages } from "@/hooks/use-messages";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const Evaluation = () => {
@@ -45,13 +46,17 @@ const Evaluation = () => {
 
     await closeConversation(conversationId, activeProfile.id);
 
-    // Complete the demande and add system message
-    // We complete on first close (don't wait for both parties)
-    await completeDemande(conversation.demandeId);
-    
-    // Check if both users have closed to add system message
-    const freshConv = getConversationById(conversationId);
-    if (freshConv && freshConv.closedBy.length >= 2) {
+    // Query DB directly to get fresh closed_by (state may not be updated yet)
+    const { data: freshRow } = await supabase
+      .from("conversations")
+      .select("closed_by")
+      .eq("id", conversationId)
+      .single();
+
+    const bothClosed = freshRow && Array.isArray(freshRow.closed_by) && freshRow.closed_by.length >= 2;
+
+    if (bothClosed) {
+      await completeDemande(conversation.demandeId);
       await addSystemMessage(conversationId, "La conversation est clôturée");
     }
 
