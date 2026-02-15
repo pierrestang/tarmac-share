@@ -13,19 +13,21 @@ const Auth = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
-      <img src={erLogo} alt="Logo" className="mb-12 h-12 w-auto" />
+    <div className="flex min-h-screen flex-col items-center justify-between bg-background px-4 py-12">
+      <div className="flex-1 flex items-center justify-center">
+        <img src={erLogo} alt="Logo" className="h-36 w-auto" />
+      </div>
 
-      <div className="flex w-full max-w-sm flex-col gap-3">
+      <div className="flex w-full max-w-sm flex-col gap-3 pb-8">
         <Button
-          className="w-full h-auto py-4"
+          className="w-full h-auto py-4 rounded-full"
           onClick={() => navigate("/inscription")}
         >
-          S'inscrire sur EnRoute
+          S'inscrire sur Tarmac
         </Button>
         <Button
           variant="outline"
-          className="w-full h-auto py-4"
+          className="w-full h-auto py-4 rounded-full"
           onClick={() => navigate("/connexion")}
         >
           J'ai déjà un compte
