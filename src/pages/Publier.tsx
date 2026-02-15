@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
 import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, Users, Briefcase } from "lucide-react";
@@ -18,14 +18,11 @@ import {
 } from "@/components/ui/popover";
 import {
   formatDateInput,
-  formatTimeInput,
   parseDateInput,
-  parseTimeInput,
   formatDateShort,
   dateInputToStorageFormat,
   storageDateToInputFormat,
   isDateInputComplete,
-  isTimeInputComplete,
 } from "@/lib/date-time-utils";
 
 // Baggage capacity constants
@@ -66,7 +63,7 @@ const initialForm: TrajetForm = {
   date: getTodayStorageFormat(),
   departureStation: "Aéroport de Bordeaux",
   departureStationCoords: { lat: 44.8283, lng: -0.7156 },
-  departureTime: "10:00",
+  departureTime: "10h00 - 10h30",
   destination: "Bordeaux",
   destinationCoords: { lat: 44.8378, lng: -0.5792 },
   companions: "1",
@@ -89,13 +86,27 @@ const Publier = () => {
   const { getActiveProfile } = useProfiles();
   const { toast } = useToast();
 
-  // Date and time input states
+  // Date input states
   const [dateInput, setDateInput] = useState("");
   const [isEditingDate, setIsEditingDate] = useState(false);
-  const [timeInput, setTimeInput] = useState("");
-  const [isEditingTime, setIsEditingTime] = useState(false);
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const timeInputRef = useRef<HTMLInputElement>(null);
+
+  // Generate 30-min time slots
+  const timeSlots = useMemo(() => {
+    const slots: string[] = [];
+    for (let h = 0; h < 24; h++) {
+      const hh = String(h).padStart(2, "0");
+      const nextH30 = h;
+      const nextH00 = h + 1;
+      slots.push(`${hh}h00 - ${hh}h30`);
+      if (nextH00 < 24) {
+        slots.push(`${hh}h30 - ${String(nextH00).padStart(2, "0")}h00`);
+      } else {
+        slots.push(`${hh}h30 - 00h00`);
+      }
+    }
+    return slots;
+  }, []);
 
   // Load trajet data in edit mode
   useEffect(() => {
@@ -311,52 +322,40 @@ const Publier = () => {
 
             <div className="w-px h-6 bg-border" />
 
-            {/* Heure */}
-            <Clock className={cn(
-              "h-4 w-4 flex-shrink-0",
-              form.departureTime ? "text-card-foreground" : "text-muted-foreground"
-            )} />
-            
-            {/* Time Input */}
-            {isEditingTime || !form.departureTime ? (
-              <Input
-                ref={timeInputRef}
-                type="text"
-                inputMode="numeric"
-                value={timeInput}
-                onChange={(e) => {
-                  const formatted = formatTimeInput(e.target.value);
-                  setTimeInput(formatted);
-                  
-                  // Auto-validate when complete
-                  if (isTimeInputComplete(formatted)) {
-                    const validTime = parseTimeInput(formatted);
-                    if (validTime) {
-                      setForm((prev) => ({ ...prev, departureTime: validTime }));
-                      setIsEditingTime(false);
-                    }
-                  }
-                }}
-                onBlur={() => {
-                  if (form.departureTime) {
-                    setIsEditingTime(false);
-                  }
-                }}
-                placeholder="Heure"
-                className="w-16 border-0 p-0 h-auto text-base font-semibold md:text-sm placeholder:text-muted-foreground placeholder:font-semibold focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none bg-transparent"
-              />
-            ) : (
-              <div
-                onClick={() => {
-                  setTimeInput(form.departureTime);
-                  setIsEditingTime(true);
-                  setTimeout(() => timeInputRef.current?.focus(), 0);
-                }}
-                className="flex w-16 text-base font-semibold cursor-pointer md:text-sm"
-              >
-                {form.departureTime}
-              </div>
-            )}
+            {/* Heure - Time Slot Picker */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <Clock className={cn(
+                    "h-4 w-4 flex-shrink-0",
+                    form.departureTime ? "text-card-foreground" : "text-muted-foreground"
+                  )} />
+                  <span className={cn(
+                    "text-base font-semibold md:text-sm whitespace-nowrap",
+                    !form.departureTime && "text-muted-foreground"
+                  )}>
+                    {form.departureTime || "Heure"}
+                  </span>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 max-h-64 overflow-y-auto" align="end">
+                <div className="flex flex-col">
+                  {timeSlots.map((slot, index) => (
+                    <div
+                      key={slot}
+                      className={cn(
+                        "px-4 py-3 cursor-pointer text-[14px] whitespace-nowrap",
+                        index < timeSlots.length - 1 && "border-b border-border",
+                        form.departureTime === slot && "bg-primary/10 font-semibold"
+                      )}
+                      onClick={() => setForm((prev) => ({ ...prev, departureTime: slot }))}
+                    >
+                      {slot}
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="h-px bg-border mx-4" />
