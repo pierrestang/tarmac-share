@@ -78,8 +78,8 @@ const ChatView = ({
       <div className="flex-1 overflow-y-auto pb-4">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-[14px] text-card-foreground">
-              Finalisez votre rencontre 👋
+            <p className="text-[14px] text-[#F0EEE9]">
+              Retrouvez-vous 📍
             </p>
           </div>
         ) : (
