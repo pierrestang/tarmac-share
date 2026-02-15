@@ -127,13 +127,12 @@ const Messages = () => {
       await sendMessage(selectedConversation.id, profileId, content);
       
       // Check if both participants are now ready after this message
-      if (content === "Je suis prêt à partir") {
-        // Query DB directly since hook state may be stale
+      if (content === "Je suis arrivé au point de rencontre") {
         const { data: dbMessages } = await supabase
           .from("messages")
           .select("sender_id, content")
           .eq("conversation_id", selectedConversation.id)
-          .eq("content", "Je suis prêt à partir")
+          .eq("content", "Je suis arrivé au point de rencontre")
           .eq("type", "user");
         
         const otherParticipant = selectedConversation.participants.find(p => p !== profileId);
@@ -142,7 +141,7 @@ const Messages = () => {
           dbMessages.some(m => m.sender_id === otherParticipant);
         
         if (bothReady) {
-          await addSystemMessage(selectedConversation.id, "Vous êtes tous les deux prêts. Montrez ce code pour vous reconnaître au point de rendez-vous.");
+          await addSystemMessage(selectedConversation.id, "Vous êtes tous les deux arrivés au point de rencontre. Cliquez sur \"Afficher le code\" pour vous reconnaître.");
         }
       }
       

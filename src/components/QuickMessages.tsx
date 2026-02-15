@@ -9,7 +9,7 @@ const QUICK_MESSAGES = [
   { emoji: <Briefcase className="h-4 w-4" />, text: "J'attends mes bagages" },
   
   { emoji: <Clock className="h-4 w-4" />, text: "J'arrive dans 5 minutes" },
-  { emoji: <CheckCircle className="h-4 w-4" />, text: "Je suis prêt à partir", primary: true },
+  { emoji: <CheckCircle className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", primary: true },
   { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", destructive: true },
 ];
 
