@@ -4,7 +4,13 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   formatDateInput,
   dateInputToStorageFormat,
@@ -42,8 +48,9 @@ const Inscription = () => {
       setError("Le prénom et le nom doivent contenir au moins 2 caractères.");
       return;
     }
-    if (password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères.");
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.");
       return;
     }
     setLoading(true);
@@ -179,16 +186,26 @@ const Inscription = () => {
 
             <div className="h-px bg-border mx-4" />
 
-            <div className="px-4 py-4">
+            <div className="px-4 py-4 flex items-center gap-2">
               <Input
                 type="password"
-                placeholder="Mot de passe (6 caractères min.)"
+                placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                minLength={8}
+                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
               />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger type="button" className="text-muted-foreground">
+                    <Info size={16} />
+                  </TooltipTrigger>
+                  <TooltipContent side="left" className="max-w-[200px] text-xs">
+                    Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             {error && (
