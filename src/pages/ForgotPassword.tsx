@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import erLogo from "@/assets/logo-tarmac.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Mail } from "lucide-react";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -18,57 +19,50 @@ const ForgotPassword = () => {
     await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: `${window.location.origin}/reset-password`,
     });
+    // Always show success to not reveal if email exists
     setSent(true);
     setLoading(false);
   };
 
   if (sent) {
     return (
-      <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
-        <div className="px-4">
-          <button onClick={() => navigate("/connexion")} className="text-heading">
-            <ArrowLeft size={24} />
-          </button>
-        </div>
-
-        <div className="flex justify-center px-4">
-          <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Vérifiez votre boîte mail.</h1>
-        </div>
-
-        <div className="flex justify-center px-4">
-          <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
-            <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                Si un compte existe avec cette adresse, un email de réinitialisation a été envoyé.
-              </p>
-            </CardContent>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+        <img src={erLogo} alt="Logo" className="mb-8 h-12 w-auto" />
+        <Card className="w-full max-w-sm border-0">
+          <div className="flex flex-col items-center gap-4 p-6 text-center">
+            <Mail size={40} className="text-primary" />
+            <h2 className="text-lg font-semibold text-card-foreground">Vérifiez votre boîte mail</h2>
+            <p className="text-sm text-muted-foreground">
+              Si un compte existe avec cette adresse, un email de réinitialisation a été envoyé.
+            </p>
             <Button
-              className="w-full rounded-none h-auto py-4"
+              variant="outline"
+              className="mt-2"
               onClick={() => navigate("/connexion")}
             >
               Retour à la connexion
             </Button>
-          </Card>
-        </div>
-      </section>
+          </div>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
-      <div className="px-4">
-        <button onClick={() => navigate("/connexion")} className="text-heading">
-          <ArrowLeft size={24} />
-        </button>
-      </div>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+      <button
+        onClick={() => navigate("/connexion")}
+        className="absolute left-4 top-4 flex items-center gap-1 text-sm text-muted-foreground"
+      >
+        <ArrowLeft size={16} />
+        Retour
+      </button>
 
-      <div className="flex justify-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Mot de passe oublié.</h1>
-      </div>
+      <img src={erLogo} alt="Logo" className="mb-8 h-12 w-auto" />
 
-      <div className="flex justify-center px-4">
-        <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col">
+      <div className="flex justify-center w-full">
+        <Card className="w-full max-w-sm border-0 rounded-md overflow-hidden">
+          <form onSubmit={handleSubmit} className="flex flex-col">
             <div className="px-4 py-3">
               <p className="text-sm text-muted-foreground">
                 Entrez votre adresse email pour recevoir un lien de réinitialisation.
@@ -83,6 +77,7 @@ const ForgotPassword = () => {
                 placeholder="Adresse email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -97,7 +92,7 @@ const ForgotPassword = () => {
           </form>
         </Card>
       </div>
-    </section>
+    </div>
   );
 };
 

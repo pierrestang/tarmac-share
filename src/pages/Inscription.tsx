@@ -106,6 +106,7 @@ const Inscription = () => {
             <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Un email de confirmation a été envoyé à <strong>{email}</strong>.
+                Un email de confirmation a été envoyé à <strong>{email}</strong>.
                 Cliquez sur le lien pour activer votre compte.
               </p>
             </CardContent>
