@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
-import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, Users, Briefcase } from "lucide-react";
+import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, User as UserIcon, Briefcase } from "lucide-react";
 import { parse } from "date-fns";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
@@ -364,7 +364,7 @@ const Publier = () => {
           <Popover>
             <PopoverTrigger asChild>
               <div className="flex items-center w-full px-4 py-4 cursor-pointer gap-3">
-                <Users className="h-4 w-4 flex-shrink-0 text-card-foreground" />
+                <UserIcon className="h-4 w-4 flex-shrink-0 text-card-foreground" />
                 <span className="text-base font-semibold md:text-sm">
                   {form.companions === "1" ? "1 voyageur" : `${form.companions} voyageurs`}
                 </span>
