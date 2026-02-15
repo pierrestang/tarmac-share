@@ -36,9 +36,8 @@ const ResetPassword = () => {
     e.preventDefault();
     setError(null);
 
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setError("Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.");
+    if (password.length < 10) {
+      setError("Le mot de passe doit contenir au moins 10 caractères.");
       return;
     }
     if (password !== confirm) {
@@ -101,7 +100,7 @@ const ResetPassword = () => {
           <form onSubmit={handleSubmit} className="flex flex-col">
             <div className="px-4 py-3">
               <p className="text-sm text-muted-foreground">
-                Choisissez un nouveau mot de passe (8 caractères min.)
+                Choisissez un nouveau mot de passe (10 caractères min.)
               </p>
             </div>
 
@@ -114,7 +113,7 @@ const ResetPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={8}
+                minLength={10}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -128,15 +127,13 @@ const ResetPassword = () => {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
-                minLength={8}
+                minLength={10}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
 
             {error && (
-              <div className="fixed bottom-0 left-0 right-0 bg-destructive text-destructive-foreground text-sm text-center py-3 px-4 z-50">
-                {error}
-              </div>
+              <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
             )}
 
             <Button
