@@ -69,16 +69,6 @@ const Connexion = () => {
               />
             </div>
 
-            <div className="px-4 pb-2">
-              <button
-                type="button"
-                onClick={() => navigate("/forgot-password")}
-                className="text-xs text-muted-foreground underline"
-              >
-                Mot de passe oublié ?
-              </button>
-            </div>
-
             {error && (
               <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
             )}
@@ -94,14 +84,20 @@ const Connexion = () => {
         </Card>
       </div>
 
-      <div className="flex justify-center px-4">
-        <button
-          onClick={() => navigate("/auth")}
-          className="flex items-center gap-1 text-sm text-white/70"
-        >
-          Retour
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => navigate("/forgot-password")}
+        className="text-sm text-white/70 underline"
+      >
+        Mot de passe oublié ?
+      </button>
+
+      <button
+        onClick={() => navigate("/auth")}
+        className="flex items-center justify-center gap-1 text-sm text-white/70"
+      >
+        Retour
+      </button>
     </section>
   );
 };
