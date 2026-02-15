@@ -14,8 +14,8 @@ const CommentCaMarche = () => {
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">1. Publiez votre trajet 📢</p>
-            <p>Indiquez votre heure de départ et votre destination. <strong>C'est gratuit !</strong></p>
+            <p className="text-[18px] font-semibold mb-2">1. Anticipez votre trajet 🔔</p>
+            <p>Avant votre vol, publiez votre annonce en indiquant votre heure d'arrivée et votre destination. <strong>C'est gratuit !</strong></p>
           </CardContent>
         </Card>
 
@@ -31,7 +31,7 @@ const CommentCaMarche = () => {
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
             <p className="text-[18px] font-semibold mb-2">3. Retrouvez-vous 📍</p>
-            <p>Rendez-vous au point de rencontre. Une fois ensemble, commandez votre transport comme vous en avez l'habitude.</p>
+            <p>Une fois arrivés, rejoignez votre partenaire au point de rencontre. Puis, commandez votre transport en toute autonomie.</p>
           </CardContent>
         </Card>
 
