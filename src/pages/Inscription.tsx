@@ -13,6 +13,7 @@ const Inscription = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [confirmationSent, setConfirmationSent] = useState(false);
@@ -99,6 +100,19 @@ const Inscription = () => {
                 placeholder="Nom"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                required
+                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+              />
+            </div>
+
+            <div className="h-px bg-border mx-4" />
+
+            <div className="px-4 py-4">
+              <Input
+                type="date"
+                placeholder="Date de naissance"
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
                 required
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
