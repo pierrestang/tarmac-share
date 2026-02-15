@@ -110,9 +110,6 @@ const ChatView = ({
           <>
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
-                <p className="text-[14px] text-success-foreground bg-success rounded-xl px-4 py-3 text-center">
-                  Vous êtes arrivés au point de rencontre. Cliquez sur 'Afficher le code' pour vous identifier mutuellement en toute simplicité.
-                </p>
                 <Button
                   className="w-full rounded-full bg-success text-success-foreground border-0 hover:bg-success/80"
                   onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
