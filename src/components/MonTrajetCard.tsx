@@ -89,7 +89,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {trajet.departureStation} <span className="text-muted-foreground">à </span>{trajet.departureTime}
+              {trajet.departureStation}, {trajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>

@@ -174,7 +174,7 @@ const Matches = () => {
                     <div className="flex flex-col gap-1 text-[14px]">
                       <p>
                         <span className="text-muted-foreground">Départ : </span>
-                        {t.departureStation} <span className="text-muted-foreground">à </span>{t.departureTime}
+                        {t.departureStation}, {t.departureTime}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Arrivée : </span>
@@ -270,7 +270,7 @@ const Matches = () => {
               <div className="flex flex-col gap-1 text-[14px] text-card-foreground">
                 <p>
                   <span className="text-muted-foreground">Départ : </span>
-                  {trajet.departureStation} <span className="text-muted-foreground">à </span>{trajet.departureTime}
+                  {trajet.departureStation}, {trajet.departureTime}
                 </p>
                 <p>
                   <span className="text-muted-foreground">Arrivée : </span>
