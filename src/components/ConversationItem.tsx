@@ -57,7 +57,7 @@ const ConversationItem = ({
           </Badge>
         )}
         {status === "completed" && (
-          <Badge className="ml-auto bg-green-100 text-green-600 border-0 hover:bg-green-100">
+          <Badge className="ml-auto bg-success text-success-foreground border-0 hover:bg-success">
             Trajet terminé
           </Badge>
         )}

@@ -55,12 +55,12 @@ export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurC
                 </span>
               )}
               {receivedDemandeId && (
-                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                   Demande reçue
                 </Badge>
               )}
               {sentDemandeId && !receivedDemandeId && (
-                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                   Demande envoyée
                 </Badge>
               )}

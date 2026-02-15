@@ -25,7 +25,7 @@ const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
             flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity whitespace-nowrap
             disabled:opacity-50 disabled:pointer-events-none
             ${msg.primary
-              ? "py-3 bg-green-100 border-0 text-green-600 text-[14px]"
+              ? "py-3 bg-success border-0 text-success-foreground text-[14px]"
               : msg.destructive
                 ? "py-3 bg-red-100 border-0 text-red-500 text-[14px]"
                 : "py-3 bg-card border-0 text-card-foreground text-[14px]"
