@@ -111,7 +111,7 @@ const ChatView = ({
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
                 <Button
-                  className="w-full rounded-full bg-green-100 text-green-600 border-0 hover:bg-green-200"
+                  className="w-full rounded-full bg-success text-success-foreground border-0 hover:bg-success/80"
                   onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
                 >
                   Afficher le code
