@@ -50,7 +50,7 @@ const ChatView = ({
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
-    messages.some(m => m.senderId === participantId && m.content === "Je suis prêt à partir")
+    messages.some(m => m.senderId === participantId && m.content === "Je suis arrivé au point de rencontre")
   );
 
   // Scroll to bottom when messages change
