@@ -90,25 +90,35 @@ const Inscription = () => {
 
   if (confirmationSent) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
-        <Card className="w-full max-w-sm border-0">
-          <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
-            <Mail size={40} className="text-primary" />
-            <h2 className="text-lg font-semibold text-card-foreground">Vérifiez votre boîte mail</h2>
-            <p className="text-sm text-muted-foreground">
-              Un email de confirmation a été envoyé à <strong>{email}</strong>.
-              Cliquez sur le lien pour activer votre compte.
-            </p>
+      <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
+        <div className="px-4">
+          <button onClick={() => navigate("/connexion")} className="text-heading">
+            <ArrowLeft size={24} />
+          </button>
+        </div>
+
+        <div className="flex justify-center px-4">
+          <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Vérifiez votre boîte mail</h1>
+        </div>
+
+        <div className="flex justify-center px-4">
+          <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
+            <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
+              <Mail size={40} className="text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Un email de confirmation a été envoyé à <strong>{email}</strong>.
+                Cliquez sur le lien pour activer votre compte.
+              </p>
+            </CardContent>
             <Button
-              variant="outline"
-              className="mt-2"
+              className="w-full rounded-none h-auto py-4"
               onClick={() => navigate("/connexion")}
             >
               Retour à la connexion
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </div>
+      </section>
     );
   }
 
