@@ -206,18 +206,18 @@ const DemandeConsulter = () => {
 
       {/* Withdraw Confirmation Dialog */}
       <AlertDialog open={showWithdrawDialog} onOpenChange={setShowWithdrawDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Retirer ma demande ?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="text-white">
               Êtes-vous sûr de vouloir retirer votre demande ? Aucun montant ne sera prélevé.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={handleWithdraw}>
+          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
+            <AlertDialogAction onClick={handleWithdraw} className="rounded-md">
               Confirmer
             </AlertDialogAction>
+            <AlertDialogCancel className="rounded-md">Annuler</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
