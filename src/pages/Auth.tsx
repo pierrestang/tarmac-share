@@ -15,7 +15,7 @@ const Auth = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between bg-background px-4 py-12">
       <div className="flex-1 flex flex-col items-center justify-center gap-4">
-        <img src={erLogo} alt="Logo" className="h-36 w-auto -mt-16" />
+        <h1 className="text-5xl font-bold text-white">Tarmac</h1>
         <h1 className="text-2xl font-semibold text-foreground text-center">Votre trajet commence ici.</h1>
         <p className="text-base text-white text-center">Trouvez votre partenaire de route en un clic.</p>
       </div>
