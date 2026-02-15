@@ -21,8 +21,8 @@ DESIGN SYSTEM RULES (mobile-first):
   :root {
     /* Global background: #6495ED */
     --background: 219 79% 66%;
-    /* Texte #F2F5F9 pour lisibilité sur fond bleu */
-    --foreground: 214 32% 96%;
+    /* Texte #F0EEE9 pour lisibilité sur fond bleu */
+    --foreground: 40 18% 93%;
 
     /* Cards: #F0EEE9 (beige clair) */
     --card: 40 18% 93%;
