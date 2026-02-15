@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMessages } from "@/hooks/use-messages";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useNotifications } from "@/hooks/use-notifications";
+import { useDemandes } from "@/hooks/use-demandes";
 
 import ConversationList from "@/components/ConversationList";
 import ChatView from "@/components/ChatView";
@@ -26,10 +27,14 @@ const Messages = () => {
     markConversationAsRead,
     hasUnreadMessages,
     isConversationFullyClosed,
+    closeConversation,
+    addSystemMessage,
+    saveRating,
   } = useMessages();
   
   const { getActiveProfile, getProfileById } = useProfiles();
-  const { notifications } = useNotifications();
+  const { notifications, createNotification } = useNotifications();
+  const { completeDemande, saveDemandeSnapshot } = useDemandes();
 
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
@@ -99,6 +104,46 @@ const Messages = () => {
     navigate(`/evaluation?conversationId=${selectedConversation.id}&ratedProfileId=${otherProfile.id}`);
   };
 
+  const handleCancelTrip = async () => {
+    if (!selectedConversation || !profileId || !activeProfile) return;
+
+    const otherProfileId = selectedConversation.participants.find((p) => p !== profileId);
+    if (!otherProfileId) return;
+
+    await sendMessage(selectedConversation.id, profileId, "Je dois annuler");
+
+    try {
+      await createNotification({
+        profileId: otherProfileId,
+        type: "cancellation",
+        title: "Trajet annulé",
+        message: "Votre voyageur a annulé. Souhaitez-vous republier votre annonce ?",
+        demandeId: selectedConversation.demandeId,
+        relatedProfileId: profileId,
+      });
+    } catch (e) {
+      console.error("Erreur notification:", e);
+    }
+
+    await closeConversation(selectedConversation.id, profileId);
+    await closeConversation(selectedConversation.id, otherProfileId);
+    await addSystemMessage(selectedConversation.id, "La conversation est clôturée");
+
+    const ratingBase = {
+      conversationId: selectedConversation.id,
+      score: 0,
+      wasUseful: false,
+      comment: "",
+    };
+    await saveRating({ ...ratingBase, raterId: profileId, ratedProfileId: otherProfileId });
+    await saveRating({ ...ratingBase, raterId: otherProfileId, ratedProfileId: profileId });
+
+    await completeDemande(selectedConversation.demandeId);
+    await saveDemandeSnapshot(selectedConversation.demandeId);
+
+    setSelectedConversation(null);
+  };
+
   // Get current messages for selected conversation
   const currentMessages = selectedConversation 
     ? getMessages(selectedConversation.id) 
@@ -142,6 +187,7 @@ const Messages = () => {
           onBack={handleBack}
           onSendMessage={handleSendMessage}
           onCloseConversation={handleCloseConversation}
+          onCancelTrip={handleCancelTrip}
         />
       </section>
     );
