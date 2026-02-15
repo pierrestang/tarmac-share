@@ -172,6 +172,11 @@ const DemandeHistorique = () => {
                     Trajet annulé
                   </Badge>
                 )}
+                {!cancellerProfileId && demande.status === "completed" && (
+                  <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                    Trajet terminé
+                  </Badge>
+                )}
               </div>
               {myTrajet.companions > 1 && (
                 <span className="text-[12px] text-muted-foreground">
@@ -226,6 +231,11 @@ const DemandeHistorique = () => {
                 {cancellerProfileId === voyageurProfileId && (
                   <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
                     Trajet annulé
+                  </Badge>
+                )}
+                {!cancellerProfileId && demande.status === "completed" && (
+                  <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                    Trajet terminé
                   </Badge>
                 )}
               </div>
