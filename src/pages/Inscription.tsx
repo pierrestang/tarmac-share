@@ -4,13 +4,12 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Mail, Info } from "lucide-react";
+import { ArrowLeft, Mail } from "lucide-react";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   formatDateInput,
   dateInputToStorageFormat,
@@ -196,16 +195,14 @@ const Inscription = () => {
                 minLength={8}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
               />
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger type="button" className="text-muted-foreground">
-                    <Info size={16} />
-                  </TooltipTrigger>
-                  <TooltipContent side="left" className="max-w-[200px] text-xs">
-                    Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Popover>
+                <PopoverTrigger type="button" className="flex items-center justify-center w-5 h-5 rounded-full border border-muted-foreground text-muted-foreground text-xs font-medium shrink-0">
+                  ?
+                </PopoverTrigger>
+                <PopoverContent side="left" className="max-w-[220px] text-xs p-3">
+                  Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.
+                </PopoverContent>
+              </Popover>
             </div>
 
             {error && (
