@@ -116,7 +116,7 @@ const DemandeEnvoyer = () => {
                 {myProfile.firstName}
                 {myTrajet.companions > 1 && (
                   <span className="text-muted-foreground font-normal">
-                    {" "}+{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                    {" "}et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
                   </span>
                 )}
               </span>
@@ -127,7 +127,7 @@ const DemandeEnvoyer = () => {
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {myTrajet.departureStation} <span className="text-muted-foreground">à </span>{myTrajet.departureTime}
+              {myTrajet.departureStation}, {myTrajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>

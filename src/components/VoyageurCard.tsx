@@ -28,11 +28,8 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   if (baggage.large > 0) parts.push(`${baggage.large} grand${baggage.large > 1 ? "s" : ""}`);
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
-function getScoreColor(score: number): string {
-  if (score >= 90) return "#10B981";
-  if (score >= 70) return "#22C55E";
-  if (score >= 40) return "#F4A261";
-  return "#E63946";
+function getScoreColor(_score: number): string {
+  return "#D3E4D1";
 }
 
 export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse }: VoyageurCardProps) {
@@ -68,12 +65,12 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
               </span>
             )}
             {receivedDemandeId && (
-              <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                 Demande reçue
               </Badge>
             )}
             {sentDemandeId && !receivedDemandeId && (
-              <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                 Demande envoyée
               </Badge>
             )}
@@ -100,7 +97,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
       <div className="flex flex-col gap-1 text-[14px]">
         <p>
           <span className="text-muted-foreground">Départ : </span>
-          {trajet.departureStation} <span className="text-muted-foreground">à </span>{trajet.departureTime}
+          {trajet.departureStation}, {trajet.departureTime}
         </p>
         <p>
           <span className="text-muted-foreground">Arrivée : </span>

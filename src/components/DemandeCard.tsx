@@ -19,11 +19,8 @@ interface DemandeCardProps {
   onRefuse?: (id: string) => void;
 }
 
-function getScoreColor(score: number): string {
-  if (score >= 90) return "#10B981";
-  if (score >= 70) return "#22C55E";
-  if (score >= 40) return "#F4A261";
-  return "#E63946";
+function getScoreColor(_score: number): string {
+  return "#D3E4D1";
 }
 
 export function DemandeCard({
@@ -56,13 +53,13 @@ export function DemandeCard({
   const getStatusBadge = () => {
     if (isReceived) {
       return (
-        <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+        <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
           Demande reçue
         </Badge>
       );
     }
     return (
-      <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+      <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
         Demande envoyée
       </Badge>
     );
@@ -121,11 +118,11 @@ export function DemandeCard({
                 </span>
               )}
               {isCompleted && isCancelled ? (
-                <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
                   Trajet annulé
                 </Badge>
               ) : isCompleted ? (
-                <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                   Trajet terminé
                 </Badge>
               ) : !isAccepted ? (

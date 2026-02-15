@@ -173,14 +173,14 @@ const DemandeHistorique = () => {
                   </Badge>
                 )}
                 {!cancellerProfileId && demande.status === "completed" && (
-                  <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                     Trajet terminé
                   </Badge>
                 )}
               </div>
               {myTrajet.companions > 1 && (
                 <span className="text-[12px] text-muted-foreground">
-                  +{myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                  et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
                 </span>
               )}
             </div>
@@ -189,7 +189,7 @@ const DemandeHistorique = () => {
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {myTrajet.departureStation} <span className="text-muted-foreground">à </span>{myTrajet.departureTime}
+              {myTrajet.departureStation}, {myTrajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>
@@ -234,14 +234,14 @@ const DemandeHistorique = () => {
                   </Badge>
                 )}
                 {!cancellerProfileId && demande.status === "completed" && (
-                  <Badge className="bg-green-100 text-green-700 border-green-300 text-[10px] px-1.5 py-0.5 hover:bg-green-100">
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                     Trajet terminé
                   </Badge>
                 )}
               </div>
               {voyageurTrajet.companions > 1 && (
                 <span className="text-[12px] text-muted-foreground">
-                  +{voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
+                  et {voyageurTrajet.companions === 2 ? "un" : voyageurTrajet.companions === 3 ? "deux" : voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
                 </span>
               )}
               <div className="flex items-center gap-2">
@@ -257,7 +257,7 @@ const DemandeHistorique = () => {
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {voyageurTrajet.departureStation} <span className="text-muted-foreground">à </span>{voyageurTrajet.departureTime}
+              {voyageurTrajet.departureStation}, {voyageurTrajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>

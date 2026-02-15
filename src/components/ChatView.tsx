@@ -68,9 +68,9 @@ const ChatView = ({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b mb-4">
-        <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 p-0 border-0 hover:bg-transparent rounded-full">
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center">
           <ArrowLeft className="h-5 w-5" />
-        </Button>
+        </button>
         <span className="text-[18px] font-semibold">{otherProfile.firstName}</span>
       </div>
 
@@ -78,8 +78,8 @@ const ChatView = ({
       <div className="flex-1 overflow-y-auto pb-4">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-[14px] text-white">
-              Finalisez votre rencontre 👋
+            <p className="text-[16px] font-medium text-[#F0EEE9]">
+              Retrouvez-vous 📍
             </p>
           </div>
         ) : (
@@ -111,7 +111,7 @@ const ChatView = ({
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
                 <Button
-                  className="w-full rounded-full bg-green-100 text-green-600 border-0 hover:bg-green-200"
+                  className="w-full rounded-full bg-success text-success-foreground border-0 hover:bg-success/80"
                   onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
                 >
                   Afficher le code

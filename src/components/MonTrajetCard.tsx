@@ -78,7 +78,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
                 {profile.firstName}
                 {trajet.companions > 1 && (
                   <span className="text-muted-foreground font-normal">
-                    {" "}+{trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
+                    {" "}et {trajet.companions === 2 ? "un" : trajet.companions === 3 ? "deux" : trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
                   </span>
                 )}
               </span>
@@ -89,7 +89,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
-              {trajet.departureStation} <span className="text-muted-foreground">à </span>{trajet.departureTime}
+              {trajet.departureStation}, {trajet.departureTime}
             </p>
             <p>
               <span className="text-muted-foreground">Arrivée : </span>
