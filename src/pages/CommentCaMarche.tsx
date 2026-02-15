@@ -22,13 +22,13 @@ const CommentCaMarche = () => {
               <div>
                 <p className="text-[18px] font-semibold">2. Trouvez un partenaire</p>
                 <p>Envoyez une demande pour l'annonce qui vous intéresse.</p>
-                <p className="mt-2">Acceptée : Vous payez les frais de mise en relation.</p>
-                <p>Refusée : Aucun frais.</p>
+                <p className="mt-2">👍 Acceptée : Vous payez les frais de mise en relation.</p>
+                <p>👎 Refusée : Aucun frais.</p>
               </div>
 
               <div>
                 <p className="text-[18px] font-semibold">3. Signalez votre présence</p>
-                <p>Rendez-vous au point taxi / VTC et cliquez sur « Je suis prêt ».</p>
+                <p>Rendez-vous au point taxi / VTC.</p>
               </div>
 
               <div>
