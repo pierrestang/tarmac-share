@@ -45,10 +45,13 @@ const Evaluation = () => {
 
     await closeConversation(conversationId, activeProfile.id);
 
-    // Check if both users have closed - re-fetch conversation
+    // Complete the demande and add system message
+    // We complete on first close (don't wait for both parties)
+    await completeDemande(conversation.demandeId);
+    
+    // Check if both users have closed to add system message
     const freshConv = getConversationById(conversationId);
     if (freshConv && freshConv.closedBy.length >= 2) {
-      await completeDemande(conversation.demandeId);
       await addSystemMessage(conversationId, "La conversation est clôturée");
     }
 
