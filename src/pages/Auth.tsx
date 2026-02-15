@@ -16,7 +16,8 @@ const Auth = () => {
     <div className="flex min-h-screen flex-col items-center justify-between bg-background px-4 py-12">
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 className="text-5xl font-bold text-white mb-8">Tarmac</h1>
-        <p className="text-base text-white text-center mt-4">Divisez vos frais dès la sortie de l'avion. Tarmac vous connecte avec d'autres voyageurs pour partager votre course vers la ville.</p>
+        <h2 className="text-2xl font-semibold text-foreground text-center">Votre trajet depuis l'aéroport, à moitié prix.</h2>
+        <p className="text-base text-white text-center mt-4">Ne payez plus le prix fort : trouvez un partenaire de route sur Tarmac et partagez les frais vers la ville.</p>
       </div>
 
       <div className="flex w-full max-w-sm flex-col gap-3 pb-8">
