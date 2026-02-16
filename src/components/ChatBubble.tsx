@@ -21,7 +21,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
       <div className="flex justify-center my-2">
         <div className={cn(
           "px-4 py-2 rounded-md",
-          isCancellation ? "bg-[#A25B5B]/20" : isCompleted ? "bg-success" : "bg-muted"
+          isCancellation ? "bg-[#f0d0d0]" : isCompleted ? "bg-success" : "bg-muted"
         )}>
           <p className={cn(
             "text-[14px] text-center",
