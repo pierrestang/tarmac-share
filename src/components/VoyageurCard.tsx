@@ -29,7 +29,7 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
 function getScoreColor(_score: number): string {
-  return "#D3E4D1";
+  return "#7BA87B";
 }
 
 export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse }: VoyageurCardProps) {
