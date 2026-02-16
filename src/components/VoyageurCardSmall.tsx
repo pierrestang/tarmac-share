@@ -16,7 +16,7 @@ function getInitials(firstName: string, lastName: string): string {
 }
 
 function getScoreColor(_score: number): string {
-  return "#D3E4D1";
+  return "#7BA87B";
 }
 
 export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurCardSmallProps) {

@@ -20,7 +20,7 @@ interface DemandeCardProps {
 }
 
 function getScoreColor(_score: number): string {
-  return "#D3E4D1";
+  return "#7BA87B";
 }
 
 export function DemandeCard({
