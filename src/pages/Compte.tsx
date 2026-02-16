@@ -20,12 +20,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+const ADMIN_EMAIL = "pierres-19@hotmail.fr";
+
 const Compte = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { getActiveProfile, updateProfile } = useProfiles();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const profile = getActiveProfile();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserEmail(session?.user?.email ?? null);
+    });
+  }, []);
+
+  const isAdmin = userEmail === ADMIN_EMAIL;
 
   const [firstName, setFirstName] = useState(profile?.firstName || "");
   const [lastName, setLastName] = useState(profile?.lastName || "");
@@ -165,15 +176,16 @@ const Compte = () => {
         </Card>
       </div>
 
-      {/* Réinitialiser */}
-      <div className="flex justify-center px-4">
-        <Button
-          className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
-          onClick={() => setShowResetConfirm(true)}
-        >
-          Réinitialiser les trajets
-        </Button>
-      </div>
+      {isAdmin && (
+        <div className="flex justify-center px-4">
+          <Button
+            className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
+            onClick={() => setShowResetConfirm(true)}
+          >
+            Réinitialiser les trajets
+          </Button>
+        </div>
+      )}
 
       {/* Déconnexion */}
       <div className="flex justify-center px-4">
