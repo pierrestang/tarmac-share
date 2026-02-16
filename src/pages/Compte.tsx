@@ -177,14 +177,24 @@ const Compte = () => {
       </div>
 
       {isAdmin && (
-        <div className="flex justify-center px-4">
-          <Button
-            className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
-            onClick={() => setShowResetConfirm(true)}
-          >
-            Réinitialiser les trajets
-          </Button>
-        </div>
+        <>
+          <div className="flex justify-center px-4">
+            <Button
+              className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
+              onClick={() => setShowResetConfirm(true)}
+            >
+              Réinitialiser les trajets
+            </Button>
+          </div>
+          <div className="flex justify-center px-4">
+            <Button
+              className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
+              onClick={() => navigate("/statistiques")}
+            >
+              Statistiques
+            </Button>
+          </div>
+        </>
       )}
 
       {/* Déconnexion */}
