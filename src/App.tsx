@@ -27,6 +27,7 @@ import Evaluation from "./pages/Evaluation";
 import RepublierAnnonce from "./pages/RepublierAnnonce";
 import ConfirmAnnulation from "./pages/ConfirmAnnulation";
 import Numero from "./pages/Numero";
+import Statistiques from "./pages/Statistiques";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
               <Route path="republier-annonce" element={<RepublierAnnonce />} />
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
               <Route path="numero" element={<Numero />} />
+              <Route path="statistiques" element={<Statistiques />} />
             </Route>
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
