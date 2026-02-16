@@ -88,7 +88,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
           style={{ borderColor: scoreColor }}
         >
           <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
-            {compatibilityScore}%
+            {Math.round(compatibilityScore)}%
           </span>
         </div>
       </div>

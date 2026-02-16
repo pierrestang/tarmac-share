@@ -144,7 +144,7 @@ export function DemandeCard({
               style={{ borderColor: scoreColor }}
             >
               <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
-                {compatibilityScore}%
+                {Math.round(compatibilityScore)}%
               </span>
             </div>
           )}
