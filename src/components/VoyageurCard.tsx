@@ -15,6 +15,7 @@ interface VoyageurCardProps {
   showDualButtons?: boolean;
   onAccept?: () => void;
   onRefuse?: () => void;
+  myTrajetId?: string;
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -32,7 +33,7 @@ function getScoreColor(_score: number): string {
   return "#7BA87B";
 }
 
-export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse }: VoyageurCardProps) {
+export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId }: VoyageurCardProps) {
   const navigate = useNavigate();
   const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
 
@@ -130,7 +131,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
               ? `/demande-accepter?demandeId=${receivedDemandeId}`
               : sentDemandeId
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
-                : `/demande-envoyer?voyageurId=${trajet.id}`
+                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
           ))}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >

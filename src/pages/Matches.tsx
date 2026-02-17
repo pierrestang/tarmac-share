@@ -303,7 +303,7 @@ const Matches = () => {
             ) : (
               <div className="flex flex-col gap-4">
                 {matches.map((match) => (
-                  <VoyageurCardSmall key={match.trajet.id} match={match} />
+                  <VoyageurCardSmall key={match.trajet.id} match={match} myTrajetId={trajetId!} />
                 ))}
               </div>
             )}

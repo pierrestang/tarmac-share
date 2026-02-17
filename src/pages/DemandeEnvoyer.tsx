@@ -32,7 +32,8 @@ const DemandeEnvoyer = () => {
 
   // Get current user data
   const myProfile = getActiveProfile();
-  const lastTrajetId = localStorage.getItem("lastPublishedTrajetId");
+  const myTrajetIdParam = searchParams.get("myTrajetId");
+  const lastTrajetId = myTrajetIdParam || localStorage.getItem("lastPublishedTrajetId");
   let myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
   
   // Fallback: find user's trajet that matches the voyageur's date & station
@@ -62,7 +63,7 @@ const DemandeEnvoyer = () => {
   } : null;
 
   const handleSendRequest = () => {
-    navigate(`/paiement?voyageurId=${voyageurId}&type=envoi`);
+    navigate(`/paiement?voyageurId=${voyageurId}&type=envoi${myTrajetIdParam ? `&myTrajetId=${myTrajetIdParam}` : ''}`);
   };
 
   const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile;
