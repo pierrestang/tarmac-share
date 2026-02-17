@@ -9,7 +9,7 @@ const VotreTiming = () => {
   return (
     <section className="flex flex-col gap-6 px-3 pt-6 pb-6 min-h-screen" style={{ backgroundColor: '#A291A9' }}>
       <div className="flex flex-col gap-2 px-4">
-        <button onClick={() => navigate(-1)} className="p-1 self-start">
+        <button onClick={() => navigate(-1)} className="p-1 self-start focus:outline-none focus-visible:outline-none">
           <ArrowLeft className="h-6 w-6 text-heading" />
         </button>
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">
@@ -18,7 +18,7 @@ const VotreTiming = () => {
       </div>
 
       <div className="flex flex-col gap-3 items-center px-4">
-        <Card className="w-full max-w-[42rem] border-0 rounded-md">
+        <Card className="w-full max-w-[42rem] border-0 rounded-md shadow-none">
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: '#3D2B3D' }}>
             <p className="text-[18px] font-semibold mb-3">Temps de transit estimé</p>
             <p className="mb-3">
@@ -35,7 +35,7 @@ const VotreTiming = () => {
         </Card>
 
         <Button
-          className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2"
+          className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2 focus:outline-none focus-visible:outline-none focus-visible:ring-0"
           style={{ backgroundColor: '#3D2B3D', color: '#F0EEE9' }}
           onClick={() => navigate(-1)}
         >
