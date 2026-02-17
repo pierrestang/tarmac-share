@@ -154,12 +154,13 @@ const Publier = () => {
     }));
   };
 
-  // Check if form is valid
+  // Check if form is valid - destination must have coords (selected from Google Places)
   const isFormValid =
     form.date.trim() !== "" &&
     form.departureStation.trim() !== "" &&
     form.departureTime.trim() !== "" &&
-    form.destination.trim() !== "";
+    form.destination.trim() !== "" &&
+    !!form.destinationCoords;
 
   const handleSubmit = async () => {
     const activeProfile = getActiveProfile();
