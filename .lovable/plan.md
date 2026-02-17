@@ -1,111 +1,77 @@
 
 
-# Page Statistiques -- Dashboard Admin
+## Objectif
 
-## Apercu
+"Trajets realises" = nombre de trajets completes MOINS ceux qui ont ete annules (via "Je dois annuler") et ceux ou un voyageur a repondu 👎 a "Le trajet a-t-il eu lieu ?".
 
-Creation d'une page `/statistiques` accessible uniquement au compte administrateur (`pierres-19@hotmail.fr`), avec un bouton d'acces sur la page `/compte` place sous "Reinitialiser les trajets". La page affiche un dashboard complet avec KPIs, graphiques et funnel.
+## Probleme actuel
 
-## Architecture
+1. Le bouton 👎 dans `/evaluation` appelle exactement la meme fonction que 👍 -- il n'y a aucune distinction enregistree en base.
+2. Les annulations sont marquees par un message systeme `[CANCELLED_BY:...]` mais le statut de la demande est `completed` comme les trajets normaux.
+3. L'edge function `get-admin-stats` ne peut donc pas distinguer les "vrais" trajets completes des annulations/negatifs.
 
-### 1. Backend function `get-admin-stats`
+## Plan d'implementation
 
-Une fonction backend sera creee pour agreger toutes les statistiques cote serveur. Cette approche est necessaire car :
-- Les politiques de securite empechent un utilisateur de lire toutes les donnees
-- Aucune donnee personnelle ne doit etre exposee au client
-- La verification admin se fait cote serveur (email du compte connecte)
+### 1. Migration base de donnees : ajouter une colonne `was_cancelled` sur la table `demandes`
 
-La fonction recevra un parametre `period` (7, 30, ou dates personnalisees) et retournera toutes les metriques agregees.
+Ajouter un champ boolean `was_cancelled` (defaut `false`) a la table `demandes` pour marquer les demandes annulees ou evaluees negativement.
 
-**Donnees retournees :**
+### 2. Distinguer 👍 et 👎 dans `src/pages/Evaluation.tsx`
 
-```text
-{
-  kpis: {
-    matchRate: { value, previousValue }
-    trajetsEffectues: { value, previousValue }
-    medianTimeToMatch: { value, previousValue }
-    tauxAnnulation: { value, previousValue }
-    activeUsersPerDay: { value, previousValue }
-  },
-  liquidite: [{ hour: 0-23, annonces: N, matchs: N }],
-  distance: {
-    moyenne: N,
-    distribution: { "0-2": N, "2-3": N, "3-5": N }
-  },
-  funnel: {
-    annoncesPubliees: N,
-    demandesEnvoyees: N,
-    matchsConfirmes: N,
-    trajetsEffectues: N
-  }
-}
-```
+- Passer un parametre `wasUseful: boolean` a `handleAnswer`
+- 👍 appelle `handleAnswer(true)`, 👎 appelle `handleAnswer(false)`
+- Quand `wasUseful === false`, mettre a jour `was_cancelled = true` sur la demande correspondante via un update Supabase
 
-**Logique de calcul :**
-- Match confirme = demande avec `status = 'accepted'` ou `status = 'completed'`
-- Trajet effectue = demande avec `status = 'completed'`
-- Annulation = demande avec `status = 'refused'` parmi les demandes qui avaient ete acceptees (ou toutes les refused comme proxy)
-- Temps median avant match = mediane de `(demande.updated_at - demande.created_at)` pour les demandes acceptees
-- Utilisateurs actifs = profils distincts ayant cree un trajet ou une demande dans la periode
-- Distance entre matches = calculee a partir des coordonnees de destination des trajets lies aux demandes acceptees/completees
+### 3. Marquer les annulations dans `src/pages/ConfirmAnnulation.tsx`
 
-### 2. Page `src/pages/Statistiques.tsx`
+Apres `completeDemande`, ajouter un update Supabase pour mettre `was_cancelled = true` sur la demande.
 
-Composants principaux :
+### 4. Marquer les annulations dans `src/pages/Messages.tsx` (handleCancelTrip)
 
-**Filtre de periode** : boutons 7j / 30j / Personnalise (avec date picker)
+Meme logique : apres la completion de la demande lors d'une annulation via le chat, mettre `was_cancelled = true`.
 
-**Section 1 -- KPIs** (5 cartes) :
-- Trajets reellement effectues (priorite 1)
-- Match Rate (priorite 2)
-- Temps median avant match
-- Taux d'annulation
-- Utilisateurs actifs / jour
+### 5. Mettre a jour l'edge function `get-admin-stats`
 
-Chaque carte affiche la valeur, la variation par rapport a la periode precedente (fleche haut/bas), et un code couleur (vert/orange/rouge).
+- `trajetsCompletes` = demandes avec `status === 'completed'` (inchange)
+- Nouveau : `trajetsRealises` = demandes `completed` ET `was_cancelled === false`
+- Renvoyer le nombre (et non plus un ratio)
 
-**Section 2 -- Graphique Liquidite** :
-Bar chart (recharts) avec heures 0h-23h, barres annonces et barres matchs superposees.
+### 6. Mettre a jour `src/pages/Statistiques.tsx`
 
-**Section 3 -- Densite & Distance** :
-Distance moyenne + barres de distribution (0-2km, 2-3km, 3-5km).
-
-**Section 4 -- Funnel** :
-Entonnoir visuel : Annonces -> Demandes -> Matchs -> Trajets effectues.
-
-**Export CSV** : bouton qui telecharge les donnees affichees.
-
-### 3. Modifications existantes
-
-**`src/pages/Compte.tsx`** : ajout d'un bouton "Statistiques" visible uniquement par l'admin, place sous "Reinitialiser les trajets", qui navigue vers `/statistiques`.
-
-**`src/App.tsx`** : ajout de la route `/statistiques` dans les routes protegees.
-
-### 4. Protection d'acces
-
-- Cote client : la page redirige vers `/compte` si l'utilisateur n'est pas admin (verification email)
-- Cote serveur : la fonction backend verifie que le token JWT correspond au compte admin avant de retourner les donnees
+- Afficher `trajetsRealises` comme un nombre entier
+- Mettre a jour le tooltip : "Trajets completes sans annulation ni evaluation negative"
 
 ---
 
-## Details techniques
+### Details techniques
 
-### Fichiers crees
-- `supabase/functions/get-admin-stats/index.ts` -- fonction backend d'agregation
-- `src/pages/Statistiques.tsx` -- page dashboard
+**Migration SQL :**
+```sql
+ALTER TABLE public.demandes 
+ADD COLUMN was_cancelled boolean NOT NULL DEFAULT false;
+```
 
-### Fichiers modifies
-- `src/App.tsx` -- ajout route `/statistiques`
-- `src/pages/Compte.tsx` -- ajout bouton "Statistiques" (admin only)
+**Evaluation.tsx** -- distinction 👍/👎 :
+```typescript
+const handleAnswer = async (wasUseful: boolean) => {
+  // ... existing logic ...
+  if (!wasUseful) {
+    await supabase.from("demandes").update({ was_cancelled: true }).eq("id", convRow.demande_id);
+  }
+  // ... rest ...
+};
+```
 
-### Dependances utilisees (deja installees)
-- `recharts` pour les graphiques
-- `date-fns` pour la gestion des periodes
-- Composants UI existants (Card, Button, etc.)
+**ConfirmAnnulation.tsx** -- apres completeDemande :
+```typescript
+await supabase.from("demandes").update({ was_cancelled: true }).eq("id", conversation.demandeId);
+```
 
-### Securite
-- Verification admin cote serveur via le JWT et l'email
-- Aucune donnee personnelle dans la reponse (uniquement des compteurs agreges)
-- Pas de creation de table de roles (le systeme existant utilise la verification email, on garde la coherence mais on securise cote serveur)
+**Edge function** -- calcul modifie :
+```typescript
+const trajetsRealises = allDemandes.filter(d => 
+  d.status === "completed" && !d.was_cancelled && 
+  new Date(d.created_at) >= periodStart
+).length;
+```
 
