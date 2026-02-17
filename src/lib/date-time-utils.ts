@@ -10,10 +10,10 @@ export function formatDateInput(value: string): string {
   // Remove all non-digits
   const digits = value.replace(/\D/g, "");
   
-  // Apply formatting: DD MM YYYY
+  // Apply formatting: DD MM (only day and month)
   let formatted = "";
-  for (let i = 0; i < digits.length && i < 8; i++) {
-    if (i === 2 || i === 4) {
+  for (let i = 0; i < digits.length && i < 4; i++) {
+    if (i === 2) {
       formatted += " ";
     }
     formatted += digits[i];
@@ -50,16 +50,34 @@ export function formatTimeInput(value: string): string {
  */
 export function parseDateInput(value: string): Date | null {
   const digits = value.replace(/\D/g, "");
-  if (digits.length !== 8) return null;
+  // Support both DD MM (4 digits) and DD MM YYYY (8 digits)
+  if (digits.length !== 4 && digits.length !== 8) return null;
   
   const day = parseInt(digits.slice(0, 2), 10);
   const month = parseInt(digits.slice(2, 4), 10);
-  const year = parseInt(digits.slice(4, 8), 10);
+  
+  let year: number;
+  if (digits.length === 8) {
+    year = parseInt(digits.slice(4, 8), 10);
+    if (year < 1900 || year > 2100) return null;
+  } else {
+    // Auto-calculate year: current year, or next year if the date has passed
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const candidate = new Date(currentYear, month - 1, day);
+    if (isValid(candidate) && candidate.getDate() === day && candidate.getMonth() === month - 1) {
+      // Compare with today (ignoring time)
+      const today = new Date(currentYear, now.getMonth(), now.getDate());
+      year = candidate >= today ? currentYear : currentYear + 1;
+    } else {
+      // Try next year in case of leap day edge case
+      year = currentYear + 1;
+    }
+  }
   
   // Basic validation
   if (day < 1 || day > 31) return null;
   if (month < 1 || month > 12) return null;
-  if (year < 1900 || year > 2100) return null;
   
   const date = new Date(year, month - 1, day);
   
@@ -118,7 +136,7 @@ export function storageDateToInputFormat(value: string): string {
   try {
     const parsed = parse(value, "dd/MM/yyyy", new Date());
     if (!isValid(parsed)) return "";
-    return format(parsed, "dd MM yyyy");
+    return format(parsed, "dd MM");
   } catch {
     return "";
   }
@@ -158,7 +176,7 @@ export function birthDateToInputFormat(birthDate: { day: number; month: number; 
  * @returns True if input contains 8 digits
  */
 export function isDateInputComplete(value: string): boolean {
-  return value.replace(/\D/g, "").length === 8;
+  return value.replace(/\D/g, "").length === 4;
 }
 
 /**

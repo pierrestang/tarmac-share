@@ -297,7 +297,7 @@ const Publier = () => {
                     setIsEditingDate(false);
                   }
                 }}
-                placeholder="Date"
+                placeholder="JJ MM"
                 className="flex-1 border-0 p-0 h-auto text-base font-semibold md:text-sm placeholder:text-muted-foreground placeholder:font-semibold focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none bg-transparent"
               />
             ) : (
