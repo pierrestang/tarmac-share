@@ -15,6 +15,7 @@ function mapRow(row: any): Demande {
     snapshot: row.snapshot || undefined,
     createdAt: Number(row.created_at),
     updatedAt: Number(row.updated_at),
+    wasCancelled: row.was_cancelled ?? false,
   };
 }
 

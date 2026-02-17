@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Demande } from "@/types/demande";
 import type { Profile } from "@/types/profile";
 import type { Trajet } from "@/types/trajet";
-import { useNotifications } from "@/hooks/use-notifications";
 import { getScoreColor } from "@/hooks/use-trajets";
 
 interface DemandeCardProps {
@@ -32,7 +31,6 @@ export function DemandeCard({
   onRefuse,
 }: DemandeCardProps) {
   const navigate = useNavigate();
-  const { notifications } = useNotifications();
   
   const isReceived = demande.toProfileId === currentProfileId;
   const isPending = demande.status === "pending";
@@ -40,10 +38,8 @@ export function DemandeCard({
   const isRefused = demande.status === "refused";
   const isCompleted = demande.status === "completed";
   
-  // Check if this completed demande was a cancellation
-  const isCancelled = isCompleted && notifications.some(
-    (n) => n.type === "cancellation" && n.demandeId === demande.id
-  );
+  // Use the wasCancelled flag directly from the demande
+  const isCancelled = isCompleted && !!demande.wasCancelled;
 
   
   const scoreColor = getScoreColor(compatibilityScore);
