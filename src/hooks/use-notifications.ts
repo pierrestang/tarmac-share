@@ -83,6 +83,19 @@ export function useNotifications() {
     setNotifications((prev) => prev.map((n) => (n.profileId === profileId ? { ...n, read: true } : n)));
   }, []);
 
+  const markReadByDemandeId = useCallback(async (demandeId: string): Promise<void> => {
+    // Mark all notifications for this demande as read, except "cancellation" type
+    const toMark = notifications.filter(
+      (n) => n.demandeId === demandeId && !n.read && n.type !== "cancellation"
+    );
+    if (toMark.length === 0) return;
+    const ids = toMark.map((n) => n.id);
+    await supabase.from("notifications").update({ read: true }).in("id", ids);
+    setNotifications((prev) =>
+      prev.map((n) => (ids.includes(n.id) ? { ...n, read: true } : n))
+    );
+  }, [notifications]);
+
   const resetNotifications = useCallback(async (): Promise<void> => {
     await supabase.from("notifications").delete().neq("id", "00000000-0000-0000-0000-000000000000");
     await fetchNotifications();
@@ -95,6 +108,7 @@ export function useNotifications() {
     getUnreadCount,
     markAsRead,
     markAllAsRead,
+    markReadByDemandeId,
     resetNotifications,
   };
 }

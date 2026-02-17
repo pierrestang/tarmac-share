@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useMessages } from "@/hooks/use-messages";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
+import { useNotifications } from "@/hooks/use-notifications";
 import { supabase } from "@/integrations/supabase/client";
 
 
@@ -17,6 +18,7 @@ const Evaluation = () => {
   const { closeConversation, addSystemMessage, saveRating } = useMessages();
   const { getActiveProfile } = useProfiles();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
+  const { markReadByDemandeId } = useNotifications();
 
   const activeProfile = getActiveProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,6 +80,7 @@ const Evaluation = () => {
     }
 
     await saveDemandeSnapshot(convRow.demande_id);
+    await markReadByDemandeId(convRow.demande_id);
 
     hasRedirected.current = true;
     navigate("/trajets", { replace: true });

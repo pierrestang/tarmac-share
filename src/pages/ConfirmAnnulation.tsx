@@ -14,7 +14,7 @@ const ConfirmAnnulation = () => {
 
   const { getConversationById, sendMessage, closeConversation, addSystemMessage, saveRating } = useMessages();
   const { getActiveProfile } = useProfiles();
-  const { createNotification } = useNotifications();
+  const { createNotification, markReadByDemandeId } = useNotifications();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
 
   const activeProfile = getActiveProfile();
@@ -76,6 +76,7 @@ const ConfirmAnnulation = () => {
     await completeDemande(conversation.demandeId);
     await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", conversation.demandeId);
     await saveDemandeSnapshot(conversation.demandeId);
+    await markReadByDemandeId(conversation.demandeId);
 
     navigate("/messages", { replace: true });
   };
