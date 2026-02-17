@@ -8,13 +8,12 @@ const CommunicationLancement = () => {
   return (
     <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
       <div className="flex justify-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Zone de service actuelle</h1>
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ</h1>
       </div>
 
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">Bordeaux, notre point de départ</p>
             <p>
               Pour notre lancement, Tarmac se concentre sur un trajet unique. L'idée est simple : en nous focalisant sur un seul secteur, nous vous garantissons de trouver un partenaire de partage en un clin d'œil à la sortie de votre avion.
             </p>
@@ -30,9 +29,10 @@ const CommunicationLancement = () => {
           </CardContent>
         </Card>
 
+        <p className="text-[18px] font-semibold w-full max-w-[42rem]">On s'agrandit très vite</p>
+
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">On s'agrandit très vite</p>
             <p>
               Nous préparons déjà nos prochains arrêts pour élargir la communauté et couvrir davantage de besoins :
             </p>
