@@ -70,7 +70,7 @@ const DemandeEnvoyer = () => {
   if (isLoading) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">contacter.</h1>
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter.</h1>
         <Card className="w-full max-w-[42rem]">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">
@@ -84,7 +84,7 @@ const DemandeEnvoyer = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center px-4">
-      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">contacter.</h1>
+      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter.</h1>
 
       {/* Date */}
       <p className="text-[16px] font-medium w-full max-w-[42rem]">
