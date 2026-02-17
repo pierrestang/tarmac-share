@@ -91,17 +91,39 @@ export function calculateDistance(coords1?: Coordinates, coords2?: Coordinates):
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet): number {
+export async function calculateDrivingDistance(
+  origin: Coordinates,
+  destinations: Coordinates[]
+): Promise<(number | null)[]> {
+  try {
+    const { data, error } = await supabase.functions.invoke("driving-distance", {
+      body: {
+        origins: [origin],
+        destinations,
+      },
+    });
+    if (error || !data?.results?.[0]) {
+      console.warn("Driving distance API failed, falling back to Haversine");
+      return destinations.map((d) => calculateDistance(origin, d));
+    }
+    return data.results[0].map((r: { distanceKm: number | null }) => r.distanceKm);
+  } catch (e) {
+    console.warn("Driving distance API error:", e);
+    return destinations.map((d) => calculateDistance(origin, d));
+  }
+}
+
+export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, drivingDistance?: number | null): number {
   const time1 = parseTime(trajet1.departureTime);
   const time2 = parseTime(trajet2.departureTime);
   const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 30;
-  let distance = calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
-  if (distance !== null && distance < 0.5) distance = 0;
+  const distance = drivingDistance ?? calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
+  const dist = distance !== null && distance < 0.5 ? 0 : distance;
 
   let score = 40;
   score += timeDiff === 0 ? 30 : 15;
-  if (distance === 0) score += 30;
-  else if (distance !== null) score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
+  if (dist === 0) score += 30;
+  else if (dist !== null) score += Math.max(0, 30 * (1 - dist / DEFAULT_MAX_DETOUR));
   return Math.min(100, score);
 }
 
@@ -176,18 +198,17 @@ export function useTrajets() {
   }, [trajets]);
 
   const findMatches = useCallback(
-    (trajetId: string): MatchedTraveler[] => {
+    async (trajetId: string): Promise<MatchedTraveler[]> => {
       const currentTrajet = trajets.find((t) => t.id === trajetId);
       if (!currentTrajet) return [];
 
-      // We need profiles - fetch them from state. For now, load from supabase cache not available here.
-      // We'll load profiles separately. For matching, we filter trajets client-side.
       const currentTime = parseTime(currentTrajet.departureTime);
       const currentBaggageVolume = calculateBaggageVolume(currentTrajet.baggage);
       const currentPersons = currentTrajet.companions;
       const currentDateNormalized = normalizeDate(currentTrajet.date);
 
-      const matches: MatchedTraveler[] = [];
+      // Pre-filter candidates using basic criteria (no distance yet)
+      const candidates: Trajet[] = [];
 
       for (const trajet of trajets) {
         if (trajet.id === currentTrajet.id) continue;
@@ -197,19 +218,41 @@ export function useTrajets() {
 
         const trajetTime = parseTime(trajet.departureTime);
         if (currentTime === null || trajetTime === null) continue;
-        const timeDiff = Math.abs(currentTime - trajetTime);
-        if (timeDiff >= 60) continue;
+        if (Math.abs(currentTime - trajetTime) >= 60) continue;
 
-        const trajetPersons = trajet.companions;
-        if (currentPersons + trajetPersons > 4) continue;
+        if (currentPersons + trajet.companions > 4) continue;
 
         const trajetBaggageVolume = calculateBaggageVolume(trajet.baggage);
         if (currentBaggageVolume + trajetBaggageVolume > MAX_CAPACITY) continue;
 
-        let distance = calculateDistance(currentTrajet.destinationCoords, trajet.destinationCoords);
+        if (!trajet.destinationCoords || !currentTrajet.destinationCoords) continue;
+
+        // Pre-filter with Haversine (generous threshold to avoid missing matches)
+        const haversine = calculateDistance(currentTrajet.destinationCoords, trajet.destinationCoords);
+        if (haversine === null || haversine > DEFAULT_MAX_DETOUR * 1.5) continue;
+
+        candidates.push(trajet);
+      }
+
+      if (candidates.length === 0) return [];
+
+      // Get driving distances for all candidates in one batch call
+      const destinationCoords = candidates.map((t) => t.destinationCoords!);
+      const drivingDistances = await calculateDrivingDistance(
+        currentTrajet.destinationCoords!,
+        destinationCoords
+      );
+
+      const matches: MatchedTraveler[] = [];
+
+      for (let i = 0; i < candidates.length; i++) {
+        const trajet = candidates[i];
+        let distance = drivingDistances[i];
         if (distance === null) continue;
         if (distance > DEFAULT_MAX_DETOUR) continue;
         if (distance < 0.5) distance = 0;
+
+        const timeDiff = Math.abs(parseTime(currentTrajet.departureTime)! - parseTime(trajet.departureTime)!);
 
         let score = 40;
         score += timeDiff === 0 ? 30 : 15;
@@ -217,7 +260,6 @@ export function useTrajets() {
         else score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
         score = Math.min(100, score);
 
-        // Profile will be resolved by the caller (Matches page) using useProfiles
         matches.push({
           trajet,
           profile: { id: trajet.profileId, firstName: "", lastName: "", description: "", photo: null, createdAt: 0 },
@@ -230,7 +272,6 @@ export function useTrajets() {
     },
     [trajets]
   );
-
   const isDuplicateTrajet = useCallback(
     (profileId: string, date: string, station: string, time: string): boolean => {
       const myTrajets = trajets.filter((t) => t.profileId === profileId);

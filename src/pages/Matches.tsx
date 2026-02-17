@@ -50,45 +50,48 @@ const Matches = () => {
       const t = getTrajetById(trajetId);
       setTrajet(t);
       if (t) {
-        const allMatches = findMatches(trajetId).map((match) => ({
-          ...match,
-          profile: getProfileById(match.trajet.profileId) || match.profile,
-        }));
-        
-        // Filtrer les trajets qui ont une demande clôturée ou acceptée
-        const filteredMatches = allMatches.filter((match) => {
-          const hasCompletedDemande = demandes.some(
-            (d) =>
-              d.status === "completed" &&
-              (d.fromTrajetId === match.trajet.id || d.toTrajetId === match.trajet.id)
-          );
-          if (hasCompletedDemande) return false;
+        (async () => {
+          const rawMatches = await findMatches(trajetId);
+          const allMatches = rawMatches.map((match) => ({
+            ...match,
+            profile: getProfileById(match.trajet.profileId) || match.profile,
+          }));
+          
+          // Filtrer les trajets qui ont une demande clôturée ou acceptée
+          const filteredMatches = allMatches.filter((match) => {
+            const hasCompletedDemande = demandes.some(
+              (d) =>
+                d.status === "completed" &&
+                (d.fromTrajetId === match.trajet.id || d.toTrajetId === match.trajet.id)
+            );
+            if (hasCompletedDemande) return false;
 
-          const hasAcceptedDemande = demandes.some(
-            (d) =>
-              d.status === "accepted" &&
-              (d.fromProfileId === match.profile.id || d.toProfileId === match.profile.id)
-          );
-          if (hasAcceptedDemande) return false;
+            const hasAcceptedDemande = demandes.some(
+              (d) =>
+                d.status === "accepted" &&
+                (d.fromProfileId === match.profile.id || d.toProfileId === match.profile.id)
+            );
+            if (hasAcceptedDemande) return false;
 
-          return true;
-        });
-        
-        const activeProfileId = getActiveProfile()?.id;
-        const enrichedMatches = filteredMatches.map((match) => {
-          const receivedDemande = demandes.find(
-            (d) => d.fromProfileId === match.profile.id && d.toTrajetId === trajetId && d.status === "pending"
-          );
-          const sentDemande = demandes.find(
-            (d) => d.fromProfileId === activeProfileId && d.toTrajetId === match.trajet.id && d.status === "pending"
-          );
-          return { 
-            ...match, 
-            receivedDemandeId: receivedDemande?.id || null,
-            sentDemandeId: sentDemande?.id || null,
-          };
-        });
-        setMatches(enrichedMatches);
+            return true;
+          });
+          
+          const activeProfileId = getActiveProfile()?.id;
+          const enrichedMatches = filteredMatches.map((match) => {
+            const receivedDemande = demandes.find(
+              (d) => d.fromProfileId === match.profile.id && d.toTrajetId === trajetId && d.status === "pending"
+            );
+            const sentDemande = demandes.find(
+              (d) => d.fromProfileId === activeProfileId && d.toTrajetId === match.trajet.id && d.status === "pending"
+            );
+            return { 
+              ...match, 
+              receivedDemandeId: receivedDemande?.id || null,
+              sentDemandeId: sentDemande?.id || null,
+            };
+          });
+          setMatches(enrichedMatches);
+        })();
       }
     }
     setProfile(getActiveProfile());
