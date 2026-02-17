@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMessages } from "@/hooks/use-messages";
@@ -89,6 +90,9 @@ const Evaluation = () => {
   return (
     <div className="flex flex-col min-h-full">
       <div className="flex items-center gap-3 px-4 pt-6 pb-4">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <ArrowLeft className="h-6 w-6 text-heading" />
+        </button>
         <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
           Le trajet a-t-il eu lieu ?
         </h1>
