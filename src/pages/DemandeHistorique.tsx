@@ -284,7 +284,7 @@ const DemandeHistorique = () => {
               navigate(`/messages?conversationId=${conversation.id}`);
             }
           }}
-          className="w-full py-3 text-center font-medium text-[14px] rounded-b-xl border-t border-border/40" style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+          className="w-full py-3 text-center font-semibold text-[14px] rounded-b-xl border-t border-border/40" style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
         >
           Voir les messages
         </button>
