@@ -216,7 +216,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annulés %" value={data.kpis.tauxAnnulation} unit="%" tooltip="Annulés / Complétés" />
+                  <KpiRow label="Annulés %" value={data.kpis.tauxAnnulation} unit="%" tooltip="Annulés / Complétés" bold />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
@@ -224,7 +224,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Non réalisés (hors annulés) %" value={data.kpis.tauxNonRealises} unit="%" tooltip="Non réalisés (hors annulés) / Complétés" />
+                  <KpiRow label="Non réalisés (hors annulés) %" value={data.kpis.tauxNonRealises} unit="%" tooltip="Non réalisés (hors annulés) / Complétés" bold />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
