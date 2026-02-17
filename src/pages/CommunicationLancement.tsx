@@ -14,6 +14,7 @@ const CommunicationLancement = () => {
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
+            <p className="text-[18px] font-semibold mb-2">Où nous trouver ?</p>
             <p>
               Pour vous garantir un maximum de partenaires dès la sortie de l'avion, Tarmac se concentre sur un trajet unique pour son lancement :
             </p>
@@ -29,15 +30,14 @@ const CommunicationLancement = () => {
           </CardContent>
         </Card>
 
-        <p className="text-[18px] font-semibold w-full max-w-[42rem]">On s'agrandit déjà !</p>
-
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
+            <p className="text-[18px] font-semibold mb-2">On s'agrandit déjà !</p>
             <p>
               Nous préparons activement l'ouverture de nouvelles zones pour répondre à vos demandes :
             </p>
             <p className="mt-3">
-              <strong>Très bientôt :</strong> Mérignac, Pessac et Talence.
+              <strong>Très bientôt :</strong> Bègles, Pessac et Talence.
             </p>
             <p className="mt-1">
               <strong>Prochaine étape :</strong> Les autres grands aéroports de France.
