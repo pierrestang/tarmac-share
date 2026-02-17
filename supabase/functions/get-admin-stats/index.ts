@@ -67,6 +67,23 @@ Deno.serve(async (req) => {
       allConvs.filter((c: any) => negativeRatingConvIds.has(c.id)).map((c: any) => c.demande_id)
     );
 
+    // Build set of demande_ids where BOTH participants rated was_useful=true
+    // Group ratings by conversation_id, check if all ratings for that conv are positive
+    const ratingsByConv: Record<string, { useful: number; total: number }> = {};
+    for (const r of allRatings) {
+      if (!ratingsByConv[r.conversation_id]) ratingsByConv[r.conversation_id] = { useful: 0, total: 0 };
+      ratingsByConv[r.conversation_id].total++;
+      if (r.was_useful) ratingsByConv[r.conversation_id].useful++;
+    }
+    const fullyPositiveConvIds = new Set(
+      Object.entries(ratingsByConv)
+        .filter(([_, v]) => v.total >= 2 && v.useful >= 2)
+        .map(([id]) => id)
+    );
+    const fullyPositiveDemandeIds = new Set(
+      allConvs.filter((c: any) => fullyPositiveConvIds.has(c.id)).map((c: any) => c.demande_id)
+    );
+
     // Period filters
     const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
     const currentDemandes = allDemandes.filter((d: any) => d.created_at >= periodStart);
@@ -87,7 +104,9 @@ Deno.serve(async (req) => {
     const tauxAnnulation = trajetsEffectues > 0 ? (annulations / trajetsEffectues) * 100 : 0;
     const tauxNonRealises = trajetsEffectues > 0 ? (nonRealises / trajetsEffectues) * 100 : 0;
 
-    const trajetsRealises = currentDemandes.filter((d: any) => d.status === "completed" && !d.was_cancelled).length;
+    // Réalisés = both participants answered 👍 AND not cancelled
+    const trajetsRealises = currentDemandes.filter((d: any) => d.status === "completed" && fullyPositiveDemandeIds.has(d.id) && !d.was_cancelled).length;
+    const tauxRealises = trajetsEffectues > 0 ? (trajetsRealises / trajetsEffectues) * 100 : 0;
 
     const result = {
       kpis: {
@@ -97,6 +116,7 @@ Deno.serve(async (req) => {
         trajetsCompletesPct: round(tauxTrajetsEffectues),
         trajetsCompletes: trajetsEffectues,
         trajetsRealises: trajetsRealises,
+        tauxRealises: round(tauxRealises),
         annulations: annulations,
         tauxAnnulation: round(tauxAnnulation),
         nonRealises: nonRealises,
