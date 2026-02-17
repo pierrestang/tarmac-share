@@ -14,7 +14,7 @@ const Evaluation = () => {
   const conversationId = searchParams.get("conversationId");
   const ratedProfileId = searchParams.get("ratedProfileId");
 
-  const { closeConversation, addSystemMessage } = useMessages();
+  const { closeConversation, addSystemMessage, saveRating } = useMessages();
   const { getActiveProfile } = useProfiles();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
 
@@ -53,10 +53,15 @@ const Evaluation = () => {
 
     await closeConversation(conversationId, activeProfile.id);
 
-    // If user answered negatively, mark demande as cancelled
-    if (!wasUseful) {
-      await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", convRow.demande_id);
-    }
+    // Save the evaluation rating
+    await saveRating({
+      conversationId,
+      raterId: activeProfile.id,
+      ratedProfileId: ratedProfileId,
+      score: wasUseful ? 5 : 1,
+      wasUseful,
+      comment: "",
+    });
 
     // Query DB directly to get fresh closed_by (state may not be updated yet)
     const { data: freshRow } = await supabase
