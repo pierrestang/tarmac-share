@@ -115,7 +115,7 @@ const Statistiques = () => {
       ["Annonces publiées", data.kpis.trajetsPublies],
       ["Nombre de matchs", data.kpis.matchsConfirmes],
       ["Taux de match (%)", data.kpis.matchRate],
-      ["Trajets réalisés", data.kpis.trajetsRealises],
+      ["Trajets complétés", data.kpis.trajetsRealises],
       ["Trajets effectués (%)", data.kpis.trajetsEffectues],
       ["Nombre d'annulations", data.kpis.annulations],
       ["Taux annulation (%)", data.kpis.tauxAnnulation],
@@ -184,7 +184,7 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets complétés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
+                  <KpiRow label="Trajets complétés" value={data.kpis.trajetsRealises} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
