@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -72,6 +73,11 @@ const RepublierAnnonce = () => {
       localStorage.setItem("republishedDemandeIds", JSON.stringify(republished));
     }
 
+    toast({
+      title: "Trajet republié ! Votre annonce est de nouveau visible.",
+      className: "bg-transparent border-0 shadow-none",
+      style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+    });
     navigate("/trajets", { replace: true });
   };
 
