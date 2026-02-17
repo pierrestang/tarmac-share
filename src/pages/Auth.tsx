@@ -20,7 +20,7 @@ const Auth = () => {
         <p className="text-base text-left mt-4 w-full" style={{ color: "#F0EEE9" }}>Ne payez plus le prix fort : trouvez un partenaire de route sur <span className="font-bold">Tarmac</span> et partagez les frais vers la ville.</p>
       </div>
 
-      <div className="flex w-full max-w-sm flex-col gap-3 pb-8">
+      <div className="flex w-full max-w-sm flex-col gap-3 pb-8" style={{ marginTop: "-4.5rem" }}>
         <Button
           className="w-full h-auto py-4 rounded-full"
           onClick={() => navigate("/inscription")}>
