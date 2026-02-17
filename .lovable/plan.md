@@ -1,37 +1,33 @@
 
+## Fix: Negative evaluation (thumbs down) not tracked correctly
 
-## Fix: Cancellation misclassified as "Non realise"
+### Problem
+When a user answers "thumbs down" to "Le trajet a-t-il eu lieu ?", two things go wrong:
 
-### Root Cause
+1. The Evaluation page sets `was_cancelled = true` on the demande -- but this flag should only be set when someone cancels via "Je dois annuler"
+2. The Evaluation page never saves a `conversation_rating` record with `was_useful: false`, so the stats edge function has no way to detect the negative evaluation
 
-When a user cancels via "Je dois annuler" (ConfirmAnnulation.tsx), the code saves two `conversation_ratings` with `was_useful: false`. This creates negative ratings in the database.
-
-In the edge function `get-admin-stats`, the logic is:
-1. **Annulations** = completed + `was_cancelled=true` + NOT in `negativeDemandeIds`
-2. **Non realises** = completed + in `negativeDemandeIds`
-
-Since the cancellation flow creates negative ratings, the demande ends up in `negativeDemandeIds`, so it gets excluded from "Annulations" and counted as "Non realises" instead.
+Result: the demande gets counted as an "Annulation" instead of "Non realise (hors annules)".
 
 ### Solution
 
-Update the edge function logic to prioritize `was_cancelled`. If a demande has `was_cancelled=true`, it should always count as an "Annulation", regardless of whether negative ratings exist.
+**File: `src/pages/Evaluation.tsx`**
 
-### Changes
+Two changes in the `handleAnswer` function:
 
-**File: `supabase/functions/get-admin-stats/index.ts`**
+1. **Remove** the block that sets `was_cancelled: true` when the user answers negatively. This line should be deleted:
+   ```
+   if (!wasUseful) {
+     await supabase.from("demandes").update({ was_cancelled: true }).eq("id", convRow.demande_id);
+   }
+   ```
 
-Update the filters:
-- **Annulations**: `status === "completed"` AND `was_cancelled === true` (remove the `!negativeDemandeIds` check)
-- **Non realises**: `status === "completed"` AND in `negativeDemandeIds` AND `was_cancelled !== true` (exclude cancellations)
+2. **Add** a call to `saveRating` to persist the evaluation in the `conversation_ratings` table. After closing the conversation, save a rating record with `wasUseful` set to the user's answer (true for thumbs up, false for thumbs down).
 
-```
-// Before (current - broken)
-annulations = completed + was_cancelled + !negativeDemandeIds  --> misses cases with both
-nonRealises = completed + negativeDemandeIds                   --> catches cancellations too
+This way:
+- Thumbs down creates a `conversation_rating` with `was_useful: false` (detected by the stats function as "Non realise")
+- `was_cancelled` stays `false` (only set by the cancellation flow in ConfirmAnnulation)
+- The stats will correctly show 0 Annulations and 1 Non realise
 
-// After (fixed)
-annulations = completed + was_cancelled                        --> all cancellations
-nonRealises = completed + negativeDemandeIds + !was_cancelled  --> only pure negative evals
-```
-
-This ensures cancellations always take priority over negative ratings.
+### Data fix
+The existing demande in the database currently has `was_cancelled = true` from the previous incorrect behavior. It will need to be corrected manually or via a one-time update if accurate historical stats are needed.
