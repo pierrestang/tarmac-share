@@ -15,32 +15,32 @@ const CommunicationLancement = () => {
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
             <p>
-              Pour notre lancement, Tarmac se concentre sur un trajet unique. L'idée est simple : en nous focalisant sur un seul secteur, nous vous garantissons de trouver un partenaire de partage en un clin d'œil à la sortie de votre avion.
+              Pour vous garantir un maximum de partenaires dès la sortie de l'avion, Tarmac se concentre sur un trajet unique pour son lancement :
             </p>
             <p className="mt-3">
               <strong>Départ :</strong> Aéroport de Bordeaux (BOD)
             </p>
             <p>
-              <strong>Arrivée :</strong> Bordeaux Intra-muros
+              <strong>Destination :</strong> Bordeaux Intra-muros
             </p>
             <p className="mt-3">
-              En restant sur le centre-ville pour le moment, nous maximisons vos chances de diviser la facture avec un autre voyageur plutôt que de rentrer seul.
+              En nous focalisant sur ce secteur, nous maximisons vos chances de trouver immédiatement un voyageur avec qui diviser la facture.
             </p>
           </CardContent>
         </Card>
 
-        <p className="text-[18px] font-semibold w-full max-w-[42rem]">On s'agrandit très vite</p>
+        <p className="text-[18px] font-semibold w-full max-w-[42rem]">On s'agrandit déjà !</p>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
             <p>
-              Nous préparons déjà nos prochains arrêts pour élargir la communauté et couvrir davantage de besoins :
+              Nous préparons activement l'ouverture de nouvelles zones pour répondre à vos demandes :
             </p>
             <p className="mt-3">
-              <strong>Prochainement :</strong> Ouverture des trajets vers Mérignac, Pessac et Talence.
+              <strong>Très bientôt :</strong> Mérignac, Pessac et Talence.
             </p>
             <p className="mt-1">
-              <strong>Et après :</strong> Déploiement prévu dans les autres grands aéroports de France.
+              <strong>Prochaine étape :</strong> Les autres grands aéroports de France.
             </p>
           </CardContent>
         </Card>
