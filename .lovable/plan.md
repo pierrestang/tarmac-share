@@ -1,33 +1,76 @@
 
-## Fix: Negative evaluation (thumbs down) not tracked correctly
 
-### Problem
-When a user answers "thumbs down" to "Le trajet a-t-il eu lieu ?", two things go wrong:
+## Plan : Mode gratuit / payant avec bouton a bascule admin
 
-1. The Evaluation page sets `was_cancelled = true` on the demande -- but this flag should only be set when someone cancels via "Je dois annuler"
-2. The Evaluation page never saves a `conversation_rating` record with `was_useful: false`, so the stats edge function has no way to detect the negative evaluation
+### Objectif
+Ajouter un parametre global "mode gratuit" controlable depuis le Tour de controle (page Statistiques) via un bouton a bascule (Switch). Quand le mode gratuit est actif, les etapes de paiement sont court-circuitees et aucune mention de prix n'apparait.
 
-Result: the demande gets counted as an "Annulation" instead of "Non realise (hors annules)".
+### Stockage du reglage
+Creer une table `app_settings` dans la base de donnees avec une seule ligne contenant un booleen `free_mode`. Cela permet de persister le reglage et de le partager entre tous les utilisateurs.
 
-### Solution
+### Modifications
 
-**File: `src/pages/Evaluation.tsx`**
+#### 1. Base de donnees
+- Creer la table `app_settings` avec une colonne `key` (text, primary key) et `value` (boolean).
+- Inserer la ligne `{ key: 'free_mode', value: true }` par defaut (gratuit au lancement).
+- RLS : lecture pour tous les utilisateurs authentifies, ecriture reservee a l'admin uniquement (via une fonction SQL qui verifie l'email admin).
 
-Two changes in the `handleAnswer` function:
+#### 2. Hook `use-app-settings.ts`
+- Nouveau hook qui lit le `free_mode` depuis `app_settings` via une requete Supabase.
+- Expose `isFreeMode` (boolean) et `toggleFreeMode` (pour l'admin).
 
-1. **Remove** the block that sets `was_cancelled: true` when the user answers negatively. This line should be deleted:
-   ```
-   if (!wasUseful) {
-     await supabase.from("demandes").update({ was_cancelled: true }).eq("id", convRow.demande_id);
-   }
-   ```
+#### 3. Page Statistiques (Tour de controle)
+- Ajouter un composant Switch (deja disponible dans `@radix-ui/react-switch`) avec le label "Mode gratuit" au-dessus des filtres de periode.
+- Le switch appelle `toggleFreeMode` pour basculer entre gratuit et payant.
 
-2. **Add** a call to `saveRating` to persist the evaluation in the `conversation_ratings` table. After closing the conversation, save a rating record with `wasUseful` set to the user's answer (true for thumbs up, false for thumbs down).
+#### 4. Page `DemandeEnvoyer.tsx` - Envoi d'une demande
+- Importer `isFreeMode` depuis le hook.
+- Si `isFreeMode` est `true`, le bouton "Contacter" execute directement la logique de creation de demande (celle actuellement dans `Paiement.tsx` pour `type=envoi`) au lieu de rediriger vers `/paiement`.
 
-This way:
-- Thumbs down creates a `conversation_rating` with `was_useful: false` (detected by the stats function as "Non realise")
-- `was_cancelled` stays `false` (only set by the cancellation flow in ConfirmAnnulation)
-- The stats will correctly show 0 Annulations and 1 Non realise
+#### 5. Page `DemandeAccepter.tsx` - Acceptation d'une demande
+- Importer `isFreeMode`.
+- Si `isFreeMode` est `true`, le bouton "Accepter" execute directement la logique d'acceptation (celle de `Paiement.tsx` pour `type=acceptation`) au lieu de rediriger vers `/paiement`.
 
-### Data fix
-The existing demande in the database currently has `was_cancelled = true` from the previous incorrect behavior. It will need to be corrected manually or via a one-time update if accurate historical stats are needed.
+#### 6. Page `RepublierAnnonce.tsx` - Republication
+- Importer `isFreeMode`.
+- Si `isFreeMode` est `true`, supprimer le texte mentionnant les demandes gratuites ou le tarif de 1,99 euros. Afficher simplement "Souhaitez-vous republier cette annonce ?" sans notion de prix.
+
+#### 7. Page `Paiement.tsx`
+- Aucune modification structurelle. Cette page reste fonctionnelle pour le mode payant. Elle ne sera simplement plus accessible quand `isFreeMode` est actif (les redirections sont court-circuitees en amont).
+
+### Details techniques
+
+```text
+Flux envoi demande :
+  Mode payant :  DemandeEnvoyer -> /paiement -> creation demande -> /trajets
+  Mode gratuit : DemandeEnvoyer -> creation demande directe -> /trajets
+
+Flux acceptation :
+  Mode payant :  DemandeAccepter -> /paiement -> acceptation -> /messages
+  Mode gratuit : DemandeAccepter -> acceptation directe -> /messages
+```
+
+#### Schema SQL
+```sql
+CREATE TABLE public.app_settings (
+  key text PRIMARY KEY,
+  value boolean NOT NULL DEFAULT false
+);
+
+INSERT INTO public.app_settings (key, value) VALUES ('free_mode', true);
+
+ALTER TABLE public.app_settings ENABLE ROW LEVEL SECURITY;
+
+-- Lecture pour tous les authentifies
+CREATE POLICY "Anyone can read settings"
+  ON public.app_settings FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+-- Ecriture uniquement pour l'admin
+CREATE POLICY "Admin can update settings"
+  ON public.app_settings FOR UPDATE
+  USING (
+    auth.email() = 'pierres-19@hotmail.fr'
+  );
+```
+
