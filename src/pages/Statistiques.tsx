@@ -202,7 +202,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annulations (%)" value={data.kpis.tauxAnnulation} unit="%" tooltip="Demandes refusées / (Matchs + Refus)" />
+                  <KpiRow label="Annulations (%)" value={data.kpis.tauxAnnulation} unit="%" tooltip="Annulations / Trajets complétés" />
                 </div>
               </Card>
 
