@@ -18,7 +18,7 @@ const VotreTiming = () => {
           className="text-[22px] font-semibold"
           style={{ color: "#F0EEE9" }}
         >
-          Votre timing.
+          Votre timing après l'atterrissage.
         </h1>
       </div>
 
@@ -35,6 +35,7 @@ const VotreTiming = () => {
               <li><strong>Inter + Cabine :</strong> ± 45 min</li>
               <li><strong>Inter + Bagage :</strong> ± 60 min</li>
             </ul>
+            <p className="mt-3 italic text-[13px]">Petit conseil : Mieux vaut prévoir 5 min de plus pour trouver le point de rencontre !</p>
           </CardContent>
         </Card>
       </div>
