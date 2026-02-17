@@ -10,7 +10,7 @@ interface PlaceSelection {
 interface PlacesAutocompleteProps {
   id?: string;
   value: string;
-  onChange: (value: string, coords?: Coordinates) => void;
+  onChange: (value: string, coords?: Coordinates, isPrecise?: boolean) => void;
   placeholder?: string;
   className?: string;
 }
@@ -40,7 +40,7 @@ const PlacesAutocomplete = ({
       {
         types: ["geocode", "establishment"],
         componentRestrictions: { country: "fr" },
-        fields: ["formatted_address", "name", "place_id", "geometry"],
+        fields: ["formatted_address", "name", "place_id", "geometry", "address_components"],
       }
     );
 
@@ -48,10 +48,8 @@ const PlacesAutocomplete = ({
     autocompleteRef.current.addListener("place_changed", () => {
       const place = autocompleteRef.current?.getPlace();
       if (place) {
-        // Prefer name for stations/establishments, fallback to formatted_address
         const selectedValue = place.name || place.formatted_address || "";
         
-        // Extract coordinates if available
         let coords: Coordinates | undefined;
         if (place.geometry?.location) {
           coords = {
@@ -59,8 +57,13 @@ const PlacesAutocomplete = ({
             lng: place.geometry.location.lng(),
           };
         }
+
+        // Check if address has a street number (precise address)
+        const hasStreetNumber = (place as any).address_components?.some(
+          (c: any) => c.types.includes("street_number")
+        ) ?? false;
         
-        onChange(selectedValue, coords);
+        onChange(selectedValue, coords, hasStreetNumber);
       }
     });
   }, [onChange]);
