@@ -57,7 +57,7 @@ DESIGN SYSTEM RULES (mobile-first):
     /* Buttons: #4E657A avec texte blanc */
     --button-bg: 207 22% 39%;
     --button-border: 207 22% 39%;
-    --button-fg: 0 0% 100%;
+    --button-fg: 40 18% 93%;
     
     /* Primary aussi pour cohérence */
     --primary: 207 22% 39%;

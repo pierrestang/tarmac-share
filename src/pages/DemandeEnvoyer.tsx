@@ -88,7 +88,7 @@ const DemandeEnvoyer = () => {
       if (isSending) return;
       setIsSending(true);
       try {
-        if (!myTrajet || !myProfile || !voyageurTrajet) return;
+        if (!myTrajet || !myProfile || !voyageurTrajet || !voyageurProfile) return;
         const existingDemande = getPendingDemandeByTrajetIds(myTrajet.id, voyageurTrajet.id);
         if (existingDemande) {
           toast({ title: "Demande déjà envoyée !" });
@@ -114,6 +114,11 @@ const DemandeEnvoyer = () => {
         } catch (e) {
           console.error("Erreur notification:", e);
         }
+        toast({
+          title: `Demande envoyée ! ${voyageurProfile.firstName} a été notifié.`,
+          className: "bg-transparent border-0 shadow-none",
+          style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+        });
         navigate("/trajets");
       } catch (error: any) {
         toast({ title: error?.message || "Une erreur est survenue.", variant: "destructive" });
