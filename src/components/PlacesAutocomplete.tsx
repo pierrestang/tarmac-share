@@ -62,8 +62,12 @@ const PlacesAutocomplete = ({
         const hasStreetNumber = (place as any).address_components?.some(
           (c: any) => c.types.includes("street_number")
         ) ?? false;
+        const isEstablishment = (place as any).types?.some(
+          (t: string) => ["establishment", "point_of_interest", "train_station", "airport", "transit_station"].includes(t)
+        ) ?? false;
+        const isPrecise = hasStreetNumber || isEstablishment;
         
-        onChange(selectedValue, coords, hasStreetNumber);
+        onChange(selectedValue, coords, isPrecise);
       }
     });
   }, [onChange]);

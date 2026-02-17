@@ -64,8 +64,8 @@ const initialForm: TrajetForm = {
   departureStation: "Aéroport de Bordeaux",
   departureStationCoords: { lat: 44.8283, lng: -0.7156 },
   departureTime: "10:00-10:30",
-  destination: "Bordeaux",
-  destinationCoords: { lat: 44.8378, lng: -0.5792 },
+  destination: "Gare Saint-Jean",
+  destinationCoords: { lat: 44.8254, lng: -0.5563 },
   companions: "1",
   baggage: {
     small: 0,
