@@ -148,13 +148,13 @@ const Statistiques = () => {
           {/* Period filter */}
           <div className="flex gap-2">
             {[7, 30, 90].map((d) => (
-              <Button
-                key={d}
-                onClick={() => setDays(d)}
-                className={`flex-1 ${days === d ? "opacity-100" : "opacity-60"}`}
-              >
-                {d}j
-              </Button>
+                <Button
+                  key={d}
+                  onClick={() => setDays(d)}
+                  className={`flex-1 rounded-full ${days === d ? "opacity-100" : "opacity-60"}`}
+                >
+                  {d}j
+                </Button>
             ))}
           </div>
 
@@ -220,7 +220,7 @@ const Statistiques = () => {
 
 
               {/* Export */}
-              <Button onClick={exportCsv} className="flex items-center gap-2">
+              <Button onClick={exportCsv} className="flex items-center gap-2 rounded-full">
                 <Download size={16} /> Exporter CSV
               </Button>
             </>
