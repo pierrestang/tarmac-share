@@ -120,10 +120,10 @@ export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, drivingDis
   const distance = drivingDistance ?? calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
   const dist = distance !== null && distance < 0.5 ? 0 : distance;
 
-  let score = 40;
+  let score = 30;
   score += timeDiff === 0 ? 30 : 15;
-  if (dist === 0) score += 30;
-  else if (dist !== null) score += Math.max(0, 30 * (1 - dist / DEFAULT_MAX_DETOUR));
+  if (dist === 0) score += 40;
+  else if (dist !== null) score += Math.max(0, 40 * (1 - dist / DEFAULT_MAX_DETOUR));
   return Math.min(100, score);
 }
 
@@ -254,10 +254,10 @@ export function useTrajets() {
 
         const timeDiff = Math.abs(parseTime(currentTrajet.departureTime)! - parseTime(trajet.departureTime)!);
 
-        let score = 40;
+        let score = 30;
         score += timeDiff === 0 ? 30 : 15;
-        if (distance === 0) score += 30;
-        else score += Math.max(0, 30 * (1 - distance / DEFAULT_MAX_DETOUR));
+        if (distance === 0) score += 40;
+        else score += Math.max(0, 40 * (1 - distance / DEFAULT_MAX_DETOUR));
         score = Math.min(100, score);
 
         matches.push({
