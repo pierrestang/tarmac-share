@@ -7,6 +7,7 @@ import type { Demande } from "@/types/demande";
 import type { Profile } from "@/types/profile";
 import type { Trajet } from "@/types/trajet";
 import { useNotifications } from "@/hooks/use-notifications";
+import { getScoreColor } from "@/hooks/use-trajets";
 
 interface DemandeCardProps {
   demande: Demande;
@@ -19,9 +20,6 @@ interface DemandeCardProps {
   onRefuse?: (id: string) => void;
 }
 
-function getScoreColor(_score: number): string {
-  return "#7BA87B";
-}
 
 export function DemandeCard({
   demande,

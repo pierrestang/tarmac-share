@@ -113,18 +113,35 @@ export async function calculateDrivingDistance(
   }
 }
 
+export function getScoreColor(score: number): string {
+  if (score < 50) return "#E34454";
+  if (score < 65) return "#DD7E58";
+  if (score < 80) return "#D9B36A";
+  return "#7BA87B";
+}
+
 export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, drivingDistance?: number | null): number {
   const time1 = parseTime(trajet1.departureTime);
   const time2 = parseTime(trajet2.departureTime);
-  const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 30;
-  const distance = drivingDistance ?? calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
-  const dist = distance !== null && distance < 0.5 ? 0 : distance;
+  const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 9999;
 
-  let score = 30;
-  score += timeDiff === 0 ? 30 : 15;
-  if (dist === 0) score += 40;
-  else if (dist !== null) score += Math.max(0, 40 * (1 - dist / DEFAULT_MAX_DETOUR));
-  return Math.min(100, score);
+  // A. Créneau horaire (50 pts max)
+  let timeScore = 0;
+  if (timeDiff === 0) timeScore = 50;
+  else if (timeDiff <= 30) timeScore = 25;
+
+  // B. Distance géographique (50 pts max)
+  const distance = drivingDistance ?? calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
+  let distScore = 0;
+  if (distance !== null) {
+    if (distance <= 1) distScore = 50;
+    else if (distance <= 2) distScore = 40;
+    else if (distance <= 3) distScore = 30;
+    else if (distance <= 4) distScore = 20;
+    else if (distance <= 5) distScore = 10;
+  }
+
+  return Math.min(100, timeScore + distScore);
 }
 
 export function getArchivedTrajet(_id: string): Trajet | null {
@@ -254,11 +271,20 @@ export function useTrajets() {
 
         const timeDiff = Math.abs(parseTime(currentTrajet.departureTime)! - parseTime(trajet.departureTime)!);
 
-        let score = 30;
-        score += timeDiff === 0 ? 30 : 15;
-        if (distance === 0) score += 40;
-        else score += Math.max(0, 40 * (1 - distance / DEFAULT_MAX_DETOUR));
-        score = Math.min(100, score);
+        // A. Créneau horaire (50 pts max)
+        let timeScore = 0;
+        if (timeDiff === 0) timeScore = 50;
+        else if (timeDiff <= 30) timeScore = 25;
+
+        // B. Distance géographique (50 pts max)
+        let distScore = 0;
+        if (distance <= 1) distScore = 50;
+        else if (distance <= 2) distScore = 40;
+        else if (distance <= 3) distScore = 30;
+        else if (distance <= 4) distScore = 20;
+        else if (distance <= 5) distScore = 10;
+
+        const score = Math.min(100, timeScore + distScore);
 
         matches.push({
           trajet,
