@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
 
     const matchRate = annonces > 0 ? ((matchsConfirmes * 2) / annonces) * 100 : 0;
     const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
-    const tauxAnnulation = trajetsEffectues > 0 ? ((annulations * 2) / trajetsEffectues) * 100 : 0;
+    const tauxAnnulation = trajetsEffectues > 0 ? (annulations / trajetsEffectues) * 100 : 0;
 
     // --- Liquidite (hourly distribution for current period) ---
     const liquidite = Array.from({ length: 24 }, (_, hour) => {
