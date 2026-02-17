@@ -6,7 +6,7 @@ const VotreTiming = () => {
 
   return (
     <section
-      className="flex flex-col flex-1 min-h-screen"
+      className="flex flex-col flex-1 min-h-screen px-3 pt-6 pb-6"
       style={{ backgroundColor: "#A291A9" }}
     >
       <div className="flex flex-col gap-2 px-4 pt-6 pb-4">
