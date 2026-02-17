@@ -171,8 +171,8 @@ const Statistiques = () => {
       <div className="flex justify-center px-4">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
           {/* Free mode toggle */}
+          <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Mode gratuit.</p>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-card-foreground">Mode gratuit</span>
             <Switch checked={isFreeMode} onCheckedChange={toggleFreeMode} />
           </div>
 
