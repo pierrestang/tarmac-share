@@ -1,22 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { useAppSettings } from "@/hooks/use-app-settings";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 
@@ -86,19 +74,6 @@ const Statistiques = () => {
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
-  const [showResetConfirm, setShowResetConfirm] = useState(false);
-  const { isFreeMode, toggleFreeMode } = useAppSettings();
-
-  const handleResetData = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-    await supabase.functions.invoke("reset-all-data", {
-      headers: { Authorization: `Bearer ${session.access_token}` },
-    });
-    setShowResetConfirm(false);
-    navigate("/publier");
-    window.location.reload();
-  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -162,7 +137,7 @@ const Statistiques = () => {
     <section className="flex flex-col gap-4 pb-6">
       {/* Header */}
       <div className="flex items-center gap-3 px-4">
-        <button onClick={() => navigate("/compte")} className="text-foreground">
+        <button onClick={() => navigate("/tour-de-controle")} className="text-foreground">
           <ArrowLeft size={20} />
         </button>
         <h1 className="text-[24px] font-semibold text-heading">Statistiques</h1>
@@ -245,44 +220,12 @@ const Statistiques = () => {
                 <Download size={16} /> Exporter CSV
               </Button>
 
-              {/* Reset */}
-              <Button
-                className="w-full rounded-full"
-                variant="outline"
-                onClick={() => setShowResetConfirm(true)}
-              >
-                Réinitialiser les trajets
-              </Button>
-
-              {/* Free mode toggle */}
-              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Mode gratuit.</p>
-              <Card className="p-4 flex items-center justify-between">
-                <span className="text-sm font-medium text-card-foreground">
-                  {isFreeMode ? "Gratuit" : "Payant"}
-                </span>
-                <Switch checked={isFreeMode} onCheckedChange={toggleFreeMode} />
-              </Card>
             </>
           ) : (
             <Card className="p-8 text-center text-muted-foreground">Erreur de chargement</Card>
           )}
         </div>
       </div>
-
-      <AlertDialog open={showResetConfirm} onOpenChange={setShowResetConfirm}>
-        <AlertDialogContent className="rounded-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Réinitialiser les trajets ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
-              Cette action supprimera tous les trajets et demandes.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
-            <AlertDialogAction onClick={handleResetData} className="rounded-md">Réinitialiser</AlertDialogAction>
-            <AlertDialogCancel className="rounded-md">Annuler</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </section>
   );
 };
