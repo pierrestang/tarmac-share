@@ -10,7 +10,7 @@ const BAGGAGE_SIZES = {
 } as const;
 
 const MAX_CAPACITY = 360;
-const DEFAULT_MAX_DETOUR = 10;
+const DEFAULT_MAX_DETOUR = 6;
 
 function mapRow(row: any): Trajet {
   return {
