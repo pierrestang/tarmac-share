@@ -200,6 +200,7 @@ const DemandeConsulter = () => {
         showButton={demande.status === "pending"}
         buttonLabel="Retirer ma demande"
         onButtonClick={() => setShowWithdrawDialog(true)}
+        messagesDemandeId={demande.status === "accepted" ? demande.id : undefined}
       />
 
       {/* Withdraw Confirmation Dialog */}

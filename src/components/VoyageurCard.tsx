@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useMessages } from "@/hooks/use-messages";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +18,7 @@ interface VoyageurCardProps {
   onAccept?: () => void;
   onRefuse?: () => void;
   myTrajetId?: string;
+  messagesDemandeId?: string;
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -31,8 +33,9 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
 
-export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId }: VoyageurCardProps) {
+export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId }: VoyageurCardProps) {
   const navigate = useNavigate();
+  const { getConversationByDemandeId } = useMessages();
   const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
 
   const scoreColor = getScoreColor(compatibilityScore);
@@ -135,6 +138,22 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
         >
           {buttonLabel ?? "Voir le trajet"}
         </Button>
+      )}
+
+      {/* Messages button */}
+      {messagesDemandeId && (
+        <button
+          onClick={() => {
+            const conversation = getConversationByDemandeId(messagesDemandeId);
+            if (conversation) {
+              navigate(`/messages?conversationId=${conversation.id}`);
+            }
+          }}
+          className="w-full py-3 text-center text-[16px] font-semibold rounded-b-xl border-t border-border/40"
+          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+        >
+          Voir les messages
+        </button>
       )}
     </Card>
   );
