@@ -7,6 +7,7 @@ import { useTrajets, calculateDistance, calculateMatchScore, getArchivedTrajet }
 import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
+import { useMessages } from "@/hooks/use-messages";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { Baggage } from "@/types/trajet";
@@ -28,6 +29,7 @@ const DemandeHistorique = () => {
   const { getActiveProfile, getProfileById } = useProfiles();
   const { getDemandeById } = useDemandes();
   const { notifications } = useNotifications();
+  const { getConversationByDemandeId } = useMessages();
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -274,15 +276,20 @@ const DemandeHistorique = () => {
               </p>
             )}
           </div>
+
+          <Button 
+            onClick={() => {
+              const conversation = getConversationByDemandeId(demandeId!);
+              if (conversation) {
+                navigate(`/messages?conversationId=${conversation.id}`);
+              }
+            }}
+            className="w-full rounded-full"
+          >
+            Voir les messages
+          </Button>
         </CardContent>
       </Card>
-
-      <Button 
-        onClick={() => navigate(`/messages?demandeId=${demandeId}`)}
-        className="w-full max-w-[42rem] rounded-full"
-      >
-        Voir les messages
-      </Button>
 
       <Button 
         variant="outline"
