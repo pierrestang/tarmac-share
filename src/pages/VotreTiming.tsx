@@ -9,7 +9,7 @@ const VotreTiming = () => {
       className="flex flex-col flex-1 min-h-screen px-3 pt-6 pb-6"
       style={{ backgroundColor: "#A291A9" }}
     >
-      <div className="flex flex-col gap-2 px-4 pt-6 pb-4">
+      <div className="flex flex-col gap-2 px-1 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 self-start">
           <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
         </button>
