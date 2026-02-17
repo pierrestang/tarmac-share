@@ -11,8 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -43,7 +41,7 @@ const Compte = () => {
   const [description, setDescription] = useState(profile?.description || "");
   const [photo, setPhoto] = useState<string | null>(profile?.photo || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  
 
   useEffect(() => {
     if (profile) {
@@ -54,16 +52,7 @@ const Compte = () => {
     }
   }, [profile]);
 
-  const handleResetData = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-    await supabase.functions.invoke("reset-all-data", {
-      headers: { Authorization: `Bearer ${session.access_token}` },
-    });
-    setShowResetConfirm(false);
-    navigate("/publier");
-    window.location.reload();
-  };
+  
 
   const compressImage = (file: File, maxSize = 100, quality = 0.7): Promise<string> => {
     return new Promise((resolve) => {
@@ -177,24 +166,14 @@ const Compte = () => {
       </div>
 
       {isAdmin && (
-        <>
-          <div className="flex justify-center px-4">
-            <Button
-              className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
-              onClick={() => setShowResetConfirm(true)}
-            >
-              Réinitialiser les trajets
-            </Button>
-          </div>
-          <div className="flex justify-center px-4">
-            <Button
-              className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
-              onClick={() => navigate("/statistiques")}
-            >
-              Statistiques
-            </Button>
-          </div>
-        </>
+        <div className="flex justify-center px-4">
+          <Button
+            className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
+            onClick={() => navigate("/statistiques")}
+          >
+            Tour de contrôle
+          </Button>
+        </div>
       )}
 
       {/* Déconnexion */}
@@ -210,20 +189,6 @@ const Compte = () => {
         </Button>
       </div>
 
-      <AlertDialog open={showResetConfirm} onOpenChange={setShowResetConfirm}>
-        <AlertDialogContent className="rounded-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Réinitialiser les trajets ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
-              Cette action supprimera tous les trajets et demandes.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
-            <AlertDialogAction onClick={handleResetData} className="rounded-md">Réinitialiser</AlertDialogAction>
-            <AlertDialogCancel className="rounded-md">Annuler</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </section>
   );
 };
