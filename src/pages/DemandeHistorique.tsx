@@ -277,18 +277,20 @@ const DemandeHistorique = () => {
             )}
           </div>
         </CardContent>
-        <button 
-          onClick={() => {
-            const conversation = getConversationByDemandeId(demandeId!);
-            if (conversation) {
-              navigate(`/messages?conversationId=${conversation.id}`);
-            }
-          }}
-          className="w-full py-3 text-center text-sm font-medium rounded-b-xl border-t border-border/40" style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
-        >
-          Voir les messages
-        </button>
       </Card>
+
+      <Button 
+        onClick={() => {
+          const conversation = getConversationByDemandeId(demandeId!);
+          if (conversation) {
+            navigate(`/messages?conversationId=${conversation.id}`);
+          }
+        }}
+        variant="outline"
+        className="w-full max-w-[42rem] rounded-full"
+      >
+        Voir les messages
+      </Button>
 
       <Button 
         variant="outline"
