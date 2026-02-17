@@ -31,6 +31,7 @@ import ConfirmAnnulation from "./pages/ConfirmAnnulation";
 import Numero from "./pages/Numero";
 import Statistiques from "./pages/Statistiques";
 import TourDeControle from "./pages/TourDeControle";
+import VotreTiming from "./pages/VotreTiming";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => (
               <Route path="statistiques" element={<Statistiques />} />
               <Route path="tour-de-controle" element={<TourDeControle />} />
               <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
+              <Route path="votre-timing" element={<VotreTiming />} />
             </Route>
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
