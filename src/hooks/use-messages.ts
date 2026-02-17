@@ -54,6 +54,25 @@ export function useMessages() {
 
   useEffect(() => {
     fetchData();
+
+    const convChannel = supabase
+      .channel('conversations-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'conversations' }, () => {
+        fetchData();
+      })
+      .subscribe();
+
+    const msgChannel = supabase
+      .channel('messages-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, () => {
+        fetchData();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(convChannel);
+      supabase.removeChannel(msgChannel);
+    };
   }, [fetchData]);
 
   const getConversations = useCallback((profileId: string): Conversation[] => {
