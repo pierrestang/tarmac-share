@@ -186,7 +186,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Complétés %" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Complétés / Matchs" />
+                  <KpiRow label="Complétés %" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Complétés / Matchs" bold />
                 </div>
               </Card>
 
