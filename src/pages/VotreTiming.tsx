@@ -8,7 +8,7 @@ const VotreTiming = () => {
   return (
     <section
       className="flex flex-col flex-1 px-3 pt-6 pb-6"
-      style={{ backgroundColor: "#A291A9", minHeight: "100vh" }}
+      style={{ backgroundColor: "#A291A9", minHeight: "100dvh" }}
     >
       <div className="flex flex-col gap-2 px-4 pb-4">
         <button onClick={() => navigate("/publier")} className="p-1 self-start">
