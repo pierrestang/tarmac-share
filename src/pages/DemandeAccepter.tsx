@@ -68,7 +68,7 @@ const DemandeAccepter = () => {
 
   const handleAccept = async () => {
     if (isFreeMode) {
-      if (isAccepting || !demandeId || !demande || !myProfile) return;
+      if (isAccepting || !demandeId || !demande || !myProfile || !voyageurProfile) return;
       setIsAccepting(true);
       try {
         await saveDemandeSnapshot(demandeId);
@@ -86,6 +86,11 @@ const DemandeAccepter = () => {
         } catch (e) {
           console.error("Erreur notification:", e);
         }
+        toast({
+          title: `Super ! Vous partagez désormais ce trajet avec ${voyageurProfile.firstName}.`,
+          className: "bg-transparent border-0 shadow-none",
+          style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+        });
         navigate("/messages");
       } catch (error: any) {
         toast({ title: error?.message || "Une erreur est survenue.", variant: "destructive" });
