@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
+import { supabase } from "@/integrations/supabase/client";
 import { VoyageurCardSmall } from "@/components/VoyageurCardSmall";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -51,29 +52,19 @@ const Matches = () => {
       setTrajet(t);
       if (t) {
         (async () => {
+          // Récupérer les trajet IDs déjà matchés (toutes demandes, pas seulement celles de l'utilisateur)
+          const { data: matchedIds } = await supabase.rpc("get_matched_trajet_ids");
+          const matchedTrajetIds = new Set((matchedIds || []).map((id: string) => id));
+
           const rawMatches = await findMatches(trajetId);
           const allMatches = rawMatches.map((match) => ({
             ...match,
             profile: getProfileById(match.trajet.profileId) || match.profile,
           }));
           
-          // Filtrer les trajets qui ont une demande clôturée ou acceptée
+          // Filtrer les trajets qui sont déjà matchés (accepted/completed)
           const filteredMatches = allMatches.filter((match) => {
-            const hasCompletedDemande = demandes.some(
-              (d) =>
-                d.status === "completed" &&
-                (d.fromTrajetId === match.trajet.id || d.toTrajetId === match.trajet.id)
-            );
-            if (hasCompletedDemande) return false;
-
-            const hasAcceptedDemande = demandes.some(
-              (d) =>
-                d.status === "accepted" &&
-                (d.fromProfileId === match.profile.id || d.toProfileId === match.profile.id)
-            );
-            if (hasAcceptedDemande) return false;
-
-            return true;
+            return !matchedTrajetIds.has(match.trajet.id);
           });
           
           const activeProfileId = getActiveProfile()?.id;
