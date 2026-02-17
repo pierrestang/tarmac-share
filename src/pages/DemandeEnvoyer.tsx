@@ -87,7 +87,7 @@ const DemandeEnvoyer = () => {
       <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter.</h1>
 
       {/* Date */}
-      <p className="text-[16px] font-medium w-full max-w-[42rem]">
+      <p className="text-[16px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
