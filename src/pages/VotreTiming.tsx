@@ -11,8 +11,8 @@ const VotreTiming = () => {
       className="flex flex-col flex-1 px-3 pt-6 pb-6"
       style={{ minHeight: "100dvh" }}
     >
-      <div className="flex flex-col gap-2 items-center pb-4">
-        <div className="w-full max-w-[42rem] px-4">
+      <div className="flex flex-col gap-3 items-center px-4 pb-4">
+        <div className="w-full max-w-[42rem] flex flex-col gap-2">
           <button onClick={() => navigate("/publier")} className="p-1 self-start">
             <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
           </button>
