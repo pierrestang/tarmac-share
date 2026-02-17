@@ -51,11 +51,13 @@ const TourDeControle = () => {
   return (
     <section className="flex flex-col gap-4 pb-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 px-4">
-        <button onClick={() => navigate("/compte")} className="text-foreground self-start">
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-[24px] font-semibold text-heading">Tour de contrôle.</h1>
+      <div className="flex flex-col gap-2 items-center">
+        <div className="w-full max-w-[42rem] px-4">
+          <button onClick={() => navigate("/compte")} className="text-foreground self-start">
+            <ArrowLeft size={20} />
+          </button>
+          <h1 className="text-[24px] font-semibold text-heading">Tour de contrôle.</h1>
+        </div>
       </div>
 
       <div className="flex justify-center px-4">
