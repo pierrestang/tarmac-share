@@ -17,7 +17,7 @@ import { fr } from "date-fns/locale";
 const Trajets = () => {
   const navigate = useNavigate();
   const { demandes, refuseDemande, hasDemandesForTrajet } = useDemandes();
-  const { trajets, getTrajetById, findMatches, deleteTrajet } = useTrajets();
+  const { trajets, getTrajetById, deleteTrajet } = useTrajets();
   const { profiles, getActiveProfile } = useProfiles();
 
   const activeProfile = getActiveProfile();
@@ -89,12 +89,6 @@ const Trajets = () => {
       return true;
     });
   }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, hasActiveTrip]);
-
-  // Get match count for each trajet
-  const getMatchCount = (trajetId: string) => {
-    return findMatches(trajetId).length;
-  };
-
   // Get profile for a demande (the other person)
   const getOtherProfile = (demande: typeof demandes[0]) => {
     const otherId =
