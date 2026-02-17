@@ -108,7 +108,7 @@ const Compte = () => {
             {/* Photo */}
             <div className="flex justify-center py-4">
               <div
-                className="relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-muted-foreground/30 bg-muted"
+                className="relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-muted"
                 onClick={() => fileInputRef.current?.click()}
               >
                 {photo ? (
