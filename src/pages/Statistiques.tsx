@@ -16,7 +16,8 @@ interface StatsData {
     trajetsPublies: number;
     matchsConfirmes: number;
     matchRate: number;
-    trajetsEffectues: number;
+    trajetsCompletesPct: number;
+    trajetsCompletes: number;
     trajetsRealises: number;
     annulations: number;
     tauxAnnulation: number;
@@ -115,8 +116,9 @@ const Statistiques = () => {
       ["Annonces publiées", data.kpis.trajetsPublies],
       ["Nombre de matchs", data.kpis.matchsConfirmes],
       ["Taux de match (%)", data.kpis.matchRate],
-      ["Trajets complétés", data.kpis.trajetsRealises],
-      ["Trajets effectués (%)", data.kpis.trajetsEffectues],
+      ["Trajets complétés", data.kpis.trajetsCompletes],
+      ["Trajets complétés (%)", data.kpis.trajetsCompletesPct],
+      ["Trajets réalisés", data.kpis.trajetsRealises],
       ["Nombre d'annulations", data.kpis.annulations],
       ["Taux annulation (%)", data.kpis.tauxAnnulation],
       [],
@@ -184,11 +186,15 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets complétés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets complétés" value={data.kpis.trajetsRealises} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
+                  <KpiRow label="Trajets complétés" value={data.kpis.trajetsCompletes} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets réalisés (%)" value={data.kpis.trajetsEffectues} unit="%" tooltip="Trajets complétés / Matchs confirmés" />
+                  <KpiRow label="Trajets complétés (%)" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Trajets complétés / Matchs confirmés" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Trajets réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Trajets complétés / Annulations" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">

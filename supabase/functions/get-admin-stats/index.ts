@@ -106,13 +106,16 @@ Deno.serve(async (req) => {
     };
 
 
+    const trajetsRealisesRatio = annulations > 0 ? trajetsEffectues / annulations : trajetsEffectues;
+
     const result = {
       kpis: {
         trajetsPublies: annonces,
         matchsConfirmes: matchsConfirmes,
         matchRate: round(matchRate),
-        trajetsEffectues: round(tauxTrajetsEffectues),
-        trajetsRealises: trajetsEffectues,
+        trajetsCompletesPct: round(tauxTrajetsEffectues),
+        trajetsCompletes: trajetsEffectues,
+        trajetsRealises: round(trajetsRealisesRatio, 2),
         annulations: annulations,
         tauxAnnulation: round(tauxAnnulation),
       },
