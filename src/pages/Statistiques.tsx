@@ -25,15 +25,15 @@ interface StatsData {
 }
 
 const KpiRow = ({
-  label, value, unit, tooltip,
+  label, value, unit, tooltip, bold,
 }: {
   label: string; value: number; unit: string;
-  tooltip?: string;
+  tooltip?: string; bold?: boolean;
 }) => {
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-1">
-        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className={`text-xs ${bold ? "font-semibold text-card-foreground" : "text-muted-foreground"}`}>{label}</p>
         {tooltip && (
           <Popover>
             <PopoverTrigger type="button" className="flex items-center justify-center w-4 h-4 rounded-full border border-muted-foreground text-muted-foreground text-[10px] font-medium shrink-0 cursor-help">
@@ -174,7 +174,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Matchs %" value={data.kpis.matchRate} unit="%" tooltip="(Matchs x 2) / Annonces" />
+                  <KpiRow label="Matchs %" value={data.kpis.matchRate} unit="%" tooltip="(Matchs x 2) / Annonces" bold />
                 </div>
               </Card>
 
@@ -214,7 +214,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Réalisés %" value={data.kpis.tauxRealises} unit="%" tooltip="Réalisés / Complétés" />
+                  <KpiRow label="Réalisés %" value={data.kpis.tauxRealises} unit="%" tooltip="Réalisés / Complétés" bold />
                 </div>
               </Card>
 
