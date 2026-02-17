@@ -129,7 +129,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
               ? `/demande-accepter?demandeId=${receivedDemandeId}`
               : sentDemandeId
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
-                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}&score=${Math.round(compatibilityScore)}&dist=${Math.round(distance * 10) / 10}`
+                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
           ))}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >
