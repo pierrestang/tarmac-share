@@ -134,7 +134,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
           ))}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >
-          {buttonLabel ?? "Voir l'annonce"}
+          {buttonLabel ?? "Voir le trajet"}
         </Button>
       )}
     </Card>

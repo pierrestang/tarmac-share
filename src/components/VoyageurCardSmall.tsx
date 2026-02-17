@@ -93,7 +93,7 @@ export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurC
           )}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >
-          Voir l'annonce
+          Voir le trajet
         </Button>
       )}
     </div>
