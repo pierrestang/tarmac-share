@@ -42,7 +42,7 @@ const CommentCaMarche = () => {
 
         <Button
           className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2"
-          onClick={() => navigate("/publier")}
+          onClick={() => navigate("/communication-lancement")}
         >
           Continuer
         </Button>

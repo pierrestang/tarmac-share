@@ -13,6 +13,8 @@ import Inscription from "./pages/Inscription";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CommentCaMarche from "./pages/CommentCaMarche";
+import CommunicationLancement from "./pages/CommunicationLancement";
+import TarmacDansMaVille from "./pages/TarmacDansMaVille";
 import Trajets from "./pages/Trajets";
 import Publier from "./pages/Publier";
 import Messages from "./pages/Messages";
@@ -44,6 +46,7 @@ const App = () => (
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="comment-ca-marche" element={<CommentCaMarche />} />
+          <Route path="communication-lancement" element={<CommunicationLancement />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<AppShell />}>
               <Route index element={<Index />} />
@@ -62,6 +65,7 @@ const App = () => (
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
               <Route path="numero" element={<Numero />} />
               <Route path="statistiques" element={<Statistiques />} />
+              <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
             </Route>
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
