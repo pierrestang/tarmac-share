@@ -17,6 +17,7 @@ interface KpiData {
 
 interface StatsData {
   kpis: {
+    trajetsPublies: KpiData;
     matchRate: KpiData;
     trajetsEffectues: KpiData;
     medianTimeToMatch: KpiData;
@@ -130,17 +131,12 @@ const Statistiques = () => {
     if (!data) return;
     const rows = [
       ["Métrique", "Valeur", "Période précédente"],
-      ["Match Rate (%)", data.kpis.matchRate.value, data.kpis.matchRate.previousValue],
+      ["Trajets publiés", data.kpis.trajetsPublies.value, data.kpis.trajetsPublies.previousValue],
+      ["Taux de match (%)", data.kpis.matchRate.value, data.kpis.matchRate.previousValue],
       ["Trajets effectués (%)", data.kpis.trajetsEffectues.value, data.kpis.trajetsEffectues.previousValue],
       ["Temps médian match (min)", data.kpis.medianTimeToMatch.value, data.kpis.medianTimeToMatch.previousValue],
       ["Taux annulation (%)", data.kpis.tauxAnnulation.value, data.kpis.tauxAnnulation.previousValue],
       ["Utilisateurs actifs/jour", data.kpis.activeUsersPerDay.value, data.kpis.activeUsersPerDay.previousValue],
-      [],
-      ["Funnel", "Valeur"],
-      ["Annonces publiées", data.funnel.annoncesPubliees],
-      ["Demandes envoyées", data.funnel.demandesEnvoyees],
-      ["Matchs confirmés", data.funnel.matchsConfirmes],
-      ["Trajets effectués", data.funnel.trajetsEffectues],
       [],
       ["Distance moyenne (km)", data.distance.moyenne],
       ["0-2 km", data.distance.distribution["0-2"]],
@@ -189,13 +185,19 @@ const Statistiques = () => {
               {/* KPIs */}
               <div className="grid grid-cols-2 gap-3">
                 <KpiCard
+                  label="Trajets publiés"
+                  value={data.kpis.trajetsPublies.value}
+                  unit=""
+                  previousValue={data.kpis.trajetsPublies.previousValue}
+                />
+                <KpiCard
                   label="Trajets effectués"
                   value={data.kpis.trajetsEffectues.value}
                   unit="%"
                   previousValue={data.kpis.trajetsEffectues.previousValue}
                 />
                 <KpiCard
-                  label="Match Rate"
+                  label="Taux de match"
                   value={data.kpis.matchRate.value}
                   unit="%"
                   previousValue={data.kpis.matchRate.previousValue}
