@@ -81,14 +81,14 @@ export function DemandeCard({
 
   // Determine button label
   const getButtonLabel = () => {
-    if (isAccepted) return "Voir messages";
+    if (isAccepted) return "Voir trajet";
     if (isCompleted) return "Voir les détails";
     return "Voir le trajet";
   };
 
   // Determine button action
   const getButtonAction = () => {
-    if (isAccepted) return handleViewMessages;
+    if (isAccepted) return handleViewDemande;
     return handleViewDemande;
   };
 
