@@ -31,10 +31,10 @@ const VotreTiming = () => {
               Estimez votre heure de sortie pour que votre partenaire ne vous attende pas trop longtemps à l'arrivée.
             </p>
             <ul className="mt-3 flex flex-col gap-1">
-              <li><strong>UE + Cabine :</strong> ± 20 min</li>
-              <li><strong>UE + Bagage :</strong> ± 40 min</li>
-              <li><strong>Inter + Cabine :</strong> ± 45 min</li>
-              <li><strong>Inter + Bagage :</strong> ± 60 min</li>
+              <li><strong>UE + Bagage cabine :</strong> ± 20 min</li>
+              <li><strong>UE + Bagage en soute :</strong> ± 40 min</li>
+              <li><strong>Internationale + Bagage cabine :</strong> ± 45 min</li>
+              <li><strong>Internationale + Bagage en soute :</strong> ± 60 min</li>
             </ul>
             <p className="mt-3 italic text-[13px]">Petit conseil : Mieux vaut prévoir 5 min de plus pour trouver le point de rencontre !</p>
           </CardContent>
