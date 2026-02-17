@@ -22,6 +22,7 @@ export interface Demande {
   toTrajetId: string;
   createdAt: number;
   updatedAt: number;
+  wasCancelled?: boolean;
   // Optional snapshot for completed demandes
   snapshot?: DemandeSnapshot;
 }
