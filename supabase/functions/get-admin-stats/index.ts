@@ -46,7 +46,6 @@ Deno.serve(async (req) => {
     const days = parseInt(url.searchParams.get("days") || "7");
     const now = Date.now();
     const periodStart = now - days * 24 * 60 * 60 * 1000;
-    const prevPeriodStart = periodStart - days * 24 * 60 * 60 * 1000;
 
     // Fetch all data needed
     const [trajetsRes, demandesRes] = await Promise.all([
@@ -59,36 +58,17 @@ Deno.serve(async (req) => {
 
     // Period filters
     const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
-    const prevTrajets = allTrajets.filter((t: any) => t.created_at >= prevPeriodStart && t.created_at < periodStart);
     const currentDemandes = allDemandes.filter((d: any) => d.created_at >= periodStart);
-    const prevDemandes = allDemandes.filter((d: any) => d.created_at >= prevPeriodStart && d.created_at < periodStart);
 
     // --- KPIs ---
-    const calcKpis = (trajets: any[], demandes: any[]) => {
-      const annonces = trajets.length;
-      const matchsConfirmes = demandes.filter((d: any) => d.status === "accepted" || d.status === "completed").length;
-      const trajetsEffectues = demandes.filter((d: any) => d.status === "completed").length;
-      const annulations = demandes.filter((d: any) => d.status === "refused").length;
+    const annonces = currentTrajets.length;
+    const matchsConfirmes = currentDemandes.filter((d: any) => d.status === "accepted" || d.status === "completed").length;
+    const trajetsEffectues = currentDemandes.filter((d: any) => d.status === "completed").length;
+    const annulations = currentDemandes.filter((d: any) => d.status === "refused").length;
 
-      const matchRate = annonces > 0 ? (matchsConfirmes / annonces) * 100 : 0;
-      const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
-      const tauxAnnulation = matchsConfirmes > 0 ? (annulations / (matchsConfirmes + annulations)) * 100 : 0;
-
-      // Active users per day
-      const activeProfileIds = new Set<string>();
-      trajets.forEach((t: any) => activeProfileIds.add(t.profile_id));
-      demandes.forEach((d: any) => {
-        activeProfileIds.add(d.from_profile_id);
-        activeProfileIds.add(d.to_profile_id);
-      });
-      const periodDays = Math.max(1, trajets.length > 0 || demandes.length > 0 ? days : 1);
-      const activeUsersPerDay = activeProfileIds.size / periodDays;
-
-      return { matchRate, tauxTrajetsEffectues, tauxAnnulation, activeUsersPerDay, annonces, matchsConfirmes, trajetsEffectues };
-    };
-
-    const current = calcKpis(currentTrajets, currentDemandes);
-    const prev = calcKpis(prevTrajets, prevDemandes);
+    const matchRate = annonces > 0 ? (matchsConfirmes / annonces) * 100 : 0;
+    const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
+    const tauxAnnulation = (matchsConfirmes + annulations) > 0 ? (annulations / (matchsConfirmes + annulations)) * 100 : 0;
 
     // --- Liquidite (hourly distribution for current period) ---
     const liquidite = Array.from({ length: 24 }, (_, hour) => {
@@ -135,17 +115,16 @@ Deno.serve(async (req) => {
 
     const result = {
       kpis: {
-        trajetsPublies: { value: current.annonces, previousValue: prev.annonces },
-        matchsConfirmes: { value: current.matchsConfirmes, previousValue: prev.matchsConfirmes },
-        matchRate: { value: round(current.matchRate), previousValue: round(prev.matchRate) },
-        trajetsEffectues: { value: round(current.tauxTrajetsEffectues), previousValue: round(prev.tauxTrajetsEffectues) },
-        trajetsRealises: { value: current.trajetsEffectues, previousValue: prev.trajetsEffectues },
-        tauxAnnulation: { value: round(current.tauxAnnulation), previousValue: round(prev.tauxAnnulation) },
-        activeUsersPerDay: { value: round(current.activeUsersPerDay, 1), previousValue: round(prev.activeUsersPerDay, 1) },
+        trajetsPublies: annonces,
+        matchsConfirmes: matchsConfirmes,
+        matchRate: round(matchRate),
+        trajetsEffectues: round(tauxTrajetsEffectues),
+        trajetsRealises: trajetsEffectues,
+        annulations: annulations,
+        tauxAnnulation: round(tauxAnnulation),
       },
       liquidite,
       distance: { moyenne: round(distMoyenne, 2), distribution: distDistribution },
-      funnel,
     };
 
     return new Response(JSON.stringify(result), {
