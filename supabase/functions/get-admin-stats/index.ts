@@ -74,16 +74,6 @@ Deno.serve(async (req) => {
       const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
       const tauxAnnulation = matchsConfirmes > 0 ? (annulations / (matchsConfirmes + annulations)) * 100 : 0;
 
-      // Median time to match (ms -> minutes)
-      const acceptedDemandes = demandes.filter((d: any) => d.status === "accepted" || d.status === "completed");
-      const matchTimes = acceptedDemandes
-        .map((d: any) => d.updated_at - d.created_at)
-        .filter((t: number) => t > 0)
-        .sort((a: number, b: number) => a - b);
-      const medianTimeToMatch = matchTimes.length > 0
-        ? matchTimes[Math.floor(matchTimes.length / 2)] / 60000
-        : 0;
-
       // Active users per day
       const activeProfileIds = new Set<string>();
       trajets.forEach((t: any) => activeProfileIds.add(t.profile_id));
@@ -94,7 +84,7 @@ Deno.serve(async (req) => {
       const periodDays = Math.max(1, trajets.length > 0 || demandes.length > 0 ? days : 1);
       const activeUsersPerDay = activeProfileIds.size / periodDays;
 
-      return { matchRate, tauxTrajetsEffectues, medianTimeToMatch, tauxAnnulation, activeUsersPerDay, annonces, matchsConfirmes, trajetsEffectues };
+      return { matchRate, tauxTrajetsEffectues, tauxAnnulation, activeUsersPerDay, annonces, matchsConfirmes, trajetsEffectues };
     };
 
     const current = calcKpis(currentTrajets, currentDemandes);
@@ -149,7 +139,7 @@ Deno.serve(async (req) => {
         matchsConfirmes: { value: current.matchsConfirmes, previousValue: prev.matchsConfirmes },
         matchRate: { value: round(current.matchRate), previousValue: round(prev.matchRate) },
         trajetsEffectues: { value: round(current.tauxTrajetsEffectues), previousValue: round(prev.tauxTrajetsEffectues) },
-        medianTimeToMatch: { value: round(current.medianTimeToMatch), previousValue: round(prev.medianTimeToMatch) },
+        trajetsRealises: { value: current.trajetsEffectues, previousValue: prev.trajetsEffectues },
         tauxAnnulation: { value: round(current.tauxAnnulation), previousValue: round(prev.tauxAnnulation) },
         activeUsersPerDay: { value: round(current.activeUsersPerDay, 1), previousValue: round(prev.activeUsersPerDay, 1) },
       },

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowUp, ArrowDown, Download, Info } from "lucide-react";
-import { Tooltip as UiTooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ArrowLeft, ArrowUp, ArrowDown, Download } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ interface StatsData {
     matchsConfirmes: KpiData;
     matchRate: KpiData;
     trajetsEffectues: KpiData;
-    medianTimeToMatch: KpiData;
+    trajetsRealises: KpiData;
     tauxAnnulation: KpiData;
     activeUsersPerDay: KpiData;
   };
@@ -60,16 +60,14 @@ const KpiCard = ({
       <div className="flex items-center gap-1 mb-1">
         <p className="text-xs text-muted-foreground">{label}</p>
         {tooltip && (
-          <TooltipProvider>
-            <UiTooltip>
-              <TooltipTrigger asChild>
-                <Info size={12} className="text-muted-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[200px] text-xs">
-                {tooltip}
-              </TooltipContent>
-            </UiTooltip>
-          </TooltipProvider>
+          <Popover>
+            <PopoverTrigger type="button" className="flex items-center justify-center w-4 h-4 rounded-full border border-muted-foreground text-muted-foreground text-[10px] font-medium shrink-0 cursor-help">
+              ?
+            </PopoverTrigger>
+            <PopoverContent side="top" className="max-w-[200px] text-xs p-3">
+              {tooltip}
+            </PopoverContent>
+          </Popover>
         )}
       </div>
       <p className="text-2xl font-semibold text-card-foreground">
@@ -151,7 +149,7 @@ const Statistiques = () => {
       ["Nombre de matchs", data.kpis.matchsConfirmes.value, data.kpis.matchsConfirmes.previousValue],
       ["Taux de match (%)", data.kpis.matchRate.value, data.kpis.matchRate.previousValue],
       ["Trajets effectués (%)", data.kpis.trajetsEffectues.value, data.kpis.trajetsEffectues.previousValue],
-      ["Temps médian match (min)", data.kpis.medianTimeToMatch.value, data.kpis.medianTimeToMatch.previousValue],
+      ["Trajets réalisés", data.kpis.trajetsRealises.value, data.kpis.trajetsRealises.previousValue],
       ["Taux annulation (%)", data.kpis.tauxAnnulation.value, data.kpis.tauxAnnulation.previousValue],
       ["Utilisateurs actifs/jour", data.kpis.activeUsersPerDay.value, data.kpis.activeUsersPerDay.previousValue],
       [],
@@ -230,12 +228,11 @@ const Statistiques = () => {
                   tooltip="Matchs confirmés / Annonces publiées"
                 />
                 <KpiCard
-                  label="Temps médian match"
-                  value={data.kpis.medianTimeToMatch.value}
-                  unit=" min"
-                  previousValue={data.kpis.medianTimeToMatch.previousValue}
-                  invertColors
-                  tooltip="Médiane du temps entre création et acceptation d'une demande"
+                  label="Trajets réalisés"
+                  value={data.kpis.trajetsRealises.value}
+                  unit=""
+                  previousValue={data.kpis.trajetsRealises.previousValue}
+                  tooltip="Nombre de demandes avec le statut complété sur la période"
                 />
                 <KpiCard
                   label="Taux d'annulation"
