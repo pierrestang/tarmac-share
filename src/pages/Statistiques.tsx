@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowUp, ArrowDown, Download } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
@@ -11,50 +11,26 @@ import {
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 
-interface KpiData {
-  value: number;
-  previousValue: number;
-}
-
 interface StatsData {
   kpis: {
-    trajetsPublies: KpiData;
-    matchsConfirmes: KpiData;
-    matchRate: KpiData;
-    trajetsEffectues: KpiData;
-    trajetsRealises: KpiData;
-    tauxAnnulation: KpiData;
-    activeUsersPerDay: KpiData;
+    trajetsPublies: number;
+    matchsConfirmes: number;
+    matchRate: number;
+    trajetsEffectues: number;
+    trajetsRealises: number;
+    annulations: number;
+    tauxAnnulation: number;
   };
   liquidite: { hour: number; annonces: number; matchs: number }[];
   distance: { moyenne: number; distribution: Record<string, number> };
-  funnel: {
-    annoncesPubliees: number;
-    demandesEnvoyees: number;
-    matchsConfirmes: number;
-    trajetsEffectues: number;
-  };
 }
 
 const KpiCard = ({
-  label, value, unit, previousValue, invertColors, tooltip,
+  label, value, unit, tooltip,
 }: {
-  label: string; value: number; unit: string; previousValue: number;
-  invertColors?: boolean; tooltip?: string;
+  label: string; value: number; unit: string;
+  tooltip?: string;
 }) => {
-  const diff = value - previousValue;
-  const isPositive = diff > 0;
-  const isNeutral = diff === 0;
-
-  let colorClass = "text-emerald-500";
-  if (invertColors) {
-    if (isPositive) colorClass = "text-red-500";
-    else if (!isNeutral) colorClass = "text-emerald-500";
-  } else {
-    if (!isPositive && !isNeutral) colorClass = "text-red-500";
-  }
-  if (isNeutral) colorClass = "text-amber-500";
-
   return (
     <Card className="p-4">
       <div className="flex items-center gap-1 mb-1">
@@ -73,15 +49,6 @@ const KpiCard = ({
       <p className="text-2xl font-semibold text-card-foreground">
         {value}{unit}
       </p>
-      {!isNeutral && (
-        <div className={`flex items-center gap-1 text-xs mt-1 ${colorClass}`}>
-          {isPositive ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
-          <span>{Math.abs(diff).toFixed(1)}{unit} vs période préc.</span>
-        </div>
-      )}
-      {isNeutral && (
-        <p className="text-xs mt-1 text-amber-500">= stable</p>
-      )}
     </Card>
   );
 };
@@ -144,14 +111,14 @@ const Statistiques = () => {
   const exportCsv = () => {
     if (!data) return;
     const rows = [
-      ["Métrique", "Valeur", "Période précédente"],
-      ["Annonces publiées", data.kpis.trajetsPublies.value, data.kpis.trajetsPublies.previousValue],
-      ["Nombre de matchs", data.kpis.matchsConfirmes.value, data.kpis.matchsConfirmes.previousValue],
-      ["Taux de match (%)", data.kpis.matchRate.value, data.kpis.matchRate.previousValue],
-      ["Trajets effectués (%)", data.kpis.trajetsEffectues.value, data.kpis.trajetsEffectues.previousValue],
-      ["Trajets réalisés", data.kpis.trajetsRealises.value, data.kpis.trajetsRealises.previousValue],
-      ["Taux annulation (%)", data.kpis.tauxAnnulation.value, data.kpis.tauxAnnulation.previousValue],
-      ["Utilisateurs actifs/jour", data.kpis.activeUsersPerDay.value, data.kpis.activeUsersPerDay.previousValue],
+      ["Métrique", "Valeur"],
+      ["Annonces publiées", data.kpis.trajetsPublies],
+      ["Nombre de matchs", data.kpis.matchsConfirmes],
+      ["Taux de match (%)", data.kpis.matchRate],
+      ["Trajets réalisés", data.kpis.trajetsRealises],
+      ["Trajets effectués (%)", data.kpis.trajetsEffectues],
+      ["Nombre d'annulations", data.kpis.annulations],
+      ["Taux annulation (%)", data.kpis.tauxAnnulation],
       [],
       ["Distance moyenne (km)", data.distance.moyenne],
       ["0-2 km", data.distance.distribution["0-2"]],
@@ -197,57 +164,55 @@ const Statistiques = () => {
             <Card className="p-8 text-center text-muted-foreground">Chargement...</Card>
           ) : data ? (
             <>
-              {/* KPIs */}
+              {/* Matching */}
+              <p className="text-base font-semibold text-card-foreground">Matching.</p>
               <div className="grid grid-cols-2 gap-3">
                 <KpiCard
                   label="Annonces publiées"
-                  value={data.kpis.trajetsPublies.value}
+                  value={data.kpis.trajetsPublies}
                   unit=""
-                  previousValue={data.kpis.trajetsPublies.previousValue}
                   tooltip="Nombre total de trajets publiés sur la période"
                 />
                 <KpiCard
                   label="Nombre de matchs"
-                  value={data.kpis.matchsConfirmes.value}
+                  value={data.kpis.matchsConfirmes}
                   unit=""
-                  previousValue={data.kpis.matchsConfirmes.previousValue}
                   tooltip="Demandes acceptées ou complétées sur la période"
                 />
                 <KpiCard
-                  label="Trajets effectués"
-                  value={data.kpis.trajetsEffectues.value}
-                  unit="%"
-                  previousValue={data.kpis.trajetsEffectues.previousValue}
-                  tooltip="Trajets complétés / Matchs confirmés"
-                />
-                <KpiCard
                   label="Taux de match"
-                  value={data.kpis.matchRate.value}
+                  value={data.kpis.matchRate}
                   unit="%"
-                  previousValue={data.kpis.matchRate.previousValue}
                   tooltip="Matchs confirmés / Annonces publiées"
                 />
+              </div>
+
+              {/* Trajets complétés */}
+              <p className="text-base font-semibold text-card-foreground">Trajets complétés.</p>
+              <div className="grid grid-cols-2 gap-3">
                 <KpiCard
                   label="Trajets réalisés"
-                  value={data.kpis.trajetsRealises.value}
+                  value={data.kpis.trajetsRealises}
                   unit=""
-                  previousValue={data.kpis.trajetsRealises.previousValue}
                   tooltip="Nombre de demandes avec le statut complété sur la période"
                 />
                 <KpiCard
-                  label="Taux d'annulation"
-                  value={data.kpis.tauxAnnulation.value}
+                  label="Trajets effectués"
+                  value={data.kpis.trajetsEffectues}
                   unit="%"
-                  previousValue={data.kpis.tauxAnnulation.previousValue}
-                  invertColors
-                  tooltip="Demandes refusées / (Matchs + Refus)"
+                  tooltip="Trajets complétés / Matchs confirmés"
                 />
                 <KpiCard
-                  label="Utilisateurs actifs/jour"
-                  value={data.kpis.activeUsersPerDay.value}
+                  label="Nombre d'annulations"
+                  value={data.kpis.annulations}
                   unit=""
-                  previousValue={data.kpis.activeUsersPerDay.previousValue}
-                  tooltip="Profils distincts ayant publié ou demandé, divisé par le nombre de jours"
+                  tooltip="Nombre de demandes refusées sur la période"
+                />
+                <KpiCard
+                  label="Taux d'annulation"
+                  value={data.kpis.tauxAnnulation}
+                  unit="%"
+                  tooltip="Demandes refusées / (Matchs + Refus)"
                 />
               </div>
 
