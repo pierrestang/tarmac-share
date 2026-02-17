@@ -31,7 +31,7 @@ export function useAuth() {
       password,
       options: {
         data: { first_name: firstName, last_name: lastName },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: `${window.location.origin}/comment-ca-marche`,
       },
     });
     return { error };
