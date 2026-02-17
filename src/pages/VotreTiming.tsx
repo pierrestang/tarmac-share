@@ -11,7 +11,7 @@ const VotreTiming = () => {
       style={{ backgroundColor: "#A291A9" }}
     >
       <div className="flex flex-col gap-2 px-4 pb-4">
-        <button onClick={() => navigate(-1)} className="p-1 self-start">
+        <button onClick={() => navigate("/publier")} className="p-1 self-start">
           <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
         </button>
         <h1
