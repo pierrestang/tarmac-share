@@ -16,6 +16,7 @@ interface StatsData {
     trajetsCompletesPct: number;
     trajetsCompletes: number;
     trajetsRealises: number;
+    tauxRealises: number;
     annulations: number;
     tauxAnnulation: number;
     nonRealises: number;
@@ -116,6 +117,7 @@ const Statistiques = () => {
       ["Trajets complétés", data.kpis.trajetsCompletes],
       ["Trajets complétés (%)", data.kpis.trajetsCompletesPct],
       ["Trajets réalisés", data.kpis.trajetsRealises],
+      ["Trajets réalisés (%)", data.kpis.tauxRealises],
       ["Nombre d'annulations", data.kpis.annulations],
       ["Taux annulation (%)", data.kpis.tauxAnnulation],
       ["Non réalisés (hors annulation)", data.kpis.nonRealises],
@@ -192,10 +194,6 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets réalisés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Complétés hors annulés et non réalisés (hors annulés)" />
-                </div>
-                <div className="h-px bg-muted" />
-                <div className="flex items-center justify-between">
                   <KpiRow label="Annulés" value={data.kpis.annulations} unit="" tooltip="Trajets annulés" />
                 </div>
                 <div className="h-px bg-muted" />
@@ -209,6 +207,14 @@ const Statistiques = () => {
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
                   <KpiRow label="Non réalisés (hors annulés) %" value={data.kpis.tauxNonRealises} unit="%" tooltip="Non réalisés (hors annulés) / Complétés" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Les deux voyageurs ont répondu Oui" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Réalisés %" value={data.kpis.tauxRealises} unit="%" tooltip="Réalisés / Complétés" />
                 </div>
               </Card>
 
