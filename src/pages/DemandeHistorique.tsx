@@ -139,7 +139,7 @@ const DemandeHistorique = () => {
       <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
 
       {/* Date */}
-      <p className="text-[16px] font-medium w-full max-w-[42rem]">
+      <p className="text-[16px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
@@ -276,6 +276,13 @@ const DemandeHistorique = () => {
           </div>
         </CardContent>
       </Card>
+
+      <Button 
+        onClick={() => navigate(`/messages?demandeId=${demandeId}`)}
+        className="w-full max-w-[42rem] rounded-full"
+      >
+        Voir les messages
+      </Button>
 
       <Button 
         variant="outline"
