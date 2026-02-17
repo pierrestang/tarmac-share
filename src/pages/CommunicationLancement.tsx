@@ -13,7 +13,7 @@ const CommunicationLancement = () => {
 
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
+          <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: '#3D2B3D' }}>
             <p className="text-[18px] font-semibold mb-2">Où nous trouver ?</p>
             <p>
               Pour son lancement, Tarmac se concentre sur un trajet unique afin de vous garantir un maximum de partenaires de partage :
@@ -31,7 +31,7 @@ const CommunicationLancement = () => {
         </Card>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
+          <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: '#3D2B3D' }}>
             <p className="text-[18px] font-semibold mb-2">Et après ?</p>
             <p>
               Nous préparons activement l'ouverture de nouvelles zones pour répondre à vos demandes :
@@ -47,6 +47,7 @@ const CommunicationLancement = () => {
 
         <Button
           className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2"
+          style={{ backgroundColor: '#3D2B3D', color: '#F0EEE9' }}
           onClick={() => navigate("/publier")}
         >
           Continuer
