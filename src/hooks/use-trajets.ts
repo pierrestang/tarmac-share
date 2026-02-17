@@ -159,6 +159,15 @@ export function useTrajets() {
 
   useEffect(() => {
     fetchTrajets();
+
+    const channel = supabase
+      .channel('trajets-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'trajets' }, () => {
+        fetchTrajets();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, [fetchTrajets]);
 
   const createTrajet = useCallback(async (data: Omit<Trajet, "id" | "createdAt">): Promise<Trajet> => {

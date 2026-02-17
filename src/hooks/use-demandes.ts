@@ -28,6 +28,15 @@ export function useDemandes() {
 
   useEffect(() => {
     fetchDemandes();
+
+    const channel = supabase
+      .channel('demandes-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'demandes' }, () => {
+        fetchDemandes();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, [fetchDemandes]);
 
   const createDemande = useCallback(
