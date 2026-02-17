@@ -89,8 +89,8 @@ const Evaluation = () => {
 
   return (
     <div className="flex flex-col min-h-full">
-      <div className="flex items-center gap-3 px-4 pt-6 pb-4">
-        <button onClick={() => navigate(-1)} className="p-1">
+      <div className="flex flex-col gap-2 px-4 pt-6 pb-4">
+        <button onClick={() => navigate(-1)} className="p-1 self-start">
           <ArrowLeft className="h-6 w-6 text-heading" />
         </button>
         <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
