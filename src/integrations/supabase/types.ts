@@ -342,6 +342,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_matched_trajet_ids: { Args: never; Returns: string[] }
       get_my_profile_id: { Args: never; Returns: string }
     }
     Enums: {
