@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          key: string
+          value: boolean
+        }
+        Insert: {
+          key: string
+          value?: boolean
+        }
+        Update: {
+          key?: string
+          value?: boolean
+        }
+        Relationships: []
+      }
       conversation_ratings: {
         Row: {
           comment: string

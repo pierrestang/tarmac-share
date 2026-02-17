@@ -6,6 +6,7 @@ import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useRepublications } from "@/hooks/use-republications";
+import { useAppSettings } from "@/hooks/use-app-settings";
 
 const RepublierAnnonce = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const RepublierAnnonce = () => {
   const { getDemandeById, saveDemandeSnapshot } = useDemandes();
   const { getTrajetById, createTrajet } = useTrajets();
   const { getFreeRepublications } = useRepublications();
+  const { isFreeMode } = useAppSettings();
 
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
@@ -96,11 +98,13 @@ const RepublierAnnonce = () => {
           <Card className="border-0 rounded-md w-full max-w-[42rem]">
             <CardContent className="p-6 flex flex-col gap-6">
               {/* Explanation */}
-              <p className="text-[14px] text-card-foreground">
-                {freeRepublicationsRemaining > 0
-                  ? `Votre prochaine demande sera offerte. Il vous reste ${freeRepublicationsRemaining} demande${freeRepublicationsRemaining > 1 ? "s" : ""} gratuite${freeRepublicationsRemaining > 1 ? "s" : ""}.`
-                  : "Votre prochaine demande sera au tarif normal de 1,99 €."}
-              </p>
+              {!isFreeMode && (
+                <p className="text-[14px] text-card-foreground">
+                  {freeRepublicationsRemaining > 0
+                    ? `Votre prochaine demande sera offerte. Il vous reste ${freeRepublicationsRemaining} demande${freeRepublicationsRemaining > 1 ? "s" : ""} gratuite${freeRepublicationsRemaining > 1 ? "s" : ""}.`
+                    : "Votre prochaine demande sera au tarif normal de 1,99 €."}
+                </p>
+              )}
 
               {/* Buttons */}
               <div className="flex flex-col gap-2">

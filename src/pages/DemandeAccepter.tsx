@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +8,9 @@ import { useTrajets, calculateDistance, calculateMatchScore } from "@/hooks/use-
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
+import { useMessages } from "@/hooks/use-messages";
+import { useAppSettings } from "@/hooks/use-app-settings";
+import { toast } from "@/hooks/use-toast";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { Baggage, EnrichedMatchedTraveler } from "@/types/trajet";
@@ -26,8 +30,11 @@ const DemandeAccepter = () => {
   
   const { getTrajetById } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
-  const { getDemandeById, refuseDemande } = useDemandes();
+  const { getDemandeById, refuseDemande, acceptDemande, saveDemandeSnapshot } = useDemandes();
   const { createNotification } = useNotifications();
+  const { createConversation } = useMessages();
+  const { isFreeMode } = useAppSettings();
+  const [isAccepting, setIsAccepting] = useState(false);
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -59,8 +66,35 @@ const DemandeAccepter = () => {
     sentDemandeId: null,
   } : null;
 
-  const handleAccept = () => {
-    navigate(`/paiement?type=acceptation&demandeId=${demandeId}`);
+  const handleAccept = async () => {
+    if (isFreeMode) {
+      if (isAccepting || !demandeId || !demande || !myProfile) return;
+      setIsAccepting(true);
+      try {
+        await saveDemandeSnapshot(demandeId);
+        await acceptDemande(demandeId, getProfileById);
+        await createConversation(demandeId, [demande.fromProfileId, demande.toProfileId]);
+        try {
+          await createNotification({
+            profileId: demande.fromProfileId,
+            type: "demande_accepted",
+            title: "Demande acceptée",
+            message: `${myProfile.firstName} a accepté votre demande`,
+            demandeId: demande.id,
+            relatedProfileId: myProfile.id,
+          });
+        } catch (e) {
+          console.error("Erreur notification:", e);
+        }
+        navigate("/messages");
+      } catch (error: any) {
+        toast({ title: error?.message || "Une erreur est survenue.", variant: "destructive" });
+      } finally {
+        setIsAccepting(false);
+      }
+    } else {
+      navigate(`/paiement?type=acceptation&demandeId=${demandeId}`);
+    }
   };
 
   const handleRefuse = async () => {

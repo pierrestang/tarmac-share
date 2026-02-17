@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
@@ -85,6 +87,7 @@ const Statistiques = () => {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const { isFreeMode, toggleFreeMode } = useAppSettings();
 
   const handleResetData = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -167,6 +170,12 @@ const Statistiques = () => {
 
       <div className="flex justify-center px-4">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
+          {/* Free mode toggle */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-card-foreground">Mode gratuit</span>
+            <Switch checked={isFreeMode} onCheckedChange={toggleFreeMode} />
+          </div>
+
           {/* Period filter */}
           <div className="flex gap-2">
             {[7, 30, 90].map((d) => (
