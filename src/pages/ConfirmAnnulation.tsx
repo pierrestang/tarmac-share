@@ -1,4 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMessages } from "@/hooks/use-messages";
@@ -71,8 +72,9 @@ const ConfirmAnnulation = () => {
       ratedProfileId: activeProfile.id,
     });
 
-    // Complete demande and save snapshot
+    // Complete demande, mark as cancelled, and save snapshot
     await completeDemande(conversation.demandeId);
+    await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", conversation.demandeId);
     await saveDemandeSnapshot(conversation.demandeId);
 
     navigate("/messages", { replace: true });

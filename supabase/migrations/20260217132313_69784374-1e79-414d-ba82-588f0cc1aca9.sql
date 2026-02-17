@@ -1,0 +1,1 @@
+ALTER TABLE public.demandes ADD COLUMN was_cancelled boolean NOT NULL DEFAULT false;

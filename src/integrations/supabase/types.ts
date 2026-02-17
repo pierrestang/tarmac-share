@@ -83,6 +83,7 @@ export type Database = {
           to_trajet_id: string
           type: string
           updated_at: number
+          was_cancelled: boolean
         }
         Insert: {
           created_at?: number
@@ -95,6 +96,7 @@ export type Database = {
           to_trajet_id: string
           type: string
           updated_at?: number
+          was_cancelled?: boolean
         }
         Update: {
           created_at?: number
@@ -107,6 +109,7 @@ export type Database = {
           to_trajet_id?: string
           type?: string
           updated_at?: number
+          was_cancelled?: boolean
         }
         Relationships: [
           {

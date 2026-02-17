@@ -27,7 +27,7 @@ const Evaluation = () => {
     return null;
   }
 
-  const handleAnswer = async () => {
+  const handleAnswer = async (wasUseful: boolean) => {
     if (isSubmitting || hasRedirected.current) return;
     if (!activeProfile) return;
 
@@ -52,6 +52,11 @@ const Evaluation = () => {
     setIsSubmitting(true);
 
     await closeConversation(conversationId, activeProfile.id);
+
+    // If user answered negatively, mark demande as cancelled
+    if (!wasUseful) {
+      await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", convRow.demande_id);
+    }
 
     // Query DB directly to get fresh closed_by (state may not be updated yet)
     const { data: freshRow } = await supabase
@@ -87,7 +92,7 @@ const Evaluation = () => {
             <CardContent className="p-6 flex flex-col gap-6">
               <div className="flex gap-3">
                 <Button
-                  onClick={() => handleAnswer()}
+                  onClick={() => handleAnswer(true)}
                   disabled={isSubmitting}
                   className="flex-1 rounded-full text-[24px]"
                 >
@@ -95,7 +100,7 @@ const Evaluation = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => handleAnswer()}
+                  onClick={() => handleAnswer(false)}
                   disabled={isSubmitting}
                   className="flex-1 rounded-full text-[24px]"
                 >
