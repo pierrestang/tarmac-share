@@ -48,13 +48,24 @@ Deno.serve(async (req) => {
     const periodStart = now - days * 24 * 60 * 60 * 1000;
 
     // Fetch all data needed
-    const [trajetsRes, demandesRes] = await Promise.all([
+    const [trajetsRes, demandesRes, ratingsRes] = await Promise.all([
       supabase.from("trajets").select("*"),
       supabase.from("demandes").select("*"),
+      supabase.from("conversation_ratings").select("conversation_id, was_useful"),
     ]);
 
     const allTrajets = trajetsRes.data || [];
     const allDemandes = demandesRes.data || [];
+    const allRatings = ratingsRes.data || [];
+
+    // Build set of demande_ids with negative ratings (👎)
+    // Need conversations to map conversation -> demande
+    const convsRes = await supabase.from("conversations").select("id, demande_id");
+    const allConvs = convsRes.data || [];
+    const negativeRatingConvIds = new Set(allRatings.filter((r: any) => !r.was_useful).map((r: any) => r.conversation_id));
+    const negativeDemandeIds = new Set(
+      allConvs.filter((c: any) => negativeRatingConvIds.has(c.id)).map((c: any) => c.demande_id)
+    );
 
     // Period filters
     const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
@@ -64,47 +75,17 @@ Deno.serve(async (req) => {
     const annonces = currentTrajets.length;
     const matchsConfirmes = currentDemandes.filter((d: any) => d.status === "accepted" || d.status === "completed").length;
     const trajetsEffectues = currentDemandes.filter((d: any) => d.status === "completed").length;
-    const annulations = currentDemandes.filter((d: any) => d.status === "completed" && d.was_cancelled === true).length;
+    
+    // Annulations = was_cancelled=true BUT not a negative rating (pure cancellation via button)
+    const annulations = currentDemandes.filter((d: any) => d.status === "completed" && d.was_cancelled === true && !negativeDemandeIds.has(d.id)).length;
+    
+    // Non réalisés (hors annulation) = negative rating (👎)
+    const nonRealises = currentDemandes.filter((d: any) => d.status === "completed" && negativeDemandeIds.has(d.id)).length;
 
     const matchRate = annonces > 0 ? ((matchsConfirmes * 2) / annonces) * 100 : 0;
     const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
     const tauxAnnulation = trajetsEffectues > 0 ? (annulations / trajetsEffectues) * 100 : 0;
-
-    // --- Liquidite (hourly distribution for current period) ---
-    const liquidite = Array.from({ length: 24 }, (_, hour) => {
-      const annonces = currentTrajets.filter((t: any) => {
-        const h = new Date(t.created_at).getHours();
-        return h === hour;
-      }).length;
-      const matchs = currentDemandes.filter((d: any) => {
-        if (d.status !== "accepted" && d.status !== "completed") return false;
-        const h = new Date(d.updated_at).getHours();
-        return h === hour;
-      }).length;
-      return { hour, annonces, matchs };
-    });
-
-    // --- Distance ---
-    const matchedDemandes = currentDemandes.filter((d: any) => d.status === "accepted" || d.status === "completed");
-    const distances: number[] = [];
-    for (const dem of matchedDemandes) {
-      const fromTrajet = allTrajets.find((t: any) => t.id === dem.from_trajet_id);
-      const toTrajet = allTrajets.find((t: any) => t.id === dem.to_trajet_id);
-      if (fromTrajet?.destination_lat && toTrajet?.destination_lat) {
-        const dist = haversine(
-          fromTrajet.destination_lat, fromTrajet.destination_lng,
-          toTrajet.destination_lat, toTrajet.destination_lng
-        );
-        distances.push(dist);
-      }
-    }
-    const distMoyenne = distances.length > 0 ? distances.reduce((a, b) => a + b, 0) / distances.length : 0;
-    const distDistribution = {
-      "0-2": distances.filter(d => d <= 2).length,
-      "2-3": distances.filter(d => d > 2 && d <= 3).length,
-      "3-5": distances.filter(d => d > 3 && d <= 5).length,
-    };
-
+    const tauxNonRealises = trajetsEffectues > 0 ? (nonRealises / trajetsEffectues) * 100 : 0;
 
     const trajetsRealises = currentDemandes.filter((d: any) => d.status === "completed" && !d.was_cancelled).length;
 
@@ -118,9 +99,9 @@ Deno.serve(async (req) => {
         trajetsRealises: trajetsRealises,
         annulations: annulations,
         tauxAnnulation: round(tauxAnnulation),
+        nonRealises: nonRealises,
+        tauxNonRealises: round(tauxNonRealises),
       },
-      liquidite,
-      distance: { moyenne: round(distMoyenne, 2), distribution: distDistribution },
     };
 
     return new Response(JSON.stringify(result), {
