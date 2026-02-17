@@ -11,11 +11,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  formatDateInput,
-  dateInputToStorageFormat,
-  storageDateToInputFormat,
-  isDateInputComplete,
-  formatDateShort,
+  formatBirthDateInput,
+  birthDateInputToStorageFormat,
+  storageBirthDateToInputFormat,
+  isBirthDateInputComplete,
 } from "@/lib/date-time-utils";
 import { parse, format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -168,10 +167,10 @@ const Inscription = () => {
                   inputMode="numeric"
                   value={birthInput}
                   onChange={(e) => {
-                    const formatted = formatDateInput(e.target.value);
+                    const formatted = formatBirthDateInput(e.target.value);
                     setBirthInput(formatted);
-                    if (isDateInputComplete(formatted)) {
-                      const storageDate = dateInputToStorageFormat(formatted);
+                    if (isBirthDateInputComplete(formatted)) {
+                      const storageDate = birthDateInputToStorageFormat(formatted);
                       if (storageDate) {
                         setBirthDate(storageDate);
                         setIsEditingBirth(false);
@@ -187,7 +186,7 @@ const Inscription = () => {
               ) : (
                 <div
                   onClick={() => {
-                    setBirthInput(storageDateToInputFormat(birthDate));
+                    setBirthInput(storageBirthDateToInputFormat(birthDate));
                     setIsEditingBirth(true);
                     setTimeout(() => birthInputRef.current?.focus(), 0);
                   }}
