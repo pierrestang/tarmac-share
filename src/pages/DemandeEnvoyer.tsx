@@ -7,6 +7,10 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { VoyageurCard } from "@/components/VoyageurCard";
 import { useTrajets, calculateMatchScore, calculateDrivingDistance } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
+import { useDemandes } from "@/hooks/use-demandes";
+import { useNotifications } from "@/hooks/use-notifications";
+import { useAppSettings } from "@/hooks/use-app-settings";
+import { toast } from "@/hooks/use-toast";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { Baggage, EnrichedMatchedTraveler } from "@/types/trajet";
@@ -26,6 +30,9 @@ const DemandeEnvoyer = () => {
   
   const { trajets, getTrajetById } = useTrajets();
   const { getActiveProfile, getProfileById } = useProfiles();
+  const { createDemande, getPendingDemandeByTrajetIds } = useDemandes();
+  const { createNotification } = useNotifications();
+  const { isFreeMode } = useAppSettings();
 
   // Get voyageur data
   const voyageurTrajet = voyageurId ? getTrajetById(voyageurId) : null;
@@ -74,8 +81,48 @@ const DemandeEnvoyer = () => {
     sentDemandeId: null,
   } : null;
 
-  const handleSendRequest = () => {
-    navigate(`/paiement?voyageurId=${voyageurId}&type=envoi${myTrajetIdParam ? `&myTrajetId=${myTrajetIdParam}` : ''}`);
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSendRequest = async () => {
+    if (isFreeMode) {
+      if (isSending) return;
+      setIsSending(true);
+      try {
+        if (!myTrajet || !myProfile || !voyageurTrajet) return;
+        const existingDemande = getPendingDemandeByTrajetIds(myTrajet.id, voyageurTrajet.id);
+        if (existingDemande) {
+          toast({ title: "Demande déjà envoyée !" });
+          navigate("/trajets");
+          return;
+        }
+        const newDemande = await createDemande({
+          type: "sent",
+          fromProfileId: myProfile.id,
+          toProfileId: voyageurTrajet.profileId,
+          fromTrajetId: myTrajet.id,
+          toTrajetId: voyageurTrajet.id,
+        });
+        try {
+          await createNotification({
+            profileId: voyageurTrajet.profileId,
+            type: "demande_received",
+            title: "Nouvelle demande",
+            message: `${myProfile.firstName} souhaite voyager avec vous`,
+            demandeId: newDemande.id,
+            relatedProfileId: myProfile.id,
+          });
+        } catch (e) {
+          console.error("Erreur notification:", e);
+        }
+        navigate("/trajets");
+      } catch (error: any) {
+        toast({ title: error?.message || "Une erreur est survenue.", variant: "destructive" });
+      } finally {
+        setIsSending(false);
+      }
+    } else {
+      navigate(`/paiement?voyageurId=${voyageurId}&type=envoi${myTrajetIdParam ? `&myTrajetId=${myTrajetIdParam}` : ''}`);
+    }
   };
 
   const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile || !distLoaded;
