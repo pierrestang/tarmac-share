@@ -164,15 +164,15 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Matching.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annonces publiées" value={data.kpis.trajetsPublies} unit="" tooltip="Nombre total de trajets publiés sur la période" />
+                  <KpiRow label="Annonces" value={data.kpis.trajetsPublies} unit="" tooltip="Nombre total d'annonces" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Nombre de matchs" value={data.kpis.matchsConfirmes} unit="" tooltip="Demandes acceptées ou complétées sur la période" />
+                  <KpiRow label="Matchs" value={data.kpis.matchsConfirmes} unit="" tooltip="Demandes acceptées ou complétées" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Taux de match" value={data.kpis.matchRate} unit="%" tooltip="(Matchs confirmés × 2) / Annonces publiées" />
+                  <KpiRow label="Matchs %" value={data.kpis.matchRate} unit="%" tooltip="(Matchs x 2) / Annonces" />
                 </div>
               </Card>
 
@@ -180,11 +180,11 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets complétés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets complétés" value={data.kpis.trajetsCompletes} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
+                  <KpiRow label="Complétés" value={data.kpis.trajetsCompletes} unit="" tooltip="Demandes avec le statut complété" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets complétés (%)" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Trajets complétés / Matchs confirmés" />
+                  <KpiRow label="Complétés %" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Complétés / Matchs" />
                 </div>
               </Card>
 
@@ -192,23 +192,23 @@ const Statistiques = () => {
               <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets réalisés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Trajets réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Trajets complétés sans annulation ni évaluation négative" />
+                  <KpiRow label="Réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Complétés hors annulés et non réalisés (hors annulés)" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annulations" value={data.kpis.annulations} unit="" tooltip="Trajets complétés annulés via 'Je dois annuler'" />
+                  <KpiRow label="Annulés" value={data.kpis.annulations} unit="" tooltip="Trajets annulés" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annulations (%)" value={data.kpis.tauxAnnulation} unit="%" tooltip="Annulations / Trajets complétés" />
+                  <KpiRow label="Annulés %" value={data.kpis.tauxAnnulation} unit="%" tooltip="Annulés / Complétés" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Non réalisés (hors annulation)" value={data.kpis.nonRealises} unit="" tooltip="Trajets où un voyageur a répondu 👎 à 'Le trajet a-t-il eu lieu ?'" />
+                  <KpiRow label="Non réalisés (hors annulés)" value={data.kpis.nonRealises} unit="" tooltip="Trajets non réalisés (hors annulés)" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Non réalisés (hors annulation) (%)" value={data.kpis.tauxNonRealises} unit="%" tooltip="Non réalisés (hors annulation) / Trajets complétés" />
+                  <KpiRow label="Non réalisés (hors annulés) %" value={data.kpis.tauxNonRealises} unit="%" tooltip="Non réalisés (hors annulés) / Complétés" />
                 </div>
               </Card>
 
