@@ -100,8 +100,8 @@ const Evaluation = () => {
 
       <div className="flex-1 px-4 pb-6">
         <div className="max-w-[42rem] mx-auto">
-          <Card className="border-0 rounded-md">
-            <CardContent className="p-6 flex flex-col gap-6">
+          <Card className="border-0 rounded-md shadow-none bg-transparent">
+            <CardContent className="p-0 flex flex-col gap-6">
               <div className="flex gap-3">
                 <Button
                   onClick={() => handleAnswer(true)}
