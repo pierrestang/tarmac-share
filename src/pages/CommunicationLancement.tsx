@@ -5,7 +5,8 @@ const CommunicationLancement = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-col gap-6 px-3 pt-6 pb-6" style={{ backgroundColor: '#A291A9', minHeight: '100dvh' }}>
+    <div className="fixed inset-0 overflow-auto" style={{ backgroundColor: '#A291A9' }}>
+    <section className="flex flex-col gap-6 px-3 pt-6 pb-6" style={{ minHeight: '100dvh' }}>
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ.</h1>
       </div>
@@ -53,6 +54,7 @@ const CommunicationLancement = () => {
         </button>
       </div>
     </section>
+    </div>
   );
 };
 
