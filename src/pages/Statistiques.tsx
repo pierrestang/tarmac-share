@@ -25,15 +25,15 @@ interface StatsData {
   distance: { moyenne: number; distribution: Record<string, number> };
 }
 
-const KpiCard = ({
+const KpiRow = ({
   label, value, unit, tooltip,
 }: {
   label: string; value: number; unit: string;
   tooltip?: string;
 }) => {
   return (
-    <Card className="p-4">
-      <div className="flex items-center gap-1 mb-1">
+    <div className="flex items-center justify-between w-full">
+      <div className="flex items-center gap-1">
         <p className="text-xs text-muted-foreground">{label}</p>
         {tooltip && (
           <Popover>
@@ -46,10 +46,10 @@ const KpiCard = ({
           </Popover>
         )}
       </div>
-      <p className="text-2xl font-semibold text-card-foreground">
+      <p className="text-base font-semibold text-card-foreground">
         {value}{unit}
       </p>
-    </Card>
+    </div>
   );
 };
 
@@ -165,56 +165,40 @@ const Statistiques = () => {
           ) : data ? (
             <>
               {/* Matching */}
-              <p className="text-base font-semibold text-card-foreground">Matching.</p>
-              <div className="grid grid-cols-2 gap-3">
-                <KpiCard
-                  label="Annonces publiées"
-                  value={data.kpis.trajetsPublies}
-                  unit=""
-                  tooltip="Nombre total de trajets publiés sur la période"
-                />
-                <KpiCard
-                  label="Nombre de matchs"
-                  value={data.kpis.matchsConfirmes}
-                  unit=""
-                  tooltip="Demandes acceptées ou complétées sur la période"
-                />
-                <KpiCard
-                  label="Taux de match"
-                  value={data.kpis.matchRate}
-                  unit="%"
-                  tooltip="Matchs confirmés / Annonces publiées"
-                />
-              </div>
+              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Matching.</p>
+              <Card className="p-4 flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Annonces publiées" value={data.kpis.trajetsPublies} unit="" tooltip="Nombre total de trajets publiés sur la période" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Nombre de matchs" value={data.kpis.matchsConfirmes} unit="" tooltip="Demandes acceptées ou complétées sur la période" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Taux de match" value={data.kpis.matchRate} unit="%" tooltip="(Matchs confirmés × 2) / Annonces publiées" />
+                </div>
+              </Card>
 
               {/* Trajets complétés */}
-              <p className="text-base font-semibold text-card-foreground">Trajets complétés.</p>
-              <div className="grid grid-cols-2 gap-3">
-                <KpiCard
-                  label="Trajets réalisés"
-                  value={data.kpis.trajetsRealises}
-                  unit=""
-                  tooltip="Nombre de demandes avec le statut complété sur la période"
-                />
-                <KpiCard
-                  label="Trajets effectués"
-                  value={data.kpis.trajetsEffectues}
-                  unit="%"
-                  tooltip="Trajets complétés / Matchs confirmés"
-                />
-                <KpiCard
-                  label="Nombre d'annulations"
-                  value={data.kpis.annulations}
-                  unit=""
-                  tooltip="Nombre de demandes refusées sur la période"
-                />
-                <KpiCard
-                  label="Taux d'annulation"
-                  value={data.kpis.tauxAnnulation}
-                  unit="%"
-                  tooltip="Demandes refusées / (Matchs + Refus)"
-                />
-              </div>
+              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets complétés.</p>
+              <Card className="p-4 flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Trajets réalisés" value={data.kpis.trajetsRealises} unit="" tooltip="Nombre de demandes avec le statut complété sur la période" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Trajets réalisés (%)" value={data.kpis.trajetsEffectues} unit="%" tooltip="Trajets complétés / Matchs confirmés" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Annulations" value={data.kpis.annulations} unit="" tooltip="Nombre de demandes refusées sur la période" />
+                </div>
+                <div className="h-px bg-muted" />
+                <div className="flex items-center justify-between">
+                  <KpiRow label="Annulations (%)" value={data.kpis.tauxAnnulation} unit="%" tooltip="Demandes refusées / (Matchs + Refus)" />
+                </div>
+              </Card>
 
               {/* Liquidité chart */}
               <Card className="p-4">

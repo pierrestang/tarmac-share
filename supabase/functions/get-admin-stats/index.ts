@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
     const trajetsEffectues = currentDemandes.filter((d: any) => d.status === "completed").length;
     const annulations = currentDemandes.filter((d: any) => d.status === "refused").length;
 
-    const matchRate = annonces > 0 ? (matchsConfirmes / annonces) * 100 : 0;
+    const matchRate = annonces > 0 ? ((matchsConfirmes * 2) / annonces) * 100 : 0;
     const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
     const tauxAnnulation = (matchsConfirmes + annulations) > 0 ? (annulations / (matchsConfirmes + annulations)) * 100 : 0;
 
