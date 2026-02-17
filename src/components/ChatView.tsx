@@ -84,7 +84,21 @@ const ChatView = ({
           </div>
         ) : (
           <div className="flex flex-col">
-            {messages.map((message, index) => {
+            {messages.map((msg, index) => {
+              // Transform cancellation system messages for the current user
+              let message = msg;
+              if (msg.type === "system") {
+                const cancelMatch = msg.content.match(/^\[CANCELLED_BY:([^\]]+)\] (.+)/);
+                if (cancelMatch) {
+                  const cancellerId = cancelMatch[1];
+                  message = {
+                    ...msg,
+                    content: cancellerId === currentProfileId
+                      ? "Vous avez annulé le trajet. Le trajet est considéré comme terminé."
+                      : cancelMatch[2],
+                  };
+                }
+              }
               const isOwn = message.senderId === currentProfileId;
               const next = messages[index + 1];
               const isLastInGroup = !next || next.senderId !== message.senderId || next.type === "system";

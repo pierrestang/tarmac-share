@@ -15,7 +15,7 @@ interface ChatBubbleProps {
 const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }: ChatBubbleProps) => {
   // System message
   if (message.type === "system") {
-    const isCancellation = message.content.includes("a annulé le trajet");
+    const isCancellation = message.content.includes("a annulé le trajet") || message.content.includes("Vous avez annulé le trajet");
     const isCompleted = message.content === "Le trajet est terminé";
     return (
       <div className="flex justify-center my-2">
