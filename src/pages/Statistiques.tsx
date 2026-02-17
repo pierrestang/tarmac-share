@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowUp, ArrowDown, Download } from "lucide-react";
+import { ArrowLeft, ArrowUp, ArrowDown, Download, Info } from "lucide-react";
+import { Tooltip as UiTooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend,
 } from "recharts";
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
@@ -18,6 +19,7 @@ interface KpiData {
 interface StatsData {
   kpis: {
     trajetsPublies: KpiData;
+    matchsConfirmes: KpiData;
     matchRate: KpiData;
     trajetsEffectues: KpiData;
     medianTimeToMatch: KpiData;
@@ -35,10 +37,10 @@ interface StatsData {
 }
 
 const KpiCard = ({
-  label, value, unit, previousValue, invertColors,
+  label, value, unit, previousValue, invertColors, tooltip,
 }: {
   label: string; value: number; unit: string; previousValue: number;
-  invertColors?: boolean;
+  invertColors?: boolean; tooltip?: string;
 }) => {
   const diff = value - previousValue;
   const isPositive = diff > 0;
@@ -55,7 +57,21 @@ const KpiCard = ({
 
   return (
     <Card className="p-4">
-      <p className="text-xs text-muted-foreground mb-1">{label}</p>
+      <div className="flex items-center gap-1 mb-1">
+        <p className="text-xs text-muted-foreground">{label}</p>
+        {tooltip && (
+          <TooltipProvider>
+            <UiTooltip>
+              <TooltipTrigger asChild>
+                <Info size={12} className="text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[200px] text-xs">
+                {tooltip}
+              </TooltipContent>
+            </UiTooltip>
+          </TooltipProvider>
+        )}
+      </div>
       <p className="text-2xl font-semibold text-card-foreground">
         {value}{unit}
       </p>
@@ -131,7 +147,8 @@ const Statistiques = () => {
     if (!data) return;
     const rows = [
       ["Métrique", "Valeur", "Période précédente"],
-      ["Trajets publiés", data.kpis.trajetsPublies.value, data.kpis.trajetsPublies.previousValue],
+      ["Annonces publiées", data.kpis.trajetsPublies.value, data.kpis.trajetsPublies.previousValue],
+      ["Nombre de matchs", data.kpis.matchsConfirmes.value, data.kpis.matchsConfirmes.previousValue],
       ["Taux de match (%)", data.kpis.matchRate.value, data.kpis.matchRate.previousValue],
       ["Trajets effectués (%)", data.kpis.trajetsEffectues.value, data.kpis.trajetsEffectues.previousValue],
       ["Temps médian match (min)", data.kpis.medianTimeToMatch.value, data.kpis.medianTimeToMatch.previousValue],
@@ -185,22 +202,32 @@ const Statistiques = () => {
               {/* KPIs */}
               <div className="grid grid-cols-2 gap-3">
                 <KpiCard
-                  label="Trajets publiés"
+                  label="Annonces publiées"
                   value={data.kpis.trajetsPublies.value}
                   unit=""
                   previousValue={data.kpis.trajetsPublies.previousValue}
+                  tooltip="Nombre total de trajets publiés sur la période"
+                />
+                <KpiCard
+                  label="Nombre de matchs"
+                  value={data.kpis.matchsConfirmes.value}
+                  unit=""
+                  previousValue={data.kpis.matchsConfirmes.previousValue}
+                  tooltip="Demandes acceptées ou complétées sur la période"
                 />
                 <KpiCard
                   label="Trajets effectués"
                   value={data.kpis.trajetsEffectues.value}
                   unit="%"
                   previousValue={data.kpis.trajetsEffectues.previousValue}
+                  tooltip="Trajets complétés / Matchs confirmés"
                 />
                 <KpiCard
                   label="Taux de match"
                   value={data.kpis.matchRate.value}
                   unit="%"
                   previousValue={data.kpis.matchRate.previousValue}
+                  tooltip="Matchs confirmés / Annonces publiées"
                 />
                 <KpiCard
                   label="Temps médian match"
@@ -208,6 +235,7 @@ const Statistiques = () => {
                   unit=" min"
                   previousValue={data.kpis.medianTimeToMatch.previousValue}
                   invertColors
+                  tooltip="Médiane du temps entre création et acceptation d'une demande"
                 />
                 <KpiCard
                   label="Taux d'annulation"
@@ -215,12 +243,14 @@ const Statistiques = () => {
                   unit="%"
                   previousValue={data.kpis.tauxAnnulation.previousValue}
                   invertColors
+                  tooltip="Demandes refusées / (Matchs + Refus)"
                 />
                 <KpiCard
                   label="Utilisateurs actifs/jour"
                   value={data.kpis.activeUsersPerDay.value}
                   unit=""
                   previousValue={data.kpis.activeUsersPerDay.previousValue}
+                  tooltip="Profils distincts ayant publié ou demandé, divisé par le nombre de jours"
                 />
               </div>
 
@@ -232,7 +262,7 @@ const Statistiques = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(214 32% 91%)" />
                     <XAxis dataKey="hour" tick={{ fontSize: 10 }} tickFormatter={(h) => `${h}h`} />
                     <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
-                    <Tooltip />
+                    <RechartsTooltip />
                     <Legend wrapperStyle={{ fontSize: 12 }} />
                     <Bar dataKey="annonces" fill="hsl(207 22% 39%)" name="Annonces" radius={[2, 2, 0, 0]} />
                     <Bar dataKey="matchs" fill="hsl(210 46% 69%)" name="Matchs" radius={[2, 2, 0, 0]} />
