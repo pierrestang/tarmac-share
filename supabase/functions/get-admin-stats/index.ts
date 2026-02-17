@@ -105,13 +105,6 @@ Deno.serve(async (req) => {
       "3-5": distances.filter(d => d > 3 && d <= 5).length,
     };
 
-    // --- Funnel ---
-    const funnel = {
-      annoncesPubliees: current.annonces,
-      demandesEnvoyees: currentDemandes.length,
-      matchsConfirmes: current.matchsConfirmes,
-      trajetsEffectues: current.trajetsEffectues,
-    };
 
     const result = {
       kpis: {
