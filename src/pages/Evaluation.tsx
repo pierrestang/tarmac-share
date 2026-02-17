@@ -31,6 +31,10 @@ const Evaluation = () => {
     return null;
   }
 
+  if (!activeProfile) {
+    return null;
+  }
+
   const handleAnswer = async (wasUseful: boolean) => {
     if (isSubmitting || hasRedirected.current) return;
     if (!activeProfile) return;
@@ -135,11 +139,6 @@ const Evaluation = () => {
                 </Button>
               </div>
 
-              {!activeProfile && (
-                <p className="text-sm text-destructive text-center">
-                  Profil non chargé. Veuillez patienter ou rafraîchir la page.
-                </p>
-              )}
             </CardContent>
           </Card>
 
