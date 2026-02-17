@@ -3,13 +3,13 @@ import { useUnreadMessagesCount } from "@/hooks/use-messages";
 import { useNotificationsUnreadCount } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
 import { cn } from "@/lib/utils";
-import { MapPin, PlusCircle, MessageCircle, User } from "lucide-react";
+import { MapPin, PlusCircle, MessageCircle, CircleUserRound } from "lucide-react";
 
 const tabs: Array<{ label: string; to: string; hasBadge?: boolean; icon: React.ElementType }> = [
   { label: "Trajets", to: "/trajets", icon: MapPin },
   { label: "Publier", to: "/publier", icon: PlusCircle },
   { label: "Messages", to: "/messages", hasBadge: true, icon: MessageCircle },
-  { label: "Compte", to: "/compte", icon: User },
+  { label: "Compte", to: "/compte", icon: CircleUserRound },
 ];
 
 export function BottomTabs() {
