@@ -6,7 +6,7 @@ const CommunicationLancement = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
+    <section className="flex flex-col gap-6 px-3 pt-6 pb-6 min-h-screen" style={{ backgroundColor: '#A291A9' }}>
       <div className="flex justify-center px-4">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ.</h1>
       </div>
