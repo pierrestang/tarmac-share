@@ -69,8 +69,8 @@ const App = () => (
               <Route path="statistiques" element={<Statistiques />} />
               <Route path="tour-de-controle" element={<TourDeControle />} />
               <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
-              <Route path="votre-timing" element={<VotreTiming />} />
             </Route>
+            <Route path="votre-timing" element={<VotreTiming />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
