@@ -46,25 +46,30 @@ const DemandeEnvoyer = () => {
 
   // Use driving distance for consistency with /matches
   const [drivingDist, setDrivingDist] = useState<number | null>(null);
+  const [distLoaded, setDistLoaded] = useState(false);
 
   useEffect(() => {
+    setDistLoaded(false);
     if (myTrajet?.destinationCoords && voyageurTrajet?.destinationCoords) {
       calculateDrivingDistance(myTrajet.destinationCoords, [voyageurTrajet.destinationCoords])
-        .then((results) => setDrivingDist(results[0]));
+        .then((results) => {
+          setDrivingDist(results[0]);
+          setDistLoaded(true);
+        });
     }
   }, [myTrajet?.destinationCoords?.lat, myTrajet?.destinationCoords?.lng, voyageurTrajet?.destinationCoords?.lat, voyageurTrajet?.destinationCoords?.lng]);
 
   const distance = drivingDist;
-  const compatibilityScore = myTrajet && voyageurTrajet 
+  const compatibilityScore = myTrajet && voyageurTrajet && distLoaded
     ? calculateMatchScore(myTrajet, voyageurTrajet, drivingDist) 
-    : 0;
+    : null;
 
   // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
     distance: distance ?? 0,
-    compatibilityScore,
+    compatibilityScore: compatibilityScore ?? 0,
     receivedDemandeId: null,
     sentDemandeId: null,
   } : null;
@@ -73,7 +78,7 @@ const DemandeEnvoyer = () => {
     navigate(`/paiement?voyageurId=${voyageurId}&type=envoi${myTrajetIdParam ? `&myTrajetId=${myTrajetIdParam}` : ''}`);
   };
 
-  const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile;
+  const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile || !distLoaded;
 
   if (isLoading) {
     return (
