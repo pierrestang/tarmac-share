@@ -81,7 +81,7 @@ export function DemandeCard({
 
   // Determine button label
   const getButtonLabel = () => {
-    if (isAccepted) return "Voir trajet";
+    if (isAccepted) return "Voir le trajet";
     if (isCompleted) return "Voir les détails";
     return "Voir le trajet";
   };
