@@ -5,6 +5,9 @@ import { useMessages } from "@/hooks/use-messages";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useNotifications } from "@/hooks/use-notifications";
 import { useDemandes } from "@/hooks/use-demandes";
+import { useTrajets } from "@/hooks/use-trajets";
+import { format, parse } from "date-fns";
+import { fr } from "date-fns/locale";
 
 import ConversationList from "@/components/ConversationList";
 import ChatView from "@/components/ChatView";
@@ -35,7 +38,8 @@ const Messages = () => {
   
   const { getActiveProfile, getProfileById } = useProfiles();
   const { notifications, createNotification } = useNotifications();
-  const { completeDemande, saveDemandeSnapshot } = useDemandes();
+  const { completeDemande, saveDemandeSnapshot, getDemandeById } = useDemandes();
+  const { getTrajetById } = useTrajets();
 
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
@@ -289,6 +293,19 @@ const Messages = () => {
               const msgs = getMessages(conversation.id);
               const hasCancelMessage = msgs.some(m => m.content === "Je dois annuler" && m.type !== "system");
               return hasCancelMessage ? "cancelled" : "completed";
+            }}
+            getConversationDate={(conversation) => {
+              const demande = getDemandeById(conversation.demandeId);
+              if (!demande) return undefined;
+              const trajetId = demande.fromProfileId === profileId ? demande.fromTrajetId : demande.toTrajetId;
+              const trajet = getTrajetById(trajetId);
+              if (!trajet) return undefined;
+              try {
+                const parsed = parse(trajet.date, "dd/MM/yyyy", new Date());
+                return format(parsed, "EEE d MMMM", { locale: fr }).replace(/^\w/, c => c.toUpperCase());
+              } catch {
+                return trajet.date;
+              }
             }}
           />
         </TabsContent>
