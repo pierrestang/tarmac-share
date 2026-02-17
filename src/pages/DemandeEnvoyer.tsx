@@ -1,10 +1,11 @@
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { VoyageurCard } from "@/components/VoyageurCard";
-import { useTrajets, calculateDistance, calculateMatchScore } from "@/hooks/use-trajets";
+import { useTrajets, calculateMatchScore, calculateDrivingDistance } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -43,13 +44,19 @@ const DemandeEnvoyer = () => {
     ) || null;
   }
 
-  // Always recalculate from actual trajet data
-  const distance = myTrajet && voyageurTrajet 
-    ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords) 
-    : null;
-  
+  // Use driving distance for consistency with /matches
+  const [drivingDist, setDrivingDist] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (myTrajet?.destinationCoords && voyageurTrajet?.destinationCoords) {
+      calculateDrivingDistance(myTrajet.destinationCoords, [voyageurTrajet.destinationCoords])
+        .then((results) => setDrivingDist(results[0]));
+    }
+  }, [myTrajet?.destinationCoords?.lat, myTrajet?.destinationCoords?.lng, voyageurTrajet?.destinationCoords?.lat, voyageurTrajet?.destinationCoords?.lng]);
+
+  const distance = drivingDist;
   const compatibilityScore = myTrajet && voyageurTrajet 
-    ? calculateMatchScore(myTrajet, voyageurTrajet) 
+    ? calculateMatchScore(myTrajet, voyageurTrajet, drivingDist) 
     : 0;
 
   // Build EnrichedMatchedTraveler for VoyageurCard
