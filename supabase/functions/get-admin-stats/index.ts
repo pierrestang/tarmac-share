@@ -145,6 +145,7 @@ Deno.serve(async (req) => {
 
     const result = {
       kpis: {
+        trajetsPublies: { value: current.annonces, previousValue: prev.annonces },
         matchRate: { value: round(current.matchRate), previousValue: round(prev.matchRate) },
         trajetsEffectues: { value: round(current.tauxTrajetsEffectues), previousValue: round(prev.tauxTrajetsEffectues) },
         medianTimeToMatch: { value: round(current.medianTimeToMatch), previousValue: round(prev.medianTimeToMatch) },
