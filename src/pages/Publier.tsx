@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
-import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase } from "lucide-react";
+import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase, HelpCircle } from "lucide-react";
 import { parse } from "date-fns";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
@@ -380,6 +380,14 @@ const Publier = () => {
                 </div>
               </PopoverContent>
             </Popover>
+
+            <button
+              type="button"
+              onClick={() => navigate("/votre-timing")}
+              className="ml-1 flex-shrink-0"
+            >
+              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            </button>
           </div>
 
           <div className="h-px bg-border mx-4" />
