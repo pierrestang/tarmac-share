@@ -1,7 +1,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useTrajets, calculateDistance, calculateMatchScore, getArchivedTrajet } from "@/hooks/use-trajets";
 import { useNotifications } from "@/hooks/use-notifications";
@@ -111,11 +111,15 @@ const DemandeHistorique = () => {
   if (!demande) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
+        <div className="w-full max-w-[42rem] flex flex-col gap-2">
+          <button onClick={handleBack} className="text-foreground self-start">
+            <ArrowLeft size={20} />
+          </button>
+          <h1 className="text-[24px] font-semibold">Historique.</h1>
+        </div>
         <Card className="w-full max-w-[42rem] border-0">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">Demande introuvable.</p>
-            <Button onClick={handleBack} variant="outline" className="w-full rounded-full">Retour</Button>
           </CardContent>
         </Card>
       </section>
@@ -125,11 +129,15 @@ const DemandeHistorique = () => {
   if (!voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
+        <div className="w-full max-w-[42rem] flex flex-col gap-2">
+          <button onClick={handleBack} className="text-foreground self-start">
+            <ArrowLeft size={20} />
+          </button>
+          <h1 className="text-[24px] font-semibold">Historique.</h1>
+        </div>
         <Card className="w-full max-w-[42rem] border-0">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">Les données du trajet ne sont plus disponibles.</p>
-            <Button onClick={handleBack} variant="outline" className="w-full rounded-full">Retour</Button>
           </CardContent>
         </Card>
       </section>
@@ -138,7 +146,12 @@ const DemandeHistorique = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center px-4">
-      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Historique</h1>
+      <div className="w-full max-w-[42rem] flex flex-col gap-2">
+        <button onClick={handleBack} className="text-foreground self-start">
+          <ArrowLeft size={20} />
+        </button>
+        <h1 className="text-[24px] font-semibold">Historique.</h1>
+      </div>
 
       {/* Date */}
       <p className="text-[16px] font-semibold w-full max-w-[42rem]">
@@ -290,13 +303,6 @@ const DemandeHistorique = () => {
         </button>
       </Card>
 
-      <Button 
-        variant="outline"
-        onClick={handleBack}
-        className="w-full max-w-[42rem] rounded-full"
-      >
-        Retour
-      </Button>
     </section>
   );
 };
