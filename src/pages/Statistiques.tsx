@@ -170,12 +170,6 @@ const Statistiques = () => {
 
       <div className="flex justify-center px-4">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
-          {/* Free mode toggle */}
-          <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Mode gratuit.</p>
-          <div className="flex items-center justify-between">
-            <Switch checked={isFreeMode} onCheckedChange={toggleFreeMode} />
-          </div>
-
           {/* Period filter */}
           <div className="flex gap-2">
             {[7, 30, 90].map((d) => (
@@ -259,6 +253,15 @@ const Statistiques = () => {
               >
                 Réinitialiser les trajets
               </Button>
+
+              {/* Free mode toggle */}
+              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Mode gratuit.</p>
+              <Card className="p-4 flex items-center justify-between">
+                <span className="text-sm font-medium text-card-foreground">
+                  {isFreeMode ? "Gratuit" : "Payant"}
+                </span>
+                <Switch checked={isFreeMode} onCheckedChange={toggleFreeMode} />
+              </Card>
             </>
           ) : (
             <Card className="p-8 text-center text-muted-foreground">Erreur de chargement</Card>
