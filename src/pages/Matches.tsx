@@ -95,7 +95,7 @@ const Matches = () => {
       }
     }
     setProfile(getActiveProfile());
-  }, [trajetId, getTrajetById, findMatches, getActiveProfile, demandes]);
+  }, [trajetId, trajets, getTrajetById, findMatches, getActiveProfile, demandes]);
 
   // Affichage de la liste des trajets si pas de trajetId
   if (!trajetId) {
