@@ -193,6 +193,7 @@ const Messages = () => {
     await saveRating({ ...ratingBase, raterId: otherProfileId, ratedProfileId: profileId });
 
     await completeDemande(selectedConversation.demandeId);
+    await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", selectedConversation.demandeId);
     await saveDemandeSnapshot(selectedConversation.demandeId);
 
     // Stay in the current conversation view

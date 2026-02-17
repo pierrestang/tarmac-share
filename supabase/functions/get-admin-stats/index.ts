@@ -106,7 +106,7 @@ Deno.serve(async (req) => {
     };
 
 
-    const trajetsRealisesRatio = annulations > 0 ? trajetsEffectues / annulations : trajetsEffectues;
+    const trajetsRealises = currentDemandes.filter((d: any) => d.status === "completed" && !d.was_cancelled).length;
 
     const result = {
       kpis: {
@@ -115,7 +115,7 @@ Deno.serve(async (req) => {
         matchRate: round(matchRate),
         trajetsCompletesPct: round(tauxTrajetsEffectues),
         trajetsCompletes: trajetsEffectues,
-        trajetsRealises: round(trajetsRealisesRatio, 2),
+        trajetsRealises: trajetsRealises,
         annulations: annulations,
         tauxAnnulation: round(tauxAnnulation),
       },
