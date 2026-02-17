@@ -276,19 +276,18 @@ const DemandeHistorique = () => {
               </p>
             )}
           </div>
-
-          <Button 
-            onClick={() => {
-              const conversation = getConversationByDemandeId(demandeId!);
-              if (conversation) {
-                navigate(`/messages?conversationId=${conversation.id}`);
-              }
-            }}
-            className="w-full rounded-full"
-          >
-            Voir les messages
-          </Button>
         </CardContent>
+        <button 
+          onClick={() => {
+            const conversation = getConversationByDemandeId(demandeId!);
+            if (conversation) {
+              navigate(`/messages?conversationId=${conversation.id}`);
+            }
+          }}
+          className="w-full py-3 text-center font-medium text-[14px] bg-muted/60 rounded-b-xl border-t border-border/40"
+        >
+          Voir les messages
+        </button>
       </Card>
 
       <Button 
