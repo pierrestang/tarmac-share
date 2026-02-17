@@ -5,9 +5,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend,
-} from "recharts";
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 
@@ -206,47 +203,6 @@ const Statistiques = () => {
                 </div>
               </Card>
 
-              {/* Liquidité chart */}
-              <Card className="p-4">
-                <p className="text-sm font-semibold text-card-foreground mb-3">Liquidité horaire</p>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={data.liquidite}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(214 32% 91%)" />
-                    <XAxis dataKey="hour" tick={{ fontSize: 10 }} tickFormatter={(h) => `${h}h`} />
-                    <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
-                    <RechartsTooltip />
-                    <Legend wrapperStyle={{ fontSize: 12 }} />
-                    <Bar dataKey="annonces" fill="hsl(207 22% 39%)" name="Annonces" radius={[2, 2, 0, 0]} />
-                    <Bar dataKey="matchs" fill="hsl(210 46% 69%)" name="Matchs" radius={[2, 2, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </Card>
-
-              {/* Distance */}
-              <Card className="p-4">
-                <p className="text-sm font-semibold text-card-foreground mb-2">Distance entre matchés</p>
-                <p className="text-lg font-semibold text-card-foreground">{data.distance.moyenne} km <span className="text-xs text-muted-foreground font-normal">en moyenne</span></p>
-                <div className="mt-3 flex flex-col gap-2">
-                  {Object.entries(data.distance.distribution).map(([range, count]) => (
-                    <div key={range} className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground w-12">{range} km</span>
-                      <div className="flex-1 h-4 bg-muted rounded-md overflow-hidden">
-                        <div
-                          className="h-full bg-[hsl(var(--primary))] rounded-md"
-                          style={{
-                            width: `${Math.max(
-                              Object.values(data.distance.distribution).reduce((a, b) => a + b, 0) > 0
-                                ? (count / Object.values(data.distance.distribution).reduce((a, b) => a + b, 0)) * 100
-                                : 0, 3
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                      <span className="text-xs font-semibold text-card-foreground w-6">{count}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
 
               {/* Export */}
               <Button onClick={exportCsv} className="flex items-center gap-2">
