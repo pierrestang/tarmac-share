@@ -8,6 +8,7 @@ import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 
 const Evaluation = () => {
@@ -82,6 +83,20 @@ const Evaluation = () => {
 
     await saveDemandeSnapshot(convRow.demande_id);
     await markReadByDemandeId(convRow.demande_id);
+
+    if (wasUseful) {
+      toast({
+        title: "Super ! Ravi que vous ayez pu partager ce trajet.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+      });
+    } else {
+      toast({
+        title: "Retour enregistré. Nous sommes désolés que ce trajet n'ait pas abouti.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+      });
+    }
 
     hasRedirected.current = true;
     navigate("/trajets", { replace: true });
