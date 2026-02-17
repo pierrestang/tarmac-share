@@ -251,12 +251,27 @@ const Publier = () => {
               form.destination ? "text-card-foreground" : "text-muted-foreground"
             )} strokeWidth={3} />
             <div className="flex-1">
-              <PlacesAutocomplete
+            <PlacesAutocomplete
                 id="destination"
                 value={form.destination}
-                onChange={(value, coords) =>
-                  setForm((prev) => ({ ...prev, destination: value, destinationCoords: coords }))
-                }
+                onChange={(value, coords) => {
+                  // If coords provided, check if within Bordeaux area
+                  if (coords) {
+                    const inBordeaux =
+                      coords.lat >= 44.78 && coords.lat <= 44.93 &&
+                      coords.lng >= -0.68 && coords.lng <= -0.49;
+                    if (!inBordeaux) {
+                      toast({
+                        title: "Zone non disponible",
+                        description: "Bientôt partout, mais pour l'instant, Tarmac ne se lance qu'à Bordeaux !",
+                        variant: "destructive",
+                      });
+                      setForm((prev) => ({ ...prev, destination: "", destinationCoords: undefined }));
+                      return;
+                    }
+                  }
+                  setForm((prev) => ({ ...prev, destination: value, destinationCoords: coords }));
+                }}
                 placeholder="Destination"
                 className="border-0 h-auto p-0 bg-transparent"
               />
