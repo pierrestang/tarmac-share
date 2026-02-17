@@ -77,10 +77,10 @@ Deno.serve(async (req) => {
     const trajetsEffectues = currentDemandes.filter((d: any) => d.status === "completed").length;
     
     // Annulations = was_cancelled=true BUT not a negative rating (pure cancellation via button)
-    const annulations = currentDemandes.filter((d: any) => d.status === "completed" && d.was_cancelled === true && !negativeDemandeIds.has(d.id)).length;
+    const annulations = currentDemandes.filter((d: any) => d.status === "completed" && d.was_cancelled === true).length;
     
-    // Non réalisés (hors annulation) = negative rating (👎)
-    const nonRealises = currentDemandes.filter((d: any) => d.status === "completed" && negativeDemandeIds.has(d.id)).length;
+    // Non réalisés (hors annulation) = negative rating (👎) but NOT cancellations
+    const nonRealises = currentDemandes.filter((d: any) => d.status === "completed" && negativeDemandeIds.has(d.id) && !d.was_cancelled).length;
 
     const matchRate = annonces > 0 ? ((matchsConfirmes * 2) / annonces) * 100 : 0;
     const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
