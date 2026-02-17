@@ -30,6 +30,7 @@ import RepublierAnnonce from "./pages/RepublierAnnonce";
 import ConfirmAnnulation from "./pages/ConfirmAnnulation";
 import Numero from "./pages/Numero";
 import Statistiques from "./pages/Statistiques";
+import TourDeControle from "./pages/TourDeControle";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
               <Route path="numero" element={<Numero />} />
               <Route path="statistiques" element={<Statistiques />} />
+              <Route path="tour-de-controle" element={<TourDeControle />} />
               <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
             </Route>
           </Route>

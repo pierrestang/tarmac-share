@@ -169,7 +169,7 @@ const Compte = () => {
         <div className="flex justify-center px-4">
           <Button
             className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
-            onClick={() => navigate("/statistiques")}
+            onClick={() => navigate("/tour-de-controle")}
           >
             Tour de contrôle
           </Button>
