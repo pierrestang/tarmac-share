@@ -34,10 +34,10 @@ interface StatsData {
 }
 
 const KpiCard = ({
-  label, value, unit, previousValue, priority, invertColors,
+  label, value, unit, previousValue, invertColors,
 }: {
   label: string; value: number; unit: string; previousValue: number;
-  priority?: boolean; invertColors?: boolean;
+  invertColors?: boolean;
 }) => {
   const diff = value - previousValue;
   const isPositive = diff > 0;
@@ -53,7 +53,7 @@ const KpiCard = ({
   if (isNeutral) colorClass = "text-amber-500";
 
   return (
-    <Card className={`p-4 ${priority ? "border-l-4 border-l-[hsl(var(--primary))]" : ""}`}>
+    <Card className="p-4">
       <p className="text-xs text-muted-foreground mb-1">{label}</p>
       <p className="text-2xl font-semibold text-card-foreground">
         {value}{unit}
@@ -193,14 +193,12 @@ const Statistiques = () => {
                   value={data.kpis.trajetsEffectues.value}
                   unit="%"
                   previousValue={data.kpis.trajetsEffectues.previousValue}
-                  priority
                 />
                 <KpiCard
                   label="Match Rate"
                   value={data.kpis.matchRate.value}
                   unit="%"
                   previousValue={data.kpis.matchRate.previousValue}
-                  priority
                 />
                 <KpiCard
                   label="Temps médian match"
@@ -263,17 +261,6 @@ const Statistiques = () => {
                       <span className="text-xs font-semibold text-card-foreground w-6">{count}</span>
                     </div>
                   ))}
-                </div>
-              </Card>
-
-              {/* Funnel */}
-              <Card className="p-4">
-                <p className="text-sm font-semibold text-card-foreground mb-3">Funnel</p>
-                <div className="flex flex-col gap-2">
-                  <FunnelBar label="Annonces" value={data.funnel.annoncesPubliees} max={data.funnel.annoncesPubliees} />
-                  <FunnelBar label="Demandes" value={data.funnel.demandesEnvoyees} max={data.funnel.annoncesPubliees} />
-                  <FunnelBar label="Matchs" value={data.funnel.matchsConfirmes} max={data.funnel.annoncesPubliees} />
-                  <FunnelBar label="Trajets" value={data.funnel.trajetsEffectues} max={data.funnel.annoncesPubliees} />
                 </div>
               </Card>
 
