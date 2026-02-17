@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getScoreColor } from "@/hooks/use-trajets";
 import type { EnrichedMatchedTraveler } from "@/types/trajet";
 
 interface VoyageurCardSmallProps {
@@ -16,9 +17,7 @@ function getInitials(firstName: string, lastName: string): string {
   return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 }
 
-function getScoreColor(_score: number): string {
-  return "#7BA87B";
-}
+// Use centralized getScoreColor from use-trajets
 
 export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId }: VoyageurCardSmallProps) {
   const navigate = useNavigate();

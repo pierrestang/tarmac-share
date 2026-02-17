@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getScoreColor } from "@/hooks/use-trajets";
 import type { EnrichedMatchedTraveler } from "@/types/trajet";
 
 interface VoyageurCardProps {
@@ -28,9 +29,6 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   if (baggage.medium > 0) parts.push(`${baggage.medium} moyen${baggage.medium > 1 ? "s" : ""}`);
   if (baggage.large > 0) parts.push(`${baggage.large} grand${baggage.large > 1 ? "s" : ""}`);
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
-}
-function getScoreColor(_score: number): string {
-  return "#7BA87B";
 }
 
 export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId }: VoyageurCardProps) {
