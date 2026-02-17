@@ -8,7 +8,7 @@ const CommunicationLancement = () => {
   return (
     <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
       <div className="flex justify-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ</h1>
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ.</h1>
       </div>
 
       <div className="flex flex-col gap-3 items-center px-4">
@@ -16,7 +16,7 @@ const CommunicationLancement = () => {
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
             <p className="text-[18px] font-semibold mb-2">Où nous trouver ?</p>
             <p>
-              Pour vous garantir un maximum de partenaires dès la sortie de l'avion, Tarmac se concentre sur un trajet unique pour son lancement :
+              Pour son lancement, Tarmac se concentre sur un trajet unique afin de vous garantir un maximum de partenaires de partage :
             </p>
             <p className="mt-3">
               <strong>Départ :</strong> Aéroport de Bordeaux (BOD)
@@ -25,14 +25,14 @@ const CommunicationLancement = () => {
               <strong>Destination :</strong> Bordeaux Intra-muros
             </p>
             <p className="mt-3">
-              En nous focalisant sur ce secteur, nous maximisons vos chances de trouver immédiatement un voyageur avec qui diviser la facture.
+              Cette zone nous permet de maximiser vos chances de trouver immédiatement un voyageur avec qui diviser la facture.
             </p>
           </CardContent>
         </Card>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">On s'agrandit déjà !</p>
+            <p className="text-[18px] font-semibold mb-2">Et après ?</p>
             <p>
               Nous préparons activement l'ouverture de nouvelles zones pour répondre à vos demandes :
             </p>
@@ -47,9 +47,9 @@ const CommunicationLancement = () => {
 
         <Button
           className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2"
-          onClick={() => navigate("/tarmac-dans-ma-ville")}
+          onClick={() => navigate("/publier")}
         >
-          Me prévenir quand ma ville est disponible
+          Continuer
         </Button>
       </div>
     </section>
