@@ -27,7 +27,7 @@ const VotreTiming = () => {
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: "#3D2B3D" }}>
             <p className="text-[18px] font-semibold mb-2">Temps de transit estimé</p>
             <p>
-              Estimez votre heure de sortie pour que votre partenaire ne vous attende pas sur le tarmac. Nos repères chrono (après l'atterrissage) :
+              Estimez votre heure de sortie pour que votre partenaire ne vous attende pas trop longtemps à l'arrivée.
             </p>
             <ul className="mt-3 flex flex-col gap-1">
               <li><strong>UE + Cabine :</strong> ± 20 min</li>
