@@ -255,7 +255,7 @@ const Publier = () => {
             <PlacesAutocomplete
                 id="destination"
                 value={form.destination}
-                onChange={(value, coords) => {
+                onChange={(value, coords, isPrecise) => {
                   // If coords provided, check if within Bordeaux area
                   if (coords) {
                     const inBordeaux =
@@ -268,6 +268,14 @@ const Publier = () => {
                         variant: "destructive",
                       });
                       setForm((prev) => ({ ...prev, destination: "", destinationCoords: undefined }));
+                      return;
+                    }
+                    if (!isPrecise) {
+                      toast({
+                        description: "Précisez votre adresse exacte (rue et numéro) pour valider le trajet.",
+                        variant: "destructive",
+                      });
+                      setForm((prev) => ({ ...prev, destination: value, destinationCoords: undefined }));
                       return;
                     }
                   }
