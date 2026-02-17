@@ -43,14 +43,17 @@ const DemandeEnvoyer = () => {
     ) || null;
   }
 
-  // Calculate distance and score
-  const distance = myTrajet && voyageurTrajet 
-    ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords)
-    : null;
+  // Use score/distance from URL params (from matches page) for consistency, fallback to local calculation
+  const urlScore = searchParams.get("score");
+  const urlDist = searchParams.get("dist");
   
-  const compatibilityScore = myTrajet && voyageurTrajet
-    ? calculateMatchScore(myTrajet, voyageurTrajet)
-    : 0;
+  const distance = urlDist !== null 
+    ? parseFloat(urlDist)
+    : (myTrajet && voyageurTrajet ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords) : null);
+  
+  const compatibilityScore = urlScore !== null
+    ? parseInt(urlScore, 10)
+    : (myTrajet && voyageurTrajet ? calculateMatchScore(myTrajet, voyageurTrajet) : 0);
 
   // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
