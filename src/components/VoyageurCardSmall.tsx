@@ -9,6 +9,7 @@ interface VoyageurCardSmallProps {
   match: EnrichedMatchedTraveler;
   showButton?: boolean;
   title?: string;
+  myTrajetId?: string;
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -19,7 +20,7 @@ function getScoreColor(_score: number): string {
   return "#7BA87B";
 }
 
-export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurCardSmallProps) {
+export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId }: VoyageurCardSmallProps) {
   const navigate = useNavigate();
   const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
 
@@ -89,7 +90,7 @@ export function VoyageurCardSmall({ match, showButton = true, title }: VoyageurC
               ? `/demande-accepter?demandeId=${receivedDemandeId}`
               : sentDemandeId
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
-                : `/demande-envoyer?voyageurId=${trajet.id}`
+                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
           )}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >
