@@ -90,7 +90,7 @@ export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId 
               ? `/demande-accepter?demandeId=${receivedDemandeId}`
               : sentDemandeId
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
-                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
+                : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}&score=${Math.round(compatibilityScore)}&dist=${Math.round(distance * 10) / 10}`
           )}
           className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
         >
