@@ -198,7 +198,7 @@ const Statistiques = () => {
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
-                  <KpiRow label="Annulations" value={data.kpis.annulations} unit="" tooltip="Nombre de demandes refusées sur la période" />
+                  <KpiRow label="Annulations" value={data.kpis.annulations} unit="" tooltip="Trajets complétés annulés via 'Je dois annuler'" />
                 </div>
                 <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
