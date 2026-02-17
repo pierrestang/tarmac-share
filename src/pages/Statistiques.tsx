@@ -210,11 +210,7 @@ const Statistiques = () => {
                 <div className="flex items-center justify-between">
                   <KpiRow label="Complétés %" value={data.kpis.trajetsCompletesPct} unit="%" tooltip="Complétés / Matchs" bold />
                 </div>
-              </Card>
-
-              {/* Trajets réalisés */}
-              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets réalisés.</p>
-              <Card className="p-4 flex flex-col gap-3">
+                <div className="h-px bg-muted" />
                 <div className="flex items-center justify-between">
                   <KpiRow label="Annulés" value={data.kpis.annulations} unit="" tooltip="Trajets annulés" />
                 </div>
