@@ -289,14 +289,13 @@ const Publier = () => {
 
           <div className="h-px bg-border mx-4" />
 
-          {/* Date et Heure */}
+          {/* Date */}
           <div className="flex items-center px-4 py-4 gap-3">
             <CalendarIcon className={cn(
               "h-4 w-4 flex-shrink-0",
               form.date ? "text-card-foreground" : "text-muted-foreground"
             )} />
             
-            {/* Date Input */}
             {isEditingDate || !form.date ? (
               <Input
                 ref={dateInputRef}
@@ -307,7 +306,6 @@ const Publier = () => {
                   const formatted = formatDateInput(e.target.value);
                   setDateInput(formatted);
                   
-                  // Auto-validate when complete
                   if (isDateInputComplete(formatted)) {
                     const storageDate = dateInputToStorageFormat(formatted);
                     if (storageDate) {
@@ -343,17 +341,19 @@ const Publier = () => {
                 })()}
               </div>
             )}
+          </div>
 
-            <div className="w-px h-6 bg-border" />
+          <div className="h-px bg-border mx-4" />
 
-            {/* Heure - Time Slot Picker */}
+          {/* Heure */}
+          <div className="flex items-center px-4 py-4 gap-3">
+            <Clock className={cn(
+              "h-4 w-4 flex-shrink-0",
+              form.departureTime ? "text-card-foreground" : "text-muted-foreground"
+            )} />
             <Popover>
               <PopoverTrigger asChild>
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <Clock className={cn(
-                    "h-4 w-4 flex-shrink-0",
-                    form.departureTime ? "text-card-foreground" : "text-muted-foreground"
-                  )} />
+                <div className="flex items-center gap-2 cursor-pointer flex-1">
                   <span className={cn(
                     "text-base font-semibold md:text-sm whitespace-nowrap",
                     !form.departureTime && "text-muted-foreground"
@@ -362,7 +362,7 @@ const Publier = () => {
                   </span>
                 </div>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 max-h-64 overflow-y-auto" align="end">
+              <PopoverContent className="w-auto p-0 max-h-64 overflow-y-auto" align="start">
                 <div className="flex flex-col">
                   {timeSlots.map((slot, index) => (
                     <div
