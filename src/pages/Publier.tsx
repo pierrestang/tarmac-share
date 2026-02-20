@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
-import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase, HelpCircle } from "lucide-react";
-import { parse, format, isValid } from "date-fns";
+import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase, HelpCircle, X } from "lucide-react";
+import { parse, format, isValid, startOfMonth, addMonths, getDaysInMonth, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import PlacesAutocomplete from "@/components/PlacesAutocomplete";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   Popover,
   PopoverContent,
@@ -80,8 +80,31 @@ const Publier = () => {
   const { getActiveProfile } = useProfiles();
   const { toast } = useToast();
 
-  // Date popover state
-  const [datePopoverOpen, setDatePopoverOpen] = useState(false);
+  // Date sheet state
+  const [dateSheetOpen, setDateSheetOpen] = useState(false);
+
+  // Build 12 months from today
+  const months = useMemo(() => {
+    const result: Date[] = [];
+    const now = startOfMonth(new Date());
+    for (let i = 0; i < 12; i++) result.push(addMonths(now, i));
+    return result;
+  }, []);
+
+  // Build days grid for a month (Monday-first, null = empty cell)
+  const buildDaysGrid = (monthDate: Date): (number | null)[] => {
+    const year = monthDate.getFullYear();
+    const month = monthDate.getMonth();
+    const daysInMonth = getDaysInMonth(monthDate);
+    const firstDow = getDay(new Date(year, month, 1));
+    const offset = (firstDow + 6) % 7;
+    const cells: (number | null)[] = [];
+    for (let i = 0; i < offset; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+    return cells;
+  };
+
+  const todayStr = format(new Date(), "dd/MM/yyyy");
 
   // Time popover state
   const [timePopoverOpen, setTimePopoverOpen] = useState(false);
@@ -288,41 +311,94 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               form.date ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
-              <PopoverTrigger asChild>
-                <div className="flex flex-1 text-base font-semibold cursor-pointer md:text-sm whitespace-nowrap">
-                  {form.date ? (() => {
-                    try {
-                      const parsed = parse(form.date, "dd/MM/yyyy", new Date());
-                      return isValid(parsed) ? formatDateShort(parsed) : form.date;
-                    } catch {
-                      return form.date;
-                    }
-                  })() : "Choisir une date"}
-                </div>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={form.date ? (() => {
-                    try {
-                      const p = parse(form.date, "dd/MM/yyyy", new Date());
-                      return isValid(p) ? p : undefined;
-                    } catch { return undefined; }
-                  })() : undefined}
-                  onSelect={(date) => {
-                    if (date) {
-                      setForm((prev) => ({ ...prev, date: format(date, "dd/MM/yyyy") }));
-                      setDatePopoverOpen(false);
-                    }
-                  }}
-                  locale={fr}
-                  initialFocus
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
+            <div
+              className="flex flex-1 text-base font-semibold cursor-pointer md:text-sm whitespace-nowrap"
+              onClick={() => setDateSheetOpen(true)}
+            >
+              {form.date ? (() => {
+                try {
+                  const parsed = parse(form.date, "dd/MM/yyyy", new Date());
+                  return isValid(parsed) ? formatDateShort(parsed) : form.date;
+                } catch {
+                  return form.date;
+                }
+              })() : "Choisir une date"}
+            </div>
           </div>
+
+          {/* Date Sheet plein écran */}
+          <Sheet open={dateSheetOpen} onOpenChange={setDateSheetOpen}>
+            <SheetContent
+              side="bottom"
+              className="h-[100dvh] p-0 bg-background border-0 flex flex-col [&>button]:hidden"
+            >
+              {/* Header */}
+              <div className="flex-shrink-0 px-6 pt-8 pb-4">
+                <button
+                  type="button"
+                  onClick={() => setDateSheetOpen(false)}
+                  className="text-foreground mb-6"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+                <h2 className="text-2xl font-bold text-heading">Quand partez-vous ?</h2>
+              </div>
+
+              {/* Scrollable calendar */}
+              <div className="flex-1 overflow-y-auto px-6 pb-8">
+                {months.map((monthDate) => {
+                  const cells = buildDaysGrid(monthDate);
+                  const monthLabel = format(monthDate, "MMMM", { locale: fr });
+                  const year = monthDate.getFullYear();
+                  const month = monthDate.getMonth();
+
+                  return (
+                    <div key={`${year}-${month}`} className="mb-8">
+                      <h3 className="text-lg font-bold text-heading mb-4 capitalize">
+                        {monthLabel}
+                      </h3>
+                      <div className="grid grid-cols-7 gap-y-1">
+                        {cells.map((day, idx) => {
+                          if (day === null) {
+                            return <div key={`empty-${idx}`} />;
+                          }
+                          const dayStr = `${String(day).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`;
+                          const isSelected = form.date === dayStr;
+                          const isToday = todayStr === dayStr;
+                          const isPast = new Date(year, month, day) < new Date(new Date().setHours(0,0,0,0));
+
+                          return (
+                            <div key={day} className="flex items-center justify-center">
+                              <button
+                                type="button"
+                                disabled={isPast}
+                                onClick={() => {
+                                  setForm((prev) => ({ ...prev, date: dayStr }));
+                                  setDateSheetOpen(false);
+                                }}
+                                className={cn(
+                                  "h-10 w-10 rounded-full text-sm font-medium transition-colors",
+                                  isSelected
+                                    ? "bg-primary text-primary-foreground"
+                                    : isToday
+                                    ? "border border-foreground/50 text-foreground"
+                                    : isPast
+                                    ? "text-foreground/30 cursor-not-allowed"
+                                    : "text-foreground/80 hover:bg-primary/20"
+                                )}
+                              >
+                                {day}
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </SheetContent>
+          </Sheet>
 
           <div className="h-px bg-border mx-4" />
 
