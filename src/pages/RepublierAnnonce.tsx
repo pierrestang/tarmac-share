@@ -82,6 +82,13 @@ const RepublierAnnonce = () => {
   };
 
   const handleCancel = () => {
+    if (demandeId) {
+      const declined = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
+      if (!declined.includes(demandeId)) {
+        declined.push(demandeId);
+        localStorage.setItem("declinedRepublishDemandeIds", JSON.stringify(declined));
+      }
+    }
     navigate("/trajets", { replace: true });
   };
 
