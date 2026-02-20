@@ -37,7 +37,7 @@ const Messages = () => {
   } = useMessages();
   
   const { getActiveProfile, getProfileById } = useProfiles();
-  const { notifications, createNotification } = useNotifications();
+  const { notifications, createNotification, markReadByDemandeId } = useNotifications();
   const { completeDemande, saveDemandeSnapshot, getDemandeById } = useDemandes();
   const { getTrajetById } = useTrajets();
 
@@ -104,10 +104,11 @@ const Messages = () => {
       if (conversation) {
         setSelectedConversation(conversation);
         markConversationAsRead(conversationId, profileId);
+        markReadByDemandeId(conversation.demandeId);
         setSearchParams({});
       }
     }
-  }, [searchParams, profileId, getConversationById, markConversationAsRead, setSearchParams]);
+  }, [searchParams, profileId, getConversationById, markConversationAsRead, markReadByDemandeId, setSearchParams]);
 
   const getOtherProfile = useCallback((conversation: Conversation) => {
     if (!profileId) return undefined;
@@ -119,6 +120,7 @@ const Messages = () => {
     setSelectedConversation(conversation);
     if (profileId) {
       markConversationAsRead(conversation.id, profileId);
+      markReadByDemandeId(conversation.demandeId);
     }
   };
 
