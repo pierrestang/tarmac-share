@@ -23,7 +23,7 @@ const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 const Compte = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
-  const { getActiveProfile, updateProfile } = useProfiles();
+  const { getActiveProfile, updateProfile, isLoaded: profilesLoaded } = useProfiles();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const profile = getActiveProfile();
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -93,6 +93,8 @@ const Compte = () => {
   };
 
   const isFormValid = firstName.trim().length >= 2 && lastName.trim().length >= 2;
+
+  if (!profilesLoaded) return null;
 
   return (
     <section className="flex flex-col gap-4 pb-6">

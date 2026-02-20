@@ -28,13 +28,15 @@ const DemandeAccepter = () => {
   const navigate = useNavigate();
   const demandeId = searchParams.get("demandeId");
   
-  const { getTrajetById } = useTrajets();
-  const { getActiveProfile, getProfileById } = useProfiles();
-  const { getDemandeById, refuseDemande, acceptDemande, saveDemandeSnapshot } = useDemandes();
+  const { getTrajetById, isLoaded: trajetsLoaded } = useTrajets();
+  const { getActiveProfile, getProfileById, isLoaded: profilesLoaded } = useProfiles();
+  const { getDemandeById, refuseDemande, acceptDemande, saveDemandeSnapshot, isLoaded: demandesLoaded } = useDemandes();
   const { createNotification } = useNotifications();
   const { createConversation } = useMessages();
   const { isFreeMode } = useAppSettings();
   const [isAccepting, setIsAccepting] = useState(false);
+
+  const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -124,19 +126,8 @@ const DemandeAccepter = () => {
     }
   };
 
-  if (!demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
-    return (
-      <section className="flex flex-col gap-4 pb-6">
-        <h1 className="text-[24px] font-semibold">Contacter</h1>
-        <Card>
-          <CardContent className="flex flex-col gap-4 p-4">
-            <p className="text-muted-foreground text-center py-8">
-              Données introuvables. Veuillez réessayer.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-    );
+  if (!isLoaded || !demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+    return null;
   }
 
   return (

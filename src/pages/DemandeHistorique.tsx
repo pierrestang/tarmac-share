@@ -25,11 +25,13 @@ const DemandeHistorique = () => {
   const navigate = useNavigate();
   const demandeId = searchParams.get("demandeId");
   
-  const { getTrajetById } = useTrajets();
-  const { getActiveProfile, getProfileById } = useProfiles();
-  const { getDemandeById } = useDemandes();
+  const { getTrajetById, isLoaded: trajetsLoaded } = useTrajets();
+  const { getActiveProfile, getProfileById, isLoaded: profilesLoaded } = useProfiles();
+  const { getDemandeById, isLoaded: demandesLoaded } = useDemandes();
   const { notifications } = useNotifications();
   const { getConversationByDemandeId } = useMessages();
+
+  const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -108,40 +110,8 @@ const DemandeHistorique = () => {
     return cancellationNotif?.relatedProfileId || null;
   })();
 
-  if (!demande) {
-    return (
-      <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <div className="w-full max-w-[42rem] flex flex-col gap-2">
-          <button onClick={handleBack} className="text-foreground self-start">
-            <ArrowLeft size={20} />
-          </button>
-          <h1 className="text-[24px] font-semibold">Historique.</h1>
-        </div>
-        <Card className="w-full max-w-[42rem] border-0">
-          <CardContent className="flex flex-col gap-4 p-4">
-            <p className="text-muted-foreground text-center py-8">Demande introuvable.</p>
-          </CardContent>
-        </Card>
-      </section>
-    );
-  }
-
-  if (!voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
-    return (
-      <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <div className="w-full max-w-[42rem] flex flex-col gap-2">
-          <button onClick={handleBack} className="text-foreground self-start">
-            <ArrowLeft size={20} />
-          </button>
-          <h1 className="text-[24px] font-semibold">Historique.</h1>
-        </div>
-        <Card className="w-full max-w-[42rem] border-0">
-          <CardContent className="flex flex-col gap-4 p-4">
-            <p className="text-muted-foreground text-center py-8">Les données du trajet ne sont plus disponibles.</p>
-          </CardContent>
-        </Card>
-      </section>
-    );
+  if (!isLoaded || !demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+    return null;
   }
 
   return (

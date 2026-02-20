@@ -16,9 +16,9 @@ import { fr } from "date-fns/locale";
 
 const Trajets = () => {
   const navigate = useNavigate();
-  const { demandes, refuseDemande, hasDemandesForTrajet } = useDemandes();
-  const { trajets, getTrajetById, deleteTrajet } = useTrajets();
-  const { profiles, getActiveProfile } = useProfiles();
+  const { demandes, refuseDemande, hasDemandesForTrajet, isLoaded: demandesLoaded } = useDemandes();
+  const { trajets, getTrajetById, deleteTrajet, isLoaded: trajetsLoaded } = useTrajets();
+  const { profiles, getActiveProfile, isLoaded: profilesLoaded } = useProfiles();
 
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
@@ -138,6 +138,8 @@ const Trajets = () => {
   };
 
   const hasEnAttenteContent = myPendingTrajets.length > 0;
+
+  if (!demandesLoaded || !trajetsLoaded || !profilesLoaded) return null;
 
   return (
     <section aria-label="Trajets" className="flex flex-col gap-4 pb-6">

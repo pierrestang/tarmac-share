@@ -27,10 +27,10 @@ const Matches = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const trajetId = searchParams.get("trajetId");
-  const { trajets, getTrajetById, findMatches } = useTrajets();
-  const isLoading = trajetId !== null && trajets.length === 0;
-  const { getActiveProfile, getProfileById } = useProfiles();
-  const { demandes } = useDemandes();
+  const { trajets, isLoaded: trajetsLoaded, getTrajetById, findMatches } = useTrajets();
+  const { getActiveProfile, getProfileById, isLoaded: profilesLoaded } = useProfiles();
+  const { demandes, isLoaded: demandesLoaded } = useDemandes();
+  const isLoading = !trajetsLoaded || !profilesLoaded || !demandesLoaded;
 
   const [trajet, setTrajet] = useState<Trajet | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
