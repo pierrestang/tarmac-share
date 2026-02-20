@@ -18,10 +18,12 @@ function mapRow(row: any): Notification {
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchNotifications = useCallback(async () => {
     const { data } = await supabase.from("notifications").select("*").order("created_at", { ascending: false });
     if (data) setNotifications(data.map(mapRow));
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -103,6 +105,7 @@ export function useNotifications() {
 
   return {
     notifications,
+    isLoaded,
     createNotification,
     getNotifications,
     getUnreadCount,
