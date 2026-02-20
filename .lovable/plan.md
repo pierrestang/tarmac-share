@@ -1,76 +1,39 @@
 
+## Optimisation de la sélection de date dans /publier pour mobile
 
-## Plan : Mode gratuit / payant avec bouton a bascule admin
+### Problème actuel
+La saisie de la date se fait via un champ texte (`Input` type `text` avec `inputMode="numeric"`) en format `JJ MM`. Sur mobile, le clavier numérique s'ouvre mais la saisie manuelle reste peu ergonomique. L'objectif est d'offrir un vrai sélecteur de date mobile-friendly, tout en **conservant exactement le même look visuel** dans la carte.
 
-### Objectif
-Ajouter un parametre global "mode gratuit" controlable depuis le Tour de controle (page Statistiques) via un bouton a bascule (Switch). Quand le mode gratuit est actif, les etapes de paiement sont court-circuitees et aucune mention de prix n'apparait.
+### Solution : Popover + Calendar Shadcn
+Remplacer la logique `isEditingDate` / `Input` texte par un `Popover` contenant le composant `Calendar` Shadcn (déjà utilisé dans le projet). Le trigger du Popover sera le même `div` avec la date formatée qui existe déjà — l'apparence dans la carte ne change pas du tout.
 
-### Stockage du reglage
-Creer une table `app_settings` dans la base de donnees avec une seule ligne contenant un booleen `free_mode`. Cela permet de persister le reglage et de le partager entre tous les utilisateurs.
+### Ce qui change
+- **Suppression** : `isEditingDate`, `dateInput`, `dateInputRef`, `Input` de date, les fonctions `formatDateInput`, `storageDateToInputFormat`, `isDateInputComplete`
+- **Ajout** : state `selectedDate: Date | undefined`, Popover + Calendar pour la sélection
+- **Conservation** : La même ligne visuelle avec `CalendarIcon` + texte formaté (ex: "Ven. 20 févr.")
 
-### Modifications
+### Fonctionnement
+1. L'utilisateur clique sur la ligne de date → Popover s'ouvre avec le `Calendar`
+2. Il sélectionne un jour → la date est convertie au format de stockage `dd/MM/yyyy` et sauvegardée dans `form.date`
+3. Le Popover se ferme automatiquement après sélection
+4. Le calendrier s'ouvre sur le mois de la date actuellement sélectionnée
+5. Les dates passées ne sont pas désactivées (un trajet peut être modifié pour une date passée lors d'édition)
 
-#### 1. Base de donnees
-- Creer la table `app_settings` avec une colonne `key` (text, primary key) et `value` (boolean).
-- Inserer la ligne `{ key: 'free_mode', value: true }` par defaut (gratuit au lancement).
-- RLS : lecture pour tous les utilisateurs authentifies, ecriture reservee a l'admin uniquement (via une fonction SQL qui verifie l'email admin).
+### Fichiers à modifier
+- **`src/pages/Publier.tsx`** : Remplacer toute la logique de date (states, Input, logique conditionnelle) par un Popover + Calendar
 
-#### 2. Hook `use-app-settings.ts`
-- Nouveau hook qui lit le `free_mode` depuis `app_settings` via une requete Supabase.
-- Expose `isFreeMode` (boolean) et `toggleFreeMode` (pour l'admin).
-
-#### 3. Page Statistiques (Tour de controle)
-- Ajouter un composant Switch (deja disponible dans `@radix-ui/react-switch`) avec le label "Mode gratuit" au-dessus des filtres de periode.
-- Le switch appelle `toggleFreeMode` pour basculer entre gratuit et payant.
-
-#### 4. Page `DemandeEnvoyer.tsx` - Envoi d'une demande
-- Importer `isFreeMode` depuis le hook.
-- Si `isFreeMode` est `true`, le bouton "Contacter" execute directement la logique de creation de demande (celle actuellement dans `Paiement.tsx` pour `type=envoi`) au lieu de rediriger vers `/paiement`.
-
-#### 5. Page `DemandeAccepter.tsx` - Acceptation d'une demande
-- Importer `isFreeMode`.
-- Si `isFreeMode` est `true`, le bouton "Accepter" execute directement la logique d'acceptation (celle de `Paiement.tsx` pour `type=acceptation`) au lieu de rediriger vers `/paiement`.
-
-#### 6. Page `RepublierAnnonce.tsx` - Republication
-- Importer `isFreeMode`.
-- Si `isFreeMode` est `true`, supprimer le texte mentionnant les demandes gratuites ou le tarif de 1,99 euros. Afficher simplement "Souhaitez-vous republier cette annonce ?" sans notion de prix.
-
-#### 7. Page `Paiement.tsx`
-- Aucune modification structurelle. Cette page reste fonctionnelle pour le mode payant. Elle ne sera simplement plus accessible quand `isFreeMode` est actif (les redirections sont court-circuitees en amont).
-
-### Details techniques
-
-```text
-Flux envoi demande :
-  Mode payant :  DemandeEnvoyer -> /paiement -> creation demande -> /trajets
-  Mode gratuit : DemandeEnvoyer -> creation demande directe -> /trajets
-
-Flux acceptation :
-  Mode payant :  DemandeAccepter -> /paiement -> acceptation -> /messages
-  Mode gratuit : DemandeAccepter -> acceptation directe -> /messages
+### Comportement visuel garanti
+La carte garde exactement :
 ```
-
-#### Schema SQL
-```sql
-CREATE TABLE public.app_settings (
-  key text PRIMARY KEY,
-  value boolean NOT NULL DEFAULT false
-);
-
-INSERT INTO public.app_settings (key, value) VALUES ('free_mode', true);
-
-ALTER TABLE public.app_settings ENABLE ROW LEVEL SECURITY;
-
--- Lecture pour tous les authentifies
-CREATE POLICY "Anyone can read settings"
-  ON public.app_settings FOR SELECT
-  USING (auth.uid() IS NOT NULL);
-
--- Ecriture uniquement pour l'admin
-CREATE POLICY "Admin can update settings"
-  ON public.app_settings FOR UPDATE
-  USING (
-    auth.email() = 'pierres-19@hotmail.fr'
-  );
+[ 📅  Ven. 20 févr. ]   ← cliquable, ouvre le calendrier en Popover
 ```
+Aucun changement de layout, padding, séparateurs ou style de la carte.
 
+### Détails techniques
+- Utiliser `format(date, "dd/MM/yyyy")` pour le stockage
+- Utiliser `formatDateShort(date)` existant pour l'affichage
+- Utiliser `parse(form.date, "dd/MM/yyyy", new Date())` pour initialiser la date sélectionnée dans Calendar
+- Ajouter `className={cn("p-3 pointer-events-auto")}` sur le `Calendar` (requis dans les Popovers)
+- Le Popover doit avoir `align="start"` pour l'alignement mobile
+- Importer `Calendar` depuis `@/components/ui/calendar`
+- Importer `fr` de `date-fns/locale` pour le calendrier en français
