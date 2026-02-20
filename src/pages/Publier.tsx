@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
 import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase, HelpCircle } from "lucide-react";
@@ -83,22 +83,23 @@ const Publier = () => {
   // Date popover state
   const [datePopoverOpen, setDatePopoverOpen] = useState(false);
 
-  // Generate 30-min time slots
-  const timeSlots = useMemo(() => {
-    const slots: string[] = [];
-    for (let h = 0; h < 24; h++) {
-      const hh = String(h).padStart(2, "0");
-      const nextH30 = h;
-      const nextH00 = h + 1;
-      slots.push(`${hh}:00-${hh}:30`);
-      if (nextH00 < 24) {
-        slots.push(`${hh}:30-${String(nextH00).padStart(2, "0")}:00`);
-      } else {
-        slots.push(`${hh}:30-00:00`);
-      }
-    }
-    return slots;
-  }, []);
+  // Time popover state
+  const [timePopoverOpen, setTimePopoverOpen] = useState(false);
+  const [selectedHour, setSelectedHour] = useState<number | null>(null);
+
+  // Get active hour from current departureTime
+  const activeHour = form.departureTime
+    ? parseInt(form.departureTime.split(":")[0], 10)
+    : null;
+
+  const getSlotForHour = (h: number, half: 0 | 1): string => {
+    const hh = String(h).padStart(2, "0");
+    if (half === 0) return `${hh}:00-${hh}:30`;
+    const nextH = h + 1;
+    return nextH < 24
+      ? `${hh}:30-${String(nextH).padStart(2, "0")}:00`
+      : `${hh}:30-00:00`;
+  };
 
   // Load trajet data in edit mode
   useEffect(() => {
@@ -331,7 +332,7 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               form.departureTime ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            <Popover>
+            <Popover open={timePopoverOpen} onOpenChange={(open) => { setTimePopoverOpen(open); if (!open) setSelectedHour(null); }}>
               <PopoverTrigger asChild>
                 <div className="flex items-center gap-2 cursor-pointer flex-1">
                   <span className={cn(
@@ -342,22 +343,60 @@ const Publier = () => {
                   </span>
                 </div>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 max-h-64 overflow-y-auto" align="start">
-                <div className="flex flex-col">
-                  {timeSlots.map((slot, index) => (
-                    <div
-                      key={slot}
-                      className={cn(
-                        "px-4 py-3 cursor-pointer text-[14px] whitespace-nowrap",
-                        index < timeSlots.length - 1 && "border-b border-border",
-                        form.departureTime === slot && "bg-primary/10 font-semibold"
-                      )}
-                      onClick={() => setForm((prev) => ({ ...prev, departureTime: slot }))}
+              <PopoverContent className="w-auto p-3" align="start">
+                {selectedHour === null ? (
+                  <div className="grid grid-cols-6 gap-1.5">
+                    {Array.from({ length: 24 }, (_, h) => (
+                      <button
+                        key={h}
+                        type="button"
+                        onClick={() => setSelectedHour(h)}
+                        className={cn(
+                          "w-10 h-10 rounded-md text-[13px] font-medium transition-colors",
+                          activeHour === h
+                            ? "bg-primary text-primary-foreground"
+                            : "hover:bg-muted"
+                        )}
+                      >
+                        {String(h).padStart(2, "0")}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedHour(null)}
+                      className="flex items-center gap-1 text-[13px] text-muted-foreground hover:text-foreground transition-colors self-start"
                     >
-                      {slot}
+                      ← {String(selectedHour).padStart(2, "0")}h
+                    </button>
+                    <div className="grid grid-cols-2 gap-2">
+                      {([0, 1] as const).map((half) => {
+                        const slot = getSlotForHour(selectedHour, half);
+                        return (
+                          <button
+                            key={half}
+                            type="button"
+                            onClick={() => {
+                              setForm((prev) => ({ ...prev, departureTime: slot }));
+                              setTimePopoverOpen(false);
+                              setSelectedHour(null);
+                            }}
+                            className={cn(
+                              "px-3 py-3 rounded-md text-[13px] font-medium transition-colors border border-border",
+                              form.departureTime === slot
+                                ? "bg-primary text-primary-foreground border-primary"
+                                : "hover:bg-muted"
+                            )}
+                          >
+                            {slot}
+                          </button>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
               </PopoverContent>
             </Popover>
 
