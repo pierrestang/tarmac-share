@@ -1,46 +1,73 @@
 
-## Optimisation de la sélection du créneau horaire — tous les créneaux conservés
+## Sélecteur de date plein écran dans /publier
 
 ### Objectif
-Remplacer la liste scrollable de 48 créneaux par une interface en 2 étapes plus ergonomique sur mobile, **en conservant tous les créneaux de 00:00 à 23:30**.
+Remplacer le Popover + Calendar compact par un écran plein écran style "Quand partez-vous ?" inspiré de la capture, adapté à la palette de l'app (beige `#F0EEE9`, bleu-gris `#4E657A`, fond bleu `#89B1D6`).
 
-### Interface en 2 étapes
-
-**Étape 1 — Grille des heures (00h à 23h)**
-24 boutons d'heures affichés en grille compacte `grid-cols-6`, soit 4 lignes de 6 boutons. Faciles à toucher sur mobile.
+### Ce que ça donne visuellement
 
 ```text
-┌─────────────────────────────────────┐
-│  00  01  02  03  04  05             │
-│  06  07  08  09  10  11             │
-│  12  13  14  15  16  17             │
-│  18  19  20  21  22  23             │
-└─────────────────────────────────────┘
+┌────────────────────────────────────┐
+│  ×                                 │
+│                                    │
+│  Quand partez-vous ?               │  ← titre bold, beige
+│                                    │
+│  février                           │  ← nom du mois, bold
+│                                    │
+│   1   2   3   4   5   6   7        │  ← pas d'en-têtes lun/mar/...
+│   8   9  10  11  12  13  14        │
+│  15  16  17  [18] 19  20  21       │  ← jour sélectionné = cercle plein
+│  22  23  24  25  26  27  28        │
+│                                    │
+│  mars                              │
+│   ...                              │
+└────────────────────────────────────┘
 ```
 
-**Étape 2 — Choix de la demi-heure**
-Après avoir tapé une heure, 2 grands boutons côte à côte apparaissent :
-
-```text
-┌──────────────────────────────────────┐
-│  ← 10h                               │
-│  ┌───────────────┐ ┌───────────────┐ │
-│  │  10:00–10:30  │ │  10:30–11:00  │ │
-│  └───────────────┘ └───────────────┘ │
-└──────────────────────────────────────┘
-```
-
-Après la sélection, le créneau est enregistré et le Popover se ferme automatiquement.
+- Fond : couleur `background` de l'app (`#89B1D6`, bleu doux)
+- Texte titre + mois : couleur `heading` (`#F0EEE9`, beige)
+- Jours : texte beige `#F0EEE9`, taille normale
+- Jour sélectionné : cercle plein bleu-gris `#4E657A` (= `primary`), texte blanc
+- Aujourd'hui (non sélectionné) : cercle fin en contour beige
+- Bouton × : icône beige en haut à gauche
+- Pas d'en-têtes de jours (lun., mar., etc.) — supprimés
+- Calendrier scrollable sur 12 mois (mois courant + 11 suivants)
+- Sélection d'un jour → fermeture automatique de l'écran
 
 ### Ce qui change dans `src/pages/Publier.tsx`
 
-- **Ajout** d'un state `selectedHour: number | null` et `timePopoverOpen: boolean`
-- **Remplacement** du contenu du `PopoverContent` du sélecteur d'heure (la liste `timeSlots.map(...)` de 48 lignes) par la grille 2 étapes
-- **Conservation** : le `useMemo timeSlots` peut être retiré puisque les créneaux sont générés à la volée lors de l'étape 2 (format `"HH:MM-HH:MM"`), le trigger visuel (`Clock` + texte), le bouton `HelpCircle`, et la valeur stockée en format `"HH:MM-HH:MM"`
-- **Reset** : `selectedHour` est remis à `null` à la fermeture du Popover (`onOpenChange`)
+**Supprimé :**
+- Le `<Popover open={datePopoverOpen}>` + `<Calendar>` existant pour la date
+- `datePopoverOpen` state
 
-### Comportement de l'heure sélectionnée actuellement
-- L'heure correspondant au créneau actuel est mise en surbrillance dans la grille (ex: si `form.departureTime === "10:00-10:30"`, le bouton `10` est actif)
+**Ajouté :**
+- `dateSheetOpen` state (boolean) pour contrôler le Sheet
+- Import de `Sheet`, `SheetContent`, `SheetClose` depuis `@/components/ui/sheet`
+- Import de `X` depuis `lucide-react`
+- Une fonction `buildMonths(count: number)` qui génère `count` mois depuis le mois courant (tableau de `Date`)
+- Une fonction `buildDaysGrid(year, month)` qui retourne le tableau de jours du mois avec le décalage lundi-en-premier (cellules vides pour l'offset)
+- Le `<Sheet>` plein écran avec :
+  - `side="bottom"` + `className="h-[100dvh] p-0 bg-background border-0"` → plein écran, fond bleu de l'app
+  - Bouton × en haut à gauche (beige)
+  - Titre "Quand partez-vous ?" en bold beige
+  - Zone scrollable avec les 12 mois
+  - Pour chaque mois : nom du mois en bold beige + grille 7 colonnes des jours (sans en-têtes de semaine)
 
-### Fichier à modifier
+**Conservé :**
+- Le trigger visuel identique (icône CalendarIcon + texte formaté `formatDateShort`)
+- La valeur stockée en format `dd/MM/yyyy`
+- Toute la logique du reste du formulaire
+
+### Palette de couleurs appliquée
+
+| Élément | Couleur |
+|---|---|
+| Fond Sheet | `bg-background` = `#89B1D6` bleu doux |
+| Titre + mois | `text-heading` = `#F0EEE9` beige |
+| Jours normaux | `text-foreground` = `#F0EEE9` beige, opacité 80% |
+| Jour sélectionné | `bg-primary text-primary-foreground` = `#4E657A` fond, blanc texte |
+| Aujourd'hui | cercle avec `border border-foreground/50` |
+| Bouton × | `text-foreground` = `#F0EEE9` |
+
+### Fichier modifié
 - **`src/pages/Publier.tsx`** uniquement
