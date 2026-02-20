@@ -94,7 +94,7 @@ const Compte = () => {
 
   const isFormValid = firstName.trim().length >= 2 && lastName.trim().length >= 2;
 
-  if (!profilesLoaded) return null;
+  if (!profilesLoaded || !profile) return null;
 
   return (
     <section className="flex flex-col gap-4 pb-6">

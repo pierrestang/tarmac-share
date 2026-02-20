@@ -8,13 +8,15 @@ import type { Notification } from "@/types/notification";
 
 export function NotificationList() {
   const navigate = useNavigate();
-  const { getNotifications, markAsRead } = useNotifications();
-  const { getActiveProfile } = useProfiles();
+  const { getNotifications, markAsRead, isLoaded: notificationsLoaded } = useNotifications();
+  const { getActiveProfile, isLoaded: profilesLoaded } = useProfiles();
   const { getConversationByDemandeId } = useMessages();
   const { getDemandeById } = useDemandes();
 
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
+
+  if (!notificationsLoaded || !profilesLoaded) return null;
 
   const notifications = profileId ? getNotifications(profileId) : [];
 
