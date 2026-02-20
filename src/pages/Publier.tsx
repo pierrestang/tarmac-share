@@ -106,8 +106,8 @@ const Publier = () => {
 
   const todayStr = format(new Date(), "dd/MM/yyyy");
 
-  // Time popover state
-  const [timePopoverOpen, setTimePopoverOpen] = useState(false);
+  // Time sheet state
+  const [timeSheetOpen, setTimeSheetOpen] = useState(false);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
 
   // Get active hour from current departureTime
@@ -408,30 +408,61 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               form.departureTime ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            <Popover open={timePopoverOpen} onOpenChange={(open) => { setTimePopoverOpen(open); if (!open) setSelectedHour(null); }}>
-              <PopoverTrigger asChild>
-                <div className="flex items-center gap-2 cursor-pointer flex-1">
-                  <span className={cn(
-                    "text-base font-semibold md:text-sm whitespace-nowrap",
-                    !form.departureTime && "text-muted-foreground"
-                  )}>
-                    {form.departureTime || "Heure"}
-                  </span>
-                </div>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-3" align="start">
+            <div
+              className="flex items-center gap-2 cursor-pointer flex-1"
+              onClick={() => setTimeSheetOpen(true)}
+            >
+              <span className={cn(
+                "text-base font-semibold md:text-sm whitespace-nowrap",
+                !form.departureTime && "text-muted-foreground"
+              )}>
+                {form.departureTime || "Heure"}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate("/votre-timing")}
+              className="ml-1 flex-shrink-0"
+            >
+              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            </button>
+          </div>
+
+          {/* Time Sheet plein écran */}
+          <Sheet open={timeSheetOpen} onOpenChange={(open) => { setTimeSheetOpen(open); if (!open) setSelectedHour(null); }}>
+            <SheetContent
+              side="bottom"
+              className="h-[100dvh] p-0 bg-background border-0 flex flex-col [&>button]:hidden"
+            >
+              {/* Header */}
+              <div className="flex-shrink-0 px-6 pt-8 pb-4">
+                <button
+                  type="button"
+                  onClick={() => { setTimeSheetOpen(false); setSelectedHour(null); }}
+                  className="text-foreground mb-6"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+                <h2 className="text-2xl font-bold text-heading">
+                  {selectedHour === null ? "À quelle heure partez-vous ?" : `${String(selectedHour).padStart(2, "0")}h — choisissez le créneau`}
+                </h2>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto px-6 pb-8">
                 {selectedHour === null ? (
-                  <div className="grid grid-cols-6 gap-1.5">
+                  /* Étape 1 : grille des 24 heures */
+                  <div className="grid grid-cols-6 gap-3 mt-4">
                     {Array.from({ length: 24 }, (_, h) => (
                       <button
                         key={h}
                         type="button"
                         onClick={() => setSelectedHour(h)}
                         className={cn(
-                          "w-10 h-10 rounded-md text-[13px] font-medium transition-colors",
+                          "h-12 w-full rounded-full text-base font-semibold transition-colors",
                           activeHour === h
                             ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted"
+                            : "text-foreground/80 hover:bg-primary/20"
                         )}
                       >
                         {String(h).padStart(2, "0")}
@@ -439,15 +470,16 @@ const Publier = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-3">
+                  /* Étape 2 : choix de la demi-heure */
+                  <div className="flex flex-col gap-6 mt-4">
                     <button
                       type="button"
                       onClick={() => setSelectedHour(null)}
-                      className="flex items-center gap-1 text-[13px] text-muted-foreground hover:text-foreground transition-colors self-start"
+                      className="flex items-center gap-2 text-foreground/70 text-base self-start"
                     >
                       ← {String(selectedHour).padStart(2, "0")}h
                     </button>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-4">
                       {([0, 1] as const).map((half) => {
                         const slot = getSlotForHour(selectedHour, half);
                         return (
@@ -456,14 +488,14 @@ const Publier = () => {
                             type="button"
                             onClick={() => {
                               setForm((prev) => ({ ...prev, departureTime: slot }));
-                              setTimePopoverOpen(false);
+                              setTimeSheetOpen(false);
                               setSelectedHour(null);
                             }}
                             className={cn(
-                              "px-3 py-3 rounded-md text-[13px] font-medium transition-colors border border-border",
+                              "py-5 rounded-2xl text-base font-semibold transition-colors",
                               form.departureTime === slot
-                                ? "bg-primary text-primary-foreground border-primary"
-                                : "hover:bg-muted"
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-foreground/10 text-foreground hover:bg-primary/20"
                             )}
                           >
                             {slot}
@@ -473,17 +505,9 @@ const Publier = () => {
                     </div>
                   </div>
                 )}
-              </PopoverContent>
-            </Popover>
-
-            <button
-              type="button"
-              onClick={() => navigate("/votre-timing")}
-              className="ml-1 flex-shrink-0"
-            >
-              <HelpCircle className="h-4 w-4 text-muted-foreground" />
-            </button>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
 
           <div className="h-px bg-border mx-4" />
 
