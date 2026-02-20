@@ -21,10 +21,12 @@ function mapRow(row: any): Demande {
 
 export function useDemandes() {
   const [demandes, setDemandes] = useState<Demande[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchDemandes = useCallback(async () => {
     const { data } = await supabase.from("demandes").select("*").order("created_at", { ascending: false });
     if (data) setDemandes(data.map(mapRow));
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -254,6 +256,7 @@ export function useDemandes() {
 
   return {
     demandes,
+    isLoaded,
     createDemande,
     acceptDemande,
     refuseDemande,

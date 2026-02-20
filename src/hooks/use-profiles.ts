@@ -21,11 +21,13 @@ function mapRow(row: any): ProfileWithUserId {
 
 export function useProfiles() {
   const [profiles, setProfiles] = useState<ProfileWithUserId[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { user } = useAuth();
 
   const fetchProfiles = useCallback(async () => {
     const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: true });
     if (data) setProfiles(data.map(mapRow));
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export function useProfiles() {
 
   return {
     profiles,
+    isLoaded,
     updateProfile,
     getActiveProfile,
     getProfileById,

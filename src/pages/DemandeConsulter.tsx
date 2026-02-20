@@ -42,10 +42,12 @@ const DemandeConsulter = () => {
   
   const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
   
-  const { getTrajetById } = useTrajets();
-  const { getActiveProfile, getProfileById } = useProfiles();
-  const { getDemandeById, withdrawDemande } = useDemandes();
+  const { getTrajetById, isLoaded: trajetsLoaded } = useTrajets();
+  const { getActiveProfile, getProfileById, isLoaded: profilesLoaded } = useProfiles();
+  const { getDemandeById, withdrawDemande, isLoaded: demandesLoaded } = useDemandes();
   const { createNotification } = useNotifications();
+
+  const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
@@ -103,19 +105,8 @@ const DemandeConsulter = () => {
     navigate("/trajets");
   };
 
-  if (!demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
-    return (
-      <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Ma demande</h1>
-        <Card className="w-full max-w-[42rem]">
-          <CardContent className="flex flex-col gap-4 p-4">
-            <p className="text-muted-foreground text-center py-8">
-              Chargement...
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-    );
+  if (!isLoaded || !demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+    return null;
   }
 
   // Build EnrichedMatchedTraveler for VoyageurCard

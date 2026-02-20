@@ -151,10 +151,12 @@ export function getArchivedTrajet(_id: string): Trajet | null {
 
 export function useTrajets() {
   const [trajets, setTrajets] = useState<Trajet[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchTrajets = useCallback(async () => {
     const { data } = await supabase.from("trajets").select("*").order("created_at", { ascending: true });
     if (data) setTrajets(data.map(mapRow));
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -327,6 +329,7 @@ export function useTrajets() {
 
   return {
     trajets,
+    isLoaded,
     createTrajet,
     updateTrajet,
     deleteTrajet,
