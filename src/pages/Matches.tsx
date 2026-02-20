@@ -143,9 +143,9 @@ const Matches = () => {
                     
                     {/* Profile row */}
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12">
+                       <Avatar className="h-12 w-12">
                         {activeProfile?.photo ? (
-                          <AvatarImage src={activeProfile.photo} alt={activeProfile.firstName} />
+                          <AvatarImage src={activeProfile.photo} alt={activeProfile.firstName} referrerPolicy="no-referrer" />
                         ) : null}
                         <AvatarFallback className="text-[14px]">
                           {activeProfile?.firstName.charAt(0)}
@@ -239,9 +239,9 @@ const Matches = () => {
             <div className="bg-card rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-4 flex flex-col gap-3">
               {/* Profile row */}
               <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
+               <Avatar className="h-12 w-12">
                   {profile.photo ? (
-                    <AvatarImage src={profile.photo} alt={profile.firstName} />
+                    <AvatarImage src={profile.photo} alt={profile.firstName} referrerPolicy="no-referrer" />
                   ) : null}
                   <AvatarFallback className="text-[14px]">
                     {profile.firstName.charAt(0)}

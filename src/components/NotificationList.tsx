@@ -29,12 +29,13 @@ export function NotificationList() {
       const conversation = getConversationByDemandeId(notification.demandeId);
       return conversation !== null;
     }
-    // For cancellation, actionable only if demande exists AND not already republished
+    // For cancellation, actionable only if demande exists AND not already republished AND not declined
     if (notification.type === "cancellation") {
       const demande = getDemandeById(notification.demandeId);
       if (!demande) return false;
       const republished: string[] = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
-      return !republished.includes(notification.demandeId);
+      const declined: string[] = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
+      return !republished.includes(notification.demandeId) && !declined.includes(notification.demandeId);
     }
     // For demande_received, only actionable if demande is still pending
     if (notification.type === "demande_received") {
@@ -93,6 +94,13 @@ export function NotificationList() {
     );
   }
 
+  // Check if a cancellation notification was declined (user chose "Non")
+  const isDeclinedRepublish = (notification: Notification): boolean => {
+    if (notification.type !== "cancellation") return false;
+    const declined: string[] = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
+    return declined.includes(notification.demandeId);
+  };
+
   // Check if a cancellation notification was already republished
   const isAlreadyRepublished = (notification: Notification): boolean => {
     if (notification.type !== "cancellation") return false;
@@ -101,7 +109,8 @@ export function NotificationList() {
   };
 
     const getBadge = (notification: Notification): { text: string; variant: "default" | "green" | "red" } | undefined => {
-      if (isAlreadyRepublished(notification)) return { text: "Déjà republié", variant: "green" };
+      if (isAlreadyRepublished(notification)) return { text: "Trajet republié", variant: "green" };
+      if (isDeclinedRepublish(notification)) return { text: "Trajet non republié", variant: "red" };
       if (notification.type === "demande_received") {
         const demande = getDemandeById(notification.demandeId);
         if (demande && demande.status === "accepted") return { text: "Demande acceptée", variant: "green" };
