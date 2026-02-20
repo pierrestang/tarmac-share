@@ -28,6 +28,7 @@ const Matches = () => {
   const navigate = useNavigate();
   const trajetId = searchParams.get("trajetId");
   const { trajets, getTrajetById, findMatches } = useTrajets();
+  const isLoading = trajetId !== null && trajets.length === 0;
   const { getActiveProfile, getProfileById } = useProfiles();
   const { demandes } = useDemandes();
 
@@ -202,13 +203,8 @@ const Matches = () => {
     );
   }
 
-  if (!trajet || !profile) {
-    return (
-      <section className="flex flex-col gap-4 pb-6 items-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Matches.</h1>
-        <p className="text-muted-foreground">Trajet non trouvé.</p>
-      </section>
-    );
+  if (isLoading || !trajet || !profile) {
+    return null;
   }
 
   const formattedDate = (() => {
