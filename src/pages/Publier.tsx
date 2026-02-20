@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Coordinates } from "@/types/trajet";
 import { Minus, Plus, Circle, Calendar as CalendarIcon, Clock, CircleUserRound, Briefcase, HelpCircle } from "lucide-react";
-import { parse } from "date-fns";
+import { parse, format, isValid } from "date-fns";
+import { fr } from "date-fns/locale";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { cn } from "@/lib/utils";
@@ -10,20 +11,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import PlacesAutocomplete from "@/components/PlacesAutocomplete";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  formatDateInput,
-  parseDateInput,
-  formatDateShort,
-  dateInputToStorageFormat,
-  storageDateToInputFormat,
-  isDateInputComplete,
-} from "@/lib/date-time-utils";
+import { formatDateShort } from "@/lib/date-time-utils";
 
 // Baggage capacity constants
 const BAGGAGE_SIZES = {
@@ -86,10 +80,8 @@ const Publier = () => {
   const { getActiveProfile } = useProfiles();
   const { toast } = useToast();
 
-  // Date input states
-  const [dateInput, setDateInput] = useState("");
-  const [isEditingDate, setIsEditingDate] = useState(false);
-  const dateInputRef = useRef<HTMLInputElement>(null);
+  // Date popover state
+  const [datePopoverOpen, setDatePopoverOpen] = useState(false);
 
   // Generate 30-min time slots
   const timeSlots = useMemo(() => {
@@ -295,52 +287,40 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               form.date ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            
-            {isEditingDate || !form.date ? (
-              <Input
-                ref={dateInputRef}
-                type="text"
-                inputMode="numeric"
-                value={dateInput}
-                onChange={(e) => {
-                  const formatted = formatDateInput(e.target.value);
-                  setDateInput(formatted);
-                  
-                  if (isDateInputComplete(formatted)) {
-                    const storageDate = dateInputToStorageFormat(formatted);
-                    if (storageDate) {
-                      setForm((prev) => ({ ...prev, date: storageDate }));
-                      setIsEditingDate(false);
+            <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
+              <PopoverTrigger asChild>
+                <div className="flex flex-1 text-base font-semibold cursor-pointer md:text-sm whitespace-nowrap">
+                  {form.date ? (() => {
+                    try {
+                      const parsed = parse(form.date, "dd/MM/yyyy", new Date());
+                      return isValid(parsed) ? formatDateShort(parsed) : form.date;
+                    } catch {
+                      return form.date;
                     }
-                  }
-                }}
-                onBlur={() => {
-                  if (form.date) {
-                    setIsEditingDate(false);
-                  }
-                }}
-                placeholder="JJ MM"
-                className="flex-1 border-0 p-0 h-auto text-base font-semibold md:text-sm placeholder:text-muted-foreground placeholder:font-semibold focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none bg-transparent"
-              />
-            ) : (
-              <div
-                onClick={() => {
-                  setDateInput(storageDateToInputFormat(form.date));
-                  setIsEditingDate(true);
-                  setTimeout(() => dateInputRef.current?.focus(), 0);
-                }}
-                className="flex flex-1 text-base font-semibold cursor-pointer md:text-sm whitespace-nowrap"
-              >
-                {(() => {
-                  try {
-                    const parsed = parse(form.date, "dd/MM/yyyy", new Date());
-                    return formatDateShort(parsed);
-                  } catch {
-                    return form.date;
-                  }
-                })()}
-              </div>
-            )}
+                  })() : "Choisir une date"}
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={form.date ? (() => {
+                    try {
+                      const p = parse(form.date, "dd/MM/yyyy", new Date());
+                      return isValid(p) ? p : undefined;
+                    } catch { return undefined; }
+                  })() : undefined}
+                  onSelect={(date) => {
+                    if (date) {
+                      setForm((prev) => ({ ...prev, date: format(date, "dd/MM/yyyy") }));
+                      setDatePopoverOpen(false);
+                    }
+                  }}
+                  locale={fr}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="h-px bg-border mx-4" />
