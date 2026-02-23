@@ -14,28 +14,28 @@ const CommentCaMarche = () => {
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">1. Anticipez votre trajet</p>
+            <p className="font-semibold mb-1">1️⃣ Anticipez votre trajet</p>
             <p>Avant votre vol, publiez votre annonce en indiquant votre heure d'arrivée et votre destination. <strong>C'est gratuit !</strong></p>
           </CardContent>
         </Card>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">2. Trouvez un partenaire</p>
+            <p className="font-semibold mb-1">2️⃣ Trouvez un partenaire</p>
             <p>Envoyez une demande pour l'annonce qui vous intéresse.</p>
           </CardContent>
         </Card>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">3. Retrouvez-vous</p>
+            <p className="font-semibold mb-1">3️⃣ Retrouvez-vous</p>
             <p>Une fois arrivés, rejoignez votre partenaire au point de rencontre. Puis, commandez votre transport en toute autonomie.</p>
           </CardContent>
         </Card>
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="text-[18px] font-semibold mb-2">4. Partagez les frais</p>
+            <p className="font-semibold mb-1">4️⃣ Partagez les frais</p>
             <p>Montez ensemble dans le véhicule et divisez le prix de la course !</p>
           </CardContent>
         </Card>
