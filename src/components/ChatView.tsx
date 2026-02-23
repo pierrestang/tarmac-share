@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, HelpCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -44,6 +45,7 @@ const ChatView = ({
   onCancelTrip,
 }: ChatViewProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   // Detect if both participants sent "Je suis prêt à partir"
@@ -78,9 +80,14 @@ const ChatView = ({
       <div className="flex-1 overflow-y-auto pb-4">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-[16px] font-medium text-[#F0EEE9]">
-              Retrouvez-vous 📍
-            </p>
+            <div className="flex items-center gap-1">
+              <p className="text-[16px] font-medium text-[#F0EEE9]">
+                Retrouvez-vous 📍
+              </p>
+              <button type="button" onClick={() => navigate("/retrouvez-vous")}>
+                <HelpCircle className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col">
@@ -146,6 +153,12 @@ const ChatView = ({
                       setShowCancelDialog(true);
                     } else {
                       onSendMessage(msg);
+                      if (msg === "Je suis arrivé au point de rencontre") {
+                        toast({
+                          description: "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
+                          style: { backgroundColor: "#7BA87B", color: "#F0EEE9" },
+                        });
+                      }
                     }
                   }}
                 />
