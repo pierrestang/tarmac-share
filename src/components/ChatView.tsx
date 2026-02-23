@@ -76,20 +76,26 @@ const ChatView = ({
         <span className="text-[18px] font-semibold">{otherProfile.firstName}</span>
       </div>
 
+      {/* Meeting point card - always visible */}
+      <Card className="border-0 rounded-md mb-4">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-1 mb-1">
+            <p className="text-[14px] font-semibold" style={{ color: "#3D2B3D" }}>
+              Retrouvez-vous au : Parking Express 📍
+            </p>
+            <button type="button" onClick={() => navigate("/retrouvez-vous")}>
+              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            </button>
+          </div>
+          <p className="text-[13px] italic" style={{ color: "#3D2B3D" }}>
+            "Au niveau du passage piéton central du Parking Express, face au Hall B"
+          </p>
+        </CardContent>
+      </Card>
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto pb-4">
-        {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="flex items-center gap-1">
-              <p className="text-[16px] font-medium text-[#F0EEE9]">
-                Retrouvez-vous 📍
-              </p>
-              <button type="button" onClick={() => navigate("/retrouvez-vous")}>
-                <HelpCircle className="h-4 w-4 text-muted-foreground" />
-              </button>
-            </div>
-          </div>
-        ) : (
+        {messages.length > 0 && (
           <div className="flex flex-col">
             {messages.map((msg, index) => {
               // Transform cancellation system messages for the current user
