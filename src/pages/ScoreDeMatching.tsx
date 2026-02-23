@@ -20,7 +20,7 @@ const ScoreDeMatching = () => {
             className="text-[24px] font-semibold"
             style={{ color: "#F0EEE9" }}
           >
-            Le Score de Matching.
+            Le score de matching.
           </h1>
         </div>
       </div>
@@ -30,14 +30,14 @@ const ScoreDeMatching = () => {
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: "#3D2B3D" }}>
             <p className="text-[18px] font-semibold mb-2">Comment calculons-nous votre compatibilité ?</p>
             <p>
-              Pour garantir un trajet fluide et économique, Tarmac analyse chaque demande en temps réel. Notre algorithme calcule un score de compatibilité sur 100 points basé sur deux piliers essentiels :
+              Pour vous garantir un trajet fluide et économique, Tarmac analyse chaque demande en temps réel afin d'établir un score de compatibilité basé sur deux piliers essentiels :
             </p>
             <ul className="mt-3 flex flex-col gap-3">
               <li>
-                <strong>Le Timing (50 pts) :</strong> La ponctualité est notre priorité. Plus vos horaires d'arrivée sont proches, plus le score grimpe. Un créneau identique vous offre le maximum de points.
+                <strong>Le timing :</strong> La ponctualité est notre priorité. Plus vos horaires d'arrivée sont proches, plus le score de match est élevé.
               </li>
               <li>
-                <strong>La Proximité (50 pts) :</strong> Nous calculons la distance routière réelle via Google Maps. L'objectif est de minimiser votre détour : le score est optimal si vos destinations sont à moins d'1 km l'une de l'autre.
+                <strong>La proximité :</strong> Nous calculons le détour routier réel via Google Maps. L’objectif est de minimiser votre trajet : le score est optimal si vos destinations sont voisines.
               </li>
             </ul>
           </CardContent>
