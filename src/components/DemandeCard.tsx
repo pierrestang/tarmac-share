@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -133,13 +134,18 @@ export function DemandeCard({
 
           {/* Compatibility score - hidden for completed and accepted */}
           {!isCompleted && !isAccepted && (
-            <div 
-              className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
-              style={{ borderColor: scoreColor }}
-            >
-              <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
-                {Math.round(compatibilityScore)}%
-              </span>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <div 
+                className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center"
+                style={{ borderColor: scoreColor }}
+              >
+                <span className="text-[14px] font-semibold" style={{ color: scoreColor }}>
+                  {Math.round(compatibilityScore)}%
+                </span>
+              </div>
+              <button type="button" onClick={() => navigate("/score-de-matching")} className="flex-shrink-0">
+                <HelpCircle className="h-4 w-4 text-muted-foreground" />
+              </button>
             </div>
           )}
         </div>

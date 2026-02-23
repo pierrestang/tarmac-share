@@ -32,6 +32,7 @@ import Numero from "./pages/Numero";
 import Statistiques from "./pages/Statistiques";
 import TourDeControle from "./pages/TourDeControle";
 import VotreTiming from "./pages/VotreTiming";
+import ScoreDeMatching from "./pages/ScoreDeMatching";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const App = () => (
               <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
             </Route>
             <Route path="votre-timing" element={<VotreTiming />} />
+            <Route path="score-de-matching" element={<ScoreDeMatching />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
