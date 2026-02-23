@@ -51,7 +51,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
       <div className="flex items-center gap-3">
         {/* Avatar */}
         <Avatar className="h-12 w-12">
-          {profile.photo && <AvatarImage src={profile.photo} alt={profile.firstName} />}
+          {profile.photo && <AvatarImage src={profile.photo} alt={profile.firstName} referrerPolicy="no-referrer" />}
           <AvatarFallback className="text-sm">
             {getInitials(profile.firstName, profile.lastName)}
           </AvatarFallback>

@@ -94,7 +94,7 @@ export function DemandeCard({
         <div className="flex items-start gap-3">
           {/* Avatar */}
           <Avatar className="h-12 w-12 shrink-0">
-            <AvatarImage src={otherProfile?.photo || undefined} alt={otherProfile?.firstName} />
+            <AvatarImage src={otherProfile?.photo || undefined} alt={otherProfile?.firstName} referrerPolicy="no-referrer" />
             <AvatarFallback className="text-sm">
               {otherProfile?.firstName?.charAt(0) || "?"}
             </AvatarFallback>
