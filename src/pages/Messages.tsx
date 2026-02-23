@@ -147,7 +147,7 @@ const Messages = () => {
           dbMessages.some(m => m.sender_id === otherParticipant);
         
         if (bothReady) {
-          await addSystemMessage(selectedConversation.id, "Vous êtes arrivés au point de rencontre. Cliquez sur \"Afficher le code\" pour vous identifier mutuellement en toute simplicité.");
+          await addSystemMessage(selectedConversation.id, "Vous êtes tous les deux arrivés au point de rencontre. Cliquez sur \"Afficher le code\" pour vous identifier mutuellement.");
         }
       }
       
