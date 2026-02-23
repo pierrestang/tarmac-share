@@ -153,9 +153,14 @@ const ChatView = ({
                       setShowCancelDialog(true);
                     } else {
                       onSendMessage(msg);
-                      if (msg === "Je suis arrivé au point de rencontre") {
+                    if (msg === "Je suis arrivé au point de rencontre") {
+                        const otherAlreadyArrived = messages.some(
+                          m => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
+                        );
                         toast({
-                          description: "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
+                          description: otherAlreadyArrived
+                            ? "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver."
+                            : "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
                           style: { backgroundColor: "#7BA87B", color: "#F0EEE9" },
                         });
                       }
