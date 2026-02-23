@@ -24,16 +24,16 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
           "px-4 py-2 rounded-md",
           isBothReady ? "" : isCancellation ? "bg-[#f0d0d0]" : isCompleted ? "bg-success" : "bg-muted"
         )} style={isBothReady ? { backgroundColor: "#F0EEE9" } : undefined}>
-          <p className={cn("text-xs",
-
-          isBothReady ? "text-left italic" : "text-center",
-          isBothReady ? "text-left" : isCancellation ? "text-[#A25B5B]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
+          <p className={cn(
+            "text-[14px]",
+            isBothReady ? "text-left italic" : "text-center",
+            isBothReady ? "text-left" : isCancellation ? "text-[#A25B5B]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
           )} style={isBothReady ? { color: "#4E657A" } : undefined}>
             {message.content}
           </p>
         </div>
-      </div>);
-
+      </div>
+    );
   }
 
   const initials = senderProfile?.firstName?.charAt(0).toUpperCase() || "?";
@@ -46,36 +46,36 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         <div className="max-w-[85%] bg-card px-4 py-2 rounded-2xl">
           <p className="text-[14px] text-card-foreground">{message.content}</p>
         </div>
-        {showTimestamp &&
-        <p className="text-[11px] text-heading mt-0.5 mr-1">{timestamp}</p>
-        }
-      </div>);
-
+        {showTimestamp && (
+          <p className="text-[11px] text-heading mt-0.5 mr-1">{timestamp}</p>
+        )}
+      </div>
+    );
   }
 
   // Received message (left)
   return (
     <div className="flex flex-col items-start mb-1">
       <div className="flex items-end gap-2">
-        {showAvatar ?
-        <Avatar className="h-8 w-8 flex-shrink-0">
-            {senderProfile?.photo ?
-          <AvatarImage src={senderProfile.photo} alt={senderProfile.firstName} /> :
-          null}
+        {showAvatar ? (
+          <Avatar className="h-8 w-8 flex-shrink-0">
+            {senderProfile?.photo ? (
+              <AvatarImage src={senderProfile.photo} alt={senderProfile.firstName} />
+            ) : null}
             <AvatarFallback className="text-[12px]">{initials}</AvatarFallback>
-          </Avatar> :
-
-        <div className="w-8 flex-shrink-0" />
-        }
+          </Avatar>
+        ) : (
+          <div className="w-8 flex-shrink-0" />
+        )}
         <div className="max-w-[85%] w-fit bg-card border border-border px-4 py-2 rounded-2xl">
           <p className="text-[14px] text-card-foreground whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
-      {showTimestamp &&
-      <p className="text-[11px] text-heading mt-0.5 ml-10">{timestamp}</p>
-      }
-    </div>);
-
+      {showTimestamp && (
+        <p className="text-[11px] text-heading mt-0.5 ml-10">{timestamp}</p>
+      )}
+    </div>
+  );
 };
 
 export default ChatBubble;
