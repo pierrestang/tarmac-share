@@ -25,7 +25,8 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
           isBothReady ? "" : isCancellation ? "bg-[#f0d0d0]" : isCompleted ? "bg-success" : "bg-muted"
         )} style={isBothReady ? { backgroundColor: "#F0EEE9" } : undefined}>
           <p className={cn(
-            "text-[14px] text-center",
+            "text-[14px]",
+            isBothReady ? "text-left italic" : "text-center",
             isBothReady ? "text-left" : isCancellation ? "text-[#A25B5B]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
           )} style={isBothReady ? { color: "#4E657A" } : undefined}>
             {message.content}
