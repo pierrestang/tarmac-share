@@ -26,7 +26,7 @@ const ConversationList = ({
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <p className="text-[16px] text-white">
-          Aucune conversation pour l'instant
+          Aucune conversation pour le moment
         </p>
       </div>
     );

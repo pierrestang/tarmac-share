@@ -285,7 +285,7 @@ const Matches = () => {
             {/* Cartes voyageurs */}
             {matches.length === 0 ? (
               <p className="text-center text-heading py-4">
-                Aucun voyageur pour l'instant...
+                Aucun voyageur pour le moment...
               </p>
             ) : (
               <div className="flex flex-col gap-4">
