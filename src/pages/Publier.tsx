@@ -606,14 +606,14 @@ const Publier = () => {
                   <X className="h-6 w-6" />
                 </button>
                 <h2 className="text-2xl font-bold text-heading">Combien de bagages avez-vous ?</h2>
-                <p className="text-sm text-foreground/60 mt-2">Capacité : {currentCapacity}/{MAX_CAPACITY}</p>
+                <p className="text-lg font-semibold text-heading mt-2">Capacité : {currentCapacity}/{MAX_CAPACITY}</p>
               </div>
 
               <div className="flex-1 overflow-y-auto px-6 pb-8">
                 <div className="flex flex-col gap-8 mt-4">
                   {/* Petit */}
                   <div className="flex flex-col gap-3">
-                    <p className="text-lg font-semibold text-heading">Petit <span className="text-foreground/50 font-normal text-sm">(sac à main, sacoche)</span></p>
+                    <p className="text-lg font-semibold text-heading">Petit (sac à main, sacoche)</p>
                     <div className="flex items-center gap-3">
                       {[0, 1, 2, 3].map((val) => (
                         <button
@@ -637,7 +637,7 @@ const Publier = () => {
 
                   {/* Moyen */}
                   <div className="flex flex-col gap-3">
-                    <p className="text-lg font-semibold text-heading">Moyen <span className="text-foreground/50 font-normal text-sm">(valise cabine)</span></p>
+                    <p className="text-lg font-semibold text-heading">Moyen (valise cabine)</p>
                     <div className="flex items-center gap-3">
                       {[0, 1, 2, 3].map((val) => (
                         <button
@@ -661,7 +661,7 @@ const Publier = () => {
 
                   {/* Grand */}
                   <div className="flex flex-col gap-3">
-                    <p className="text-lg font-semibold text-heading">Grand <span className="text-foreground/50 font-normal text-sm">(grosse valise)</span></p>
+                    <p className="text-lg font-semibold text-heading">Grand (grosse valise)</p>
                     <div className="flex items-center gap-3">
                       {[0, 1, 2, 3].map((val) => (
                         <button
