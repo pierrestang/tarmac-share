@@ -83,13 +83,13 @@ const ConfirmAnnulation = () => {
 
   return (
     <div className="flex flex-col min-h-full">
-      <div className="flex items-center gap-3 px-4 pt-6 pb-4">
+      <div className="flex items-center gap-3 pt-6 pb-4">
         <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
           Confirmer l'annulation
         </h1>
       </div>
 
-      <div className="flex-1 px-4 pb-6">
+      <div className="flex-1 pb-6">
         <div className="max-w-[42rem] mx-auto">
           <Card className="border-0 rounded-md shadow-none">
             <CardContent className="p-6 flex flex-col gap-6">

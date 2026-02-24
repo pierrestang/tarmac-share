@@ -243,13 +243,13 @@ const Publier = () => {
 
   return (
     <section className="flex flex-col flex-1 justify-center gap-6 pb-6">
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading text-center">
           {editTrajetId ? "Modifier le trajet." : "Partagez le trajet, divisez les frais."}
         </h1>
       </div>
 
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <Card className="bg-card w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <CardContent className="flex flex-col p-0">
 

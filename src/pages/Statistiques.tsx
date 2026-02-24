@@ -136,7 +136,7 @@ const Statistiques = () => {
   return (
     <section className="flex flex-col gap-4 pb-6">
       {/* Header */}
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <div className="w-full max-w-[42rem] flex flex-col gap-2">
           <button onClick={() => navigate("/tour-de-controle")} className="text-foreground self-start">
             <ArrowLeft size={20} />
@@ -145,7 +145,7 @@ const Statistiques = () => {
         </div>
       </div>
 
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
           {/* Period filter */}
           <div className="flex gap-2">

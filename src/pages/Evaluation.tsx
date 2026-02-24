@@ -108,7 +108,7 @@ const Evaluation = () => {
 
   return (
     <div className="flex flex-col min-h-full">
-      <div className="flex flex-col gap-2 px-4 pt-6 pb-4">
+      <div className="flex flex-col gap-2 pt-6 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 self-start">
           <ArrowLeft className="h-6 w-6 text-heading" />
         </button>
@@ -117,7 +117,7 @@ const Evaluation = () => {
         </h1>
       </div>
 
-      <div className="flex-1 px-4 pb-6">
+      <div className="flex-1 pb-6">
         <div className="max-w-[42rem] mx-auto">
           <Card className="border-0 rounded-md shadow-none" style={{ backgroundColor: "#FFFFFF" }}>
             <CardContent className="p-4 flex flex-col gap-4">
