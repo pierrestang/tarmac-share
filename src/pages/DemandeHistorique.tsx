@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,7 @@ import { useDemandes } from "@/hooks/use-demandes";
 import { useMessages } from "@/hooks/use-messages";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
 import type { Baggage } from "@/types/trajet";
 
 function formatBaggage(baggage: Baggage): string {
@@ -31,12 +33,33 @@ const DemandeHistorique = () => {
   const { notifications } = useNotifications();
   const { getConversationByDemandeId } = useMessages();
 
+  // Ratings state: map of raterId -> wasUseful
+  const [ratings, setRatings] = useState<Record<string, boolean>>({});
+
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
   // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
+
+  // Fetch ratings for this demande's conversation
+  useEffect(() => {
+    if (!demandeId) return;
+    const conversation = getConversationByDemandeId(demandeId);
+    if (!conversation) return;
+    supabase
+      .from("conversation_ratings")
+      .select("rater_id, was_useful")
+      .eq("conversation_id", conversation.id)
+      .then(({ data }) => {
+        if (data) {
+          const map: Record<string, boolean> = {};
+          data.forEach((r: any) => { map[r.rater_id] = r.was_useful; });
+          setRatings(map);
+        }
+      });
+  }, [demandeId, getConversationByDemandeId]);
 
   // Determine if current user is sender or recipient
   const isSender = demande?.fromProfileId === currentProfileId;
@@ -153,11 +176,22 @@ const DemandeHistorique = () => {
                   {myProfile.firstName}
                 </span>
                 {cancellerProfileId === currentProfileId && (
-                  <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                  <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
                     Trajet annulé
                   </Badge>
                 )}
-                {!cancellerProfileId && demande.status === "completed" && (
+                {!cancellerProfileId && demande.status === "completed" && currentProfileId in ratings && (
+                  ratings[currentProfileId] ? (
+                    <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                      Trajet réalisé
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+                      Trajet non réalisé
+                    </Badge>
+                  )
+                )}
+                {!cancellerProfileId && demande.status === "completed" && !(currentProfileId in ratings) && (
                   <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                     Trajet terminé
                   </Badge>
@@ -214,11 +248,22 @@ const DemandeHistorique = () => {
                   {voyageurProfile.firstName}
                 </span>
                 {cancellerProfileId === voyageurProfileId && (
-                  <Badge className="bg-red-100 text-red-700 border-red-300 text-[10px] px-1.5 py-0.5 hover:bg-red-100">
+                  <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
                     Trajet annulé
                   </Badge>
                 )}
-                {!cancellerProfileId && demande.status === "completed" && (
+                {!cancellerProfileId && demande.status === "completed" && voyageurProfileId && voyageurProfileId in ratings && (
+                  ratings[voyageurProfileId] ? (
+                    <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                      Trajet réalisé
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+                      Trajet non réalisé
+                    </Badge>
+                  )
+                )}
+                {!cancellerProfileId && demande.status === "completed" && (!voyageurProfileId || !(voyageurProfileId in ratings)) && (
                   <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                     Trajet terminé
                   </Badge>

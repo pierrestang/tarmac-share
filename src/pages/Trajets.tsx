@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Accordion,
@@ -11,6 +11,8 @@ import { MonTrajetCard } from "@/components/MonTrajetCard";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
+import { useMessages } from "@/hooks/use-messages";
+import { supabase } from "@/integrations/supabase/client";
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -19,6 +21,10 @@ const Trajets = () => {
   const { demandes, refuseDemande, hasDemandesForTrajet, isLoaded: demandesLoaded } = useDemandes();
   const { trajets, getTrajetById, deleteTrajet, isLoaded: trajetsLoaded } = useTrajets();
   const { profiles, getActiveProfile, isLoaded: profilesLoaded } = useProfiles();
+  const { getConversationByDemandeId } = useMessages();
+
+  // Ratings for completed demandes: demandeId -> tripRealized (true = both yes, false = at least one no)
+  const [tripRealizedMap, setTripRealizedMap] = useState<Record<string, boolean>>({});
 
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
@@ -47,6 +53,30 @@ const Trajets = () => {
   const historique = useMemo(() => {
     return myDemandes.filter((d) => d.status === "refused" || d.status === "completed");
   }, [myDemandes]);
+
+  // Fetch ratings for completed demandes to determine tripRealized
+  useEffect(() => {
+    const completedDemandes = historique.filter((d) => d.status === "completed" && !d.wasCancelled);
+    if (completedDemandes.length === 0) return;
+
+    const fetchRatings = async () => {
+      const map: Record<string, boolean> = {};
+      for (const d of completedDemandes) {
+        const conv = getConversationByDemandeId(d.id);
+        if (!conv) continue;
+        const { data } = await supabase
+          .from("conversation_ratings")
+          .select("was_useful")
+          .eq("conversation_id", conv.id);
+        if (data && data.length > 0) {
+          const allYes = data.every((r: any) => r.was_useful === true);
+          map[d.id] = allYes;
+        }
+      }
+      setTripRealizedMap(map);
+    };
+    fetchRatings();
+  }, [historique, getConversationByDemandeId]);
 
   // Get trajet IDs that have accepted demandes (exclude from "en attente" section)
   const trajetsWithAcceptedDemandes = useMemo(() => {
@@ -266,6 +296,7 @@ const Trajets = () => {
                           otherProfile={getOtherProfile(demande)}
                           trajet={getTrajet(demande)}
                           currentProfileId={currentProfileId}
+                          tripRealized={demande.id in tripRealizedMap ? tripRealizedMap[demande.id] : undefined}
                           onRefuse={handleRefuse}
                         />
                       </div>

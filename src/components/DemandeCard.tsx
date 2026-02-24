@@ -16,6 +16,8 @@ interface DemandeCardProps {
   currentProfileId: string;
   compatibilityScore?: number;
   distance?: number;
+  /** Rating result for completed demandes: true = both said yes, false = at least one said no, undefined = no ratings yet */
+  tripRealized?: boolean;
   onAccept?: (id: string) => void;
   onRefuse?: (id: string) => void;
 }
@@ -28,6 +30,7 @@ export function DemandeCard({
   currentProfileId,
   compatibilityScore = 100,
   distance = 0,
+  tripRealized,
   onAccept,
   onRefuse,
 }: DemandeCardProps) {
@@ -115,6 +118,14 @@ export function DemandeCard({
               {isCompleted && isCancelled ? (
                 <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
                   Trajet annulé
+                </Badge>
+              ) : isCompleted && tripRealized === true ? (
+                <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                  Trajet réalisé
+                </Badge>
+              ) : isCompleted && tripRealized === false ? (
+                <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+                  Trajet non réalisé
                 </Badge>
               ) : isCompleted ? (
                 <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
