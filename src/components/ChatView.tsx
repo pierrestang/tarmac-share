@@ -140,6 +140,7 @@ const ChatView = ({
               }
 
               const isBothReadySystem = message.type === "system" && message.content.includes("Vous êtes tous les deux arrivés au point de rencontre");
+              const isCompletedSystem = message.type === "system" && message.content === "Le trajet est terminé";
 
               return (
                 <div key={message.id}>
@@ -158,6 +159,16 @@ const ChatView = ({
                         >
                           Afficher le code
                         </button>
+                      </div>
+                    </div>
+                  ) : isCompletedSystem ? (
+                    <div className="flex justify-center my-2">
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#F0EEE9" }}>
+                        <div className="px-4 py-3">
+                          <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                            Le trajet est terminé ✅
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ) : (
