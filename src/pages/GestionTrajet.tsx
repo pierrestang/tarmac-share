@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, XCircle } from "lucide-react";
+import { ArrowLeft, XCircle, Check } from "lucide-react";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -27,9 +27,20 @@ const GestionTrajet = () => {
         <ArrowLeft className="h-5 w-5" />
       </button>
 
-      <h1 className="text-[22px] font-bold mb-6">Gestion du trajet</h1>
+      <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Gestion du trajet.</h1>
 
       <div className="flex flex-col gap-3">
+        <button
+          onClick={() =>
+            navigate(`/messages?conversationId=${conversationId}&action=close`)
+          }
+          className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
+          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+        >
+          <Check className="h-4 w-4" />
+          <span>Trajet effectué ?</span>
+        </button>
+
         <button
           onClick={() => setShowCancelDialog(true)}
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
@@ -37,16 +48,6 @@ const GestionTrajet = () => {
         >
           <XCircle className="h-4 w-4" />
           <span>Je dois annuler</span>
-        </button>
-
-        <button
-          onClick={() =>
-            navigate(`/messages?conversationId=${conversationId}&action=close`)
-          }
-          className="w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
-        >
-          Trajet effectué ?
         </button>
       </div>
 
