@@ -126,8 +126,8 @@ const Evaluation = () => {
               </p>
 
               <p className="text-[14px]" style={{ color: "#4E657A" }}>
+                Confirmez si votre trajet a bien eu lieu pour finaliser la mise en relation et mettre à jour votre historique, ou signalez tout imprévu.
               </p>
-
               <div className="flex gap-3">
                 <Button
                   onClick={() => handleAnswer(true)}
