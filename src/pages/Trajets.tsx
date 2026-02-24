@@ -203,7 +203,7 @@ const Trajets = () => {
                     return (
                       <Accordion key={trajet.id} type="multiple" defaultValue={[`date-${trajet.id}`]} className="w-full">
                         <AccordionItem value={`date-${trajet.id}`} className="border-0">
-                          <AccordionTrigger className="font-semibold hover:no-underline text-heading px-0">
+                          <AccordionTrigger className="text-[16px] font-semibold hover:no-underline text-heading px-0">
                             {formattedDate}
                           </AccordionTrigger>
                           <AccordionContent className="pt-3 pb-0 flex flex-col gap-4">
