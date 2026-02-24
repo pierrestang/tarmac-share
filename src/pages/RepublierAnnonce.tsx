@@ -8,6 +8,7 @@ import { useDemandes } from "@/hooks/use-demandes";
 import { useTrajets } from "@/hooks/use-trajets";
 import { useRepublications } from "@/hooks/use-republications";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { ArrowLeft } from "lucide-react";
 
 const RepublierAnnonce = () => {
   const navigate = useNavigate();
@@ -99,8 +100,16 @@ const RepublierAnnonce = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6">
-      {/* Header */}
-      <div className="flex justify-center px-4">
+      {/* Header with back arrow + title */}
+      <div className="flex flex-col px-4">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="self-start text-foreground mb-1"
+          aria-label="Retour"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </button>
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">
           Republier cette annonce ?
         </h1>
@@ -108,36 +117,34 @@ const RepublierAnnonce = () => {
 
       {/* Content */}
       <div className="flex flex-col gap-4 items-center px-4">
-          <Card className="border-0 rounded-md w-full max-w-[42rem]">
-            <CardContent className="p-6 flex flex-col gap-6">
-              {/* Explanation */}
-              {!isFreeMode && (
-                <p className="text-[14px] text-card-foreground">
-                  {freeRepublicationsRemaining > 0
-                    ? `Votre prochaine demande sera offerte. Il vous reste ${freeRepublicationsRemaining} demande${freeRepublicationsRemaining > 1 ? "s" : ""} gratuite${freeRepublicationsRemaining > 1 ? "s" : ""}.`
-                    : "Votre prochaine demande sera au tarif normal de 1,99 €."}
-                </p>
-              )}
+        <Card className="border-0 rounded-md w-full max-w-[42rem]">
+          <CardContent className="p-6 flex flex-col gap-4">
+            <p className="text-[16px] font-semibold text-card-foreground">
+              Votre trajet a été annulé ?
+            </p>
+            <p className="text-[14px] text-card-foreground">
+              Vous pouvez choisir de le republier immédiatement pour retrouver un partenaire. Pour vous aider à repartir sans frais, nous vous offrons 2 actions gratuites (envois ou acceptations de demandes) valables uniquement sur ce trajet.
+            </p>
+          </CardContent>
+        </Card>
 
-              {/* Buttons */}
-              <div className="flex flex-col gap-2">
-                <Button 
-                  onClick={handleRepublish}
-                  className="rounded-full"
-                >
-                  Republier
-                </Button>
+        {/* Buttons outside the card */}
+        <div className="flex flex-col gap-2 w-full max-w-[42rem]">
+          <Button
+            onClick={handleRepublish}
+            className="rounded-full"
+          >
+            Republier
+          </Button>
 
-                <Button 
-                  variant="outline"
-                  onClick={handleCancel}
-                  className="rounded-full"
-                >
-                  Non merci
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            className="rounded-full"
+          >
+            Non merci
+          </Button>
+        </div>
       </div>
     </section>
   );
