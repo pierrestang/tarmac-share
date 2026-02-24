@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, XCircle, Check } from "lucide-react";
+import { ArrowLeft, XCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -20,11 +20,8 @@ const GestionTrajet = () => {
 
   return (
     <div className="p-4">
-      <button
-        onClick={() => navigate(-1)}
-        className="h-8 w-8 p-0 flex items-center justify-center mb-4"
-      >
-        <ArrowLeft className="h-5 w-5" />
+      <button onClick={() => navigate(-1)} className="p-1 self-start mb-2">
+        <ArrowLeft className="h-6 w-6" />
       </button>
 
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Gestion du trajet.</h1>
@@ -37,7 +34,7 @@ const GestionTrajet = () => {
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
         >
-          <Check className="h-4 w-4" />
+          <CheckCircle className="h-4 w-4" />
           <span>Trajet effectué ?</span>
         </button>
 
