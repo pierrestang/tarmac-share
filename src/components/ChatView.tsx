@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, HelpCircle, MapPin } from "lucide-react";
+import { ArrowLeft, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,8 +18,6 @@ import ChatBubble from "./ChatBubble";
 import QuickMessages from "./QuickMessages";
 import type { Message, Conversation } from "@/types/message";
 import type { Profile } from "@/types/profile";
-import { useGeolocation } from "@/hooks/use-geolocation";
-import { calculateDistance } from "@/hooks/use-trajets";
 
 interface ChatViewProps {
   conversation: Conversation;
@@ -49,14 +47,6 @@ const ChatView = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const { isSharing, startSharing, stopSharing, myLocation, otherLocation, subscribeToOtherUser } = useGeolocation(currentProfileId);
-
-  useEffect(() => {
-    if (otherProfile.id) {
-      const unsubscribe = subscribeToOtherUser(otherProfile.id);
-      return () => unsubscribe();
-    }
-  }, [otherProfile.id, subscribeToOtherUser]);
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
@@ -144,54 +134,6 @@ const ChatView = ({
       {/* Input */}
       <div className="border-t pt-4">
         {!isFullyClosed && !isClosedByUser && (
-          <div className="mb-4">
-            {/* Location Sharing */}
-            <div className="flex flex-col gap-2 mb-4">
-              <Button
-                variant={isSharing ? "secondary" : "outline"}
-                className={`w-full rounded-full transition-all duration-300 ${isSharing ? "bg-green-100 hover:bg-green-200 border-green-200" : ""}`}
-                onClick={isSharing ? stopSharing : startSharing}
-              >
-                <MapPin className={`mr-2 h-4 w-4 ${isSharing ? "text-green-600 animate-pulse" : ""}`} />
-                <span className={isSharing ? "text-green-800" : ""}>
-                  {isSharing ? "Arrêter le partage" : "Partager ma position"}
-                </span>
-              </Button>
-
-              {otherLocation && (
-                <Card className="border border-green-200 bg-green-50 shadow-sm animate-in fade-in slide-in-from-bottom-2">
-                  <CardContent className="p-3 flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse ring-4 ring-green-500/20" />
-                        <span className="text-sm font-medium text-green-900">
-                          {otherProfile.firstName} est à {myLocation ? 
-                            (calculateDistance(
-                              { lat: myLocation.latitude, lng: myLocation.longitude },
-                              { lat: otherLocation.latitude, lng: otherLocation.longitude }
-                            ) ?? 0).toFixed(1) : "?"
-                          }km
-                        </span>
-                      </div>
-                    </div>
-                    <div className="rounded-md overflow-hidden border border-green-200" style={{ height: 200 }}>
-                      <iframe
-                        title="Position du voyageur"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""}&q=${otherLocation.latitude},${otherLocation.longitude}&zoom=14`}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
-        )}
-      {!isFullyClosed && !isClosedByUser && (
           <>
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
