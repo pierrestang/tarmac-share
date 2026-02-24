@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, HelpCircle, Send, XCircle } from "lucide-react";
+import { ArrowLeft, HelpCircle, MoreVertical, Send, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +15,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ChatBubble from "./ChatBubble";
 import type { Message, Conversation } from "@/types/message";
 import type { Profile } from "@/types/profile";
@@ -74,7 +80,25 @@ const ChatView = ({
         <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center">
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold">{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1">{otherProfile.firstName}</span>
+        {!isFullyClosed && !isClosedByUser && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button type="button" className="h-8 w-8 p-0 flex items-center justify-center">
+                <MoreVertical className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={() => setShowCancelDialog(true)} className="text-[#e34454]">
+                <XCircle className="h-4 w-4 mr-2" />
+                Je dois annuler
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={onCloseConversation}>
+                Le trajet a-t-il eu lieu ?
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       {/* Meeting point card - always visible */}
@@ -182,7 +206,8 @@ const ChatView = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Écrire un message..."
-                    className="flex-1 rounded-full"
+                    className="flex-1 rounded-full placeholder:text-[#F0EEE9]/60"
+                    style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                   />
                   <button
                     type="submit"
@@ -194,25 +219,6 @@ const ChatView = ({
                   </button>
                 </form>
 
-                {/* Cancel + Close buttons */}
-                <div className="flex flex-col gap-2 mt-3">
-                  <button
-                    onClick={() => setShowCancelDialog(true)}
-                    className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[14px] border-0"
-                    style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}
-                  >
-                    <XCircle className="h-4 w-4" />
-                    <span>Je dois annuler</span>
-                  </button>
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-full"
-                    style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
-                    onClick={onCloseConversation}
-                  >
-                    Le trajet a-t-il eu lieu ?
-                  </Button>
-                </div>
               </>
             )}
           </>
