@@ -75,16 +75,13 @@ const ChatView = ({
           <ArrowLeft className="h-5 w-5" />
         </button>
         <span className="text-[18px] font-semibold flex-1" style={{ color: "#F0EEE9" }}>{otherProfile.firstName}</span>
-        {!isFullyClosed && !isClosedByUser &&
         <button
           type="button"
-          onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}`)}
+          onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
           className="h-8 w-8 p-0 flex items-center justify-center"
           style={{ color: "#F0EEE9" }}>
-
             <MoreVertical className="h-5 w-5" />
           </button>
-        }
       </div>
 
       {/* Scrollable content area */}
