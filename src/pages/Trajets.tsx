@@ -152,7 +152,7 @@ const Trajets = () => {
         <Accordion type="multiple" defaultValue={enCours.length > 0 ? ["en-cours"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-cours" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 En cours
               </AccordionTrigger>
             </div>
@@ -176,7 +176,7 @@ const Trajets = () => {
         <Accordion type="multiple" defaultValue={hasEnAttenteContent ? ["en-attente"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-attente" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 En attente
               </AccordionTrigger>
             </div>
@@ -203,7 +203,7 @@ const Trajets = () => {
                     return (
                       <Accordion key={trajet.id} type="multiple" defaultValue={[`date-${trajet.id}`]} className="w-full">
                         <AccordionItem value={`date-${trajet.id}`} className="border-0">
-                          <AccordionTrigger className="text-[18px] font-semibold hover:no-underline text-heading px-0">
+                          <AccordionTrigger className="font-semibold hover:no-underline text-heading px-0">
                             {formattedDate}
                           </AccordionTrigger>
                           <AccordionContent className="pt-3 pb-0 flex flex-col gap-4">
@@ -228,7 +228,7 @@ const Trajets = () => {
         <Accordion type="multiple" className="w-full max-w-[42rem]">
           <AccordionItem value="historique" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="text-[18px] font-semibold hover:no-underline px-4 text-card-foreground">
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 Historique
               </AccordionTrigger>
             </div>
