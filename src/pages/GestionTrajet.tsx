@@ -45,7 +45,7 @@ const GestionTrajet = () => {
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}>
           <MapPin className="h-4 w-4" />
-          <span>Je suis arrivé au point de rencontre</span>
+          <span>Je suis arrivé</span>
         </button>
 
         <button
