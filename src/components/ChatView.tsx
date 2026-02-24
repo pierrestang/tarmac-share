@@ -148,9 +148,9 @@ const ChatView = ({
                 <div key={message.id}>
                   {isCancellationSystem ? (
                     <div className="flex justify-center my-2">
-                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#A25B5B" }}>
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#E34454" }}>
                         <div className="px-4 py-3 text-center">
-                          <p className="text-[14px] font-semibold" style={{ color: "#E34454" }}>
+                          <p className="text-[14px] font-semibold" style={{ color: "#F0EEE9" }}>
                             {message.content}
                           </p>
                         </div>
