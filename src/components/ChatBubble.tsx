@@ -43,8 +43,8 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
   if (isOwn) {
     return (
       <div className="flex flex-col items-end mb-1">
-        <div className="max-w-[85%] bg-card px-4 py-2 rounded-2xl">
-          <p className="text-[14px] text-card-foreground">{message.content}</p>
+        <div className="max-w-[85%] px-4 py-2 rounded-2xl" style={{ backgroundColor: "#4E657A" }}>
+          <p className="text-[14px]" style={{ color: "#F0EEE9" }}>{message.content}</p>
         </div>
         {showTimestamp && (
           <p className="text-[11px] text-heading mt-0.5 mr-1">{timestamp}</p>
@@ -67,8 +67,8 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         ) : (
           <div className="w-8 flex-shrink-0" />
         )}
-        <div className="max-w-[85%] w-fit bg-card border border-border px-4 py-2 rounded-2xl">
-          <p className="text-[14px] text-card-foreground whitespace-pre-wrap">{message.content}</p>
+        <div className="max-w-[85%] w-fit px-4 py-2 rounded-2xl" style={{ backgroundColor: "#4E657A" }}>
+          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#F0EEE9" }}>{message.content}</p>
         </div>
       </div>
       {showTimestamp && (
