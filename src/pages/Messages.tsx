@@ -96,9 +96,10 @@ const Messages = () => {
     ? notifications.filter(n => n.profileId === profileId && !n.read).length 
     : 0;
 
-  // Handle conversationId from URL params (from notification click)
+  // Handle conversationId from URL params (from notification click or gestion-trajet)
   useEffect(() => {
     const conversationId = searchParams.get("conversationId");
+    const action = searchParams.get("action");
     if (conversationId && profileId) {
       const conversation = getConversationById(conversationId);
       if (conversation) {
@@ -106,6 +107,15 @@ const Messages = () => {
         markConversationAsRead(conversationId, profileId);
         markReadByDemandeId(conversation.demandeId);
         setSearchParams({});
+        if (action === "close") {
+          const other = conversation.participants.find(p => p !== profileId);
+          if (other) {
+            navigate(`/evaluation?conversationId=${conversationId}&ratedProfileId=${other}`);
+          }
+        } else if (action === "cancel") {
+          // Trigger cancel after setting conversation
+          setTimeout(() => handleCancelTrip(), 0);
+        }
       }
     }
   }, [searchParams, profileId, getConversationById, markConversationAsRead, markReadByDemandeId, setSearchParams]);
