@@ -66,7 +66,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {profile.photo ? (
-                <AvatarImage src={profile.photo} alt={profile.firstName} />
+                <AvatarImage src={profile.photo} alt={profile.firstName} referrerPolicy="no-referrer" />
               ) : null}
               <AvatarFallback className="text-[14px]">
                 {profile.firstName.charAt(0)}

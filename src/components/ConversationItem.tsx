@@ -35,7 +35,7 @@ const ConversationItem = ({
         <div className="relative">
           <Avatar className="h-12 w-12">
             {otherProfile.photo ? (
-              <AvatarImage src={otherProfile.photo} alt={otherProfile.firstName} />
+              <AvatarImage src={otherProfile.photo} alt={otherProfile.firstName} referrerPolicy="no-referrer" />
             ) : null}
             <AvatarFallback className="text-[14px]">{initials}</AvatarFallback>
           </Avatar>

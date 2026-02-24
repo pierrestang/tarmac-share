@@ -114,7 +114,7 @@ const Compte = () => {
                 onClick={() => fileInputRef.current?.click()}
               >
                 {photo ? (
-                  <img src={photo} alt="Aperçu" className="h-full w-full rounded-full object-cover" />
+                  <img src={photo} alt="Aperçu" className="h-full w-full rounded-full object-cover" referrerPolicy="no-referrer" />
                 ) : (
                   <Camera size={24} className="text-muted-foreground" />
                 )}
