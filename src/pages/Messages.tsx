@@ -97,6 +97,9 @@ const Messages = () => {
     : 0;
 
   // Handle conversationId from URL params (from notification click or gestion-trajet)
+  // Store pending action from URL params
+  const [pendingAction, setPendingAction] = useState<{ action: string; conversation: Conversation } | null>(null);
+
   useEffect(() => {
     const conversationId = searchParams.get("conversationId");
     const action = searchParams.get("action");
@@ -112,14 +115,27 @@ const Messages = () => {
           if (other) {
             navigate(`/evaluation?conversationId=${conversationId}&ratedProfileId=${other}`);
           }
-        } else if (action === "cancel") {
-          setTimeout(() => handleCancelTrip(), 0);
-        } else if (action === "arrived") {
-          setTimeout(() => handleSendMessage("Je suis arrivé au point de rencontre"), 0);
+        } else if (action === "cancel" || action === "arrived") {
+          setPendingAction({ action, conversation });
         }
       }
     }
   }, [searchParams, profileId, getConversationById, markConversationAsRead, markReadByDemandeId, setSearchParams]);
+
+  // Execute pending actions after selectedConversation state is updated
+  useEffect(() => {
+    if (!pendingAction || !selectedConversation) return;
+    if (selectedConversation.id !== pendingAction.conversation.id) return;
+
+    const { action } = pendingAction;
+    setPendingAction(null);
+
+    if (action === "cancel") {
+      handleCancelTrip();
+    } else if (action === "arrived") {
+      handleSendMessage("Je suis arrivé au point de rencontre");
+    }
+  }, [pendingAction, selectedConversation]);
 
   const getOtherProfile = useCallback((conversation: Conversation) => {
     if (!profileId) return undefined;
