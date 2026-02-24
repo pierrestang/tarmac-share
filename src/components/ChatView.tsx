@@ -87,21 +87,59 @@ const ChatView = ({
       </div>
 
       {/* Meeting point card - always visible */}
-      <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <CardContent className="p-4">
-          <div className="flex items-center gap-1 mb-1">
-            <p className="text-[14px] font-semibold" style={{ color: "#4E657A" }}>
-              Point de rencontre recommandé 📍:
-            </p>
-            <button type="button" onClick={() => navigate("/retrouvez-vous")}>
-              <HelpCircle className="h-4 w-4" style={{ color: "#4E657A" }} />
-            </button>
-          </div>
+      <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#F0EEE9" }}>
+        <button type="button" onClick={() => navigate("/retrouvez-vous")} className="absolute top-3 right-3">
+          <HelpCircle className="h-4 w-4" style={{ color: "#4E657A" }} />
+        </button>
+        <CardContent className="p-4 pr-8">
+          <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>
+            Point de rencontre recommandé 📍:
+          </p>
           <p className="text-[13px] italic" style={{ color: "#4E657A" }}>
             Au niveau du passage piéton central du Parking Express, face au Hall B.
           </p>
         </CardContent>
       </Card>
+
+      {/* Arrival status card */}
+      {(() => {
+        const currentArrived = messages.some(m => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre");
+        const otherArrived = messages.some(m => m.senderId !== currentProfileId && m.type !== "system" && m.content === "Je suis arrivé au point de rencontre");
+        if (currentArrived && otherArrived) {
+          return (
+            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
+              <CardContent className="p-4">
+                <p className="text-[13px]" style={{ color: "#4E657A" }}>
+                  Tout le monde est arrivé ! Vous pouvez maintenant générer vos codes pour vous identifier.
+                </p>
+              </CardContent>
+            </Card>
+          );
+        }
+        if (currentArrived) {
+          return (
+            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
+              <CardContent className="p-4">
+                <p className="text-[13px]" style={{ color: "#4E657A" }}>
+                  Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.
+                </p>
+              </CardContent>
+            </Card>
+          );
+        }
+        if (otherArrived) {
+          return (
+            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
+              <CardContent className="p-4">
+                <p className="text-[13px]" style={{ color: "#4E657A" }}>
+                  {otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.
+                </p>
+              </CardContent>
+            </Card>
+          );
+        }
+        return null;
+      })()}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto pb-4">
