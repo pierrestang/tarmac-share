@@ -118,12 +118,12 @@ const RepublierAnnonce = () => {
       {/* Content */}
       <div className="flex flex-col gap-4 items-center px-4">
         <Card className="border-0 rounded-md w-full max-w-[42rem]">
-          <CardContent className="p-6 flex flex-col gap-4">
-            <p className="text-[16px] font-semibold text-card-foreground">
+          <CardContent className="p-6 flex flex-col gap-3">
+            <p className="text-[16px] font-bold text-card-foreground">
               Votre trajet a été annulé ?
             </p>
-            <p className="text-[14px] text-card-foreground">
-              Vous pouvez choisir de le republier immédiatement pour retrouver un partenaire. Pour vous aider à repartir sans frais, nous vous offrons 2 actions gratuites (envois ou acceptations de demandes) valables uniquement sur ce trajet.
+            <p className="text-[14px] text-card-foreground leading-relaxed">
+              Vous pouvez choisir de le republier immédiatement pour retrouver un partenaire. Pour vous aider à repartir sans frais, nous vous offrons <span className="font-bold">2 actions gratuites</span> (envois ou acceptations de demandes) valables uniquement sur ce trajet.
             </p>
           </CardContent>
         </Card>
