@@ -111,9 +111,11 @@ const ChatView = ({
             {messages.map((msg, index) => {
               // Transform cancellation system messages for the current user
               let message = msg;
+              let isCancellationSystem = false;
               if (msg.type === "system") {
                 const cancelMatch = msg.content.match(/^\[CANCELLED_BY:([^\]]+)\] (.+)/);
                 if (cancelMatch) {
+                  isCancellationSystem = true;
                   const cancellerId = cancelMatch[1];
                   message = {
                     ...msg,
@@ -144,7 +146,17 @@ const ChatView = ({
 
               return (
                 <div key={message.id}>
-                  {isBothReadySystem ? (
+                  {isCancellationSystem ? (
+                    <div className="flex justify-center my-2">
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#A25B5B" }}>
+                        <div className="px-4 py-3 text-center">
+                          <p className="text-[14px] font-semibold" style={{ color: "#F0EEE9" }}>
+                            {message.content}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : isBothReadySystem ? (
                     <div className="flex justify-center my-2">
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#F0EEE9" }}>
                         <div className="px-4 py-3">
