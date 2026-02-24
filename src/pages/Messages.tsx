@@ -113,8 +113,9 @@ const Messages = () => {
             navigate(`/evaluation?conversationId=${conversationId}&ratedProfileId=${other}`);
           }
         } else if (action === "cancel") {
-          // Trigger cancel after setting conversation
           setTimeout(() => handleCancelTrip(), 0);
+        } else if (action === "arrived") {
+          setTimeout(() => handleSendMessage("Je suis arrivé au point de rencontre"), 0);
         }
       }
     }
