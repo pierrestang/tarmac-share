@@ -29,20 +29,18 @@ const GestionTrajet = () => {
       <div className="flex flex-col gap-3">
         <button
           onClick={() =>
-          navigate(`/messages?conversationId=${conversationId}&action=close`)
+            navigate(`/messages?conversationId=${conversationId}&action=close`)
           }
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-          <span>Trajet effectué ?</span>
+          <span>Clôturer le trajet</span>
         </button>
-
-
 
         <button
           onClick={() => setShowCancelDialog(true)}
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}>
-          <span>Je dois annuler</span>
+          <span>Annuler le trajet</span>
         </button>
       </div>
 
