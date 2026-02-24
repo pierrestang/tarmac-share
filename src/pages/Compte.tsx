@@ -38,7 +38,7 @@ const Compte = () => {
 
   const [firstName, setFirstName] = useState(profile?.firstName || "");
   const [lastName, setLastName] = useState(profile?.lastName || "");
-  const [description, setDescription] = useState(profile?.description || "");
+  
   const [photo, setPhoto] = useState<string | null>(profile?.photo || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -47,7 +47,7 @@ const Compte = () => {
     if (profile) {
       setFirstName(profile.firstName);
       setLastName(profile.lastName);
-      setDescription(profile.description);
+      
       setPhoto(profile.photo);
     }
   }, [profile]);
@@ -86,7 +86,7 @@ const Compte = () => {
     await updateProfile(profile.id, {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      description: description.trim(),
+      description: "",
       photo,
     });
     setIsSubmitting(false);
@@ -141,18 +141,6 @@ const Compte = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
-              />
-            </div>
-
-            <div className="h-px bg-border mx-4" />
-
-            <div className="px-4 py-4">
-              <Textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={1}
-                className="border-0 min-h-0 p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 resize-none"
               />
             </div>
 
