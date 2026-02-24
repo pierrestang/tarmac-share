@@ -157,6 +157,38 @@ export type Database = {
           },
         ]
       }
+      locations: {
+        Row: {
+          is_active: boolean | null
+          latitude: number
+          longitude: number
+          profile_id: string
+          updated_at: number
+        }
+        Insert: {
+          is_active?: boolean | null
+          latitude: number
+          longitude: number
+          profile_id: string
+          updated_at?: number
+        }
+        Update: {
+          is_active?: boolean | null
+          latitude?: number
+          longitude?: number
+          profile_id?: string
+          updated_at?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locations_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string

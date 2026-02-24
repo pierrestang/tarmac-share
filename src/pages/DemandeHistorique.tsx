@@ -140,7 +140,7 @@ const DemandeHistorique = () => {
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {myProfile.photo ? (
-                <AvatarImage src={myProfile.photo} alt={myProfile.firstName} />
+                <AvatarImage src={myProfile.photo} alt={myProfile.firstName} referrerPolicy="no-referrer" />
               ) : null}
               <AvatarFallback className="text-[14px]">
                 {myProfile.firstName.charAt(0)}
@@ -201,7 +201,7 @@ const DemandeHistorique = () => {
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {voyageurProfile.photo ? (
-                <AvatarImage src={voyageurProfile.photo} alt={voyageurProfile.firstName} />
+                <AvatarImage src={voyageurProfile.photo} alt={voyageurProfile.firstName} referrerPolicy="no-referrer" />
               ) : null}
               <AvatarFallback className="text-[14px]">
                 {voyageurProfile.firstName.charAt(0)}

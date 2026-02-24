@@ -28,7 +28,7 @@ export function TopHeader() {
         <div className="absolute left-0 flex items-center">
           <Avatar className="h-8 w-8">
             {activeProfile?.photo ? (
-              <AvatarImage src={activeProfile.photo} alt={activeProfile.firstName} />
+              <AvatarImage src={activeProfile.photo} alt={activeProfile.firstName} referrerPolicy="no-referrer" />
             ) : null}
             <AvatarFallback className="text-xs">
               {activeProfile?.firstName?.charAt(0) || "?"}
