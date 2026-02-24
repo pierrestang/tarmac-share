@@ -143,11 +143,11 @@ const Trajets = () => {
 
   return (
     <section aria-label="Trajets" className="flex flex-col gap-4 pb-6">
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Consulter mes trajets.</h1>
       </div>
 
-      <div className="flex flex-col gap-4 items-center px-4">
+      <div className="flex flex-col gap-4 items-center">
         {/* En cours */}
         <Accordion type="multiple" defaultValue={enCours.length > 0 ? ["en-cours"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-cours" className="border-0">

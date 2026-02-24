@@ -101,7 +101,7 @@ const RepublierAnnonce = () => {
   return (
     <section className="flex flex-col gap-4 pb-6">
       {/* Header with back arrow + title */}
-      <div className="flex flex-col px-4">
+      <div className="flex flex-col">
         <button
           type="button"
           onClick={() => navigate(-1)}
@@ -116,7 +116,7 @@ const RepublierAnnonce = () => {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col gap-4 items-center px-4">
+      <div className="flex flex-col gap-4 items-center">
         <Card className="border-0 rounded-md w-full max-w-[42rem]">
           <CardContent className="p-6 flex flex-col gap-3">
             <p className="text-[16px] font-bold text-card-foreground">

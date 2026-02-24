@@ -98,13 +98,13 @@ const Compte = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6">
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">
           Mon compte.
         </h1>
       </div>
 
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <Card className="w-full max-w-[42rem] bg-card border-0 rounded-md overflow-hidden">
           <div className="flex flex-col">
             {/* Photo */}
@@ -168,7 +168,7 @@ const Compte = () => {
       </div>
 
       {isAdmin && (
-        <div className="flex justify-center px-4">
+        <div className="flex justify-center">
           <Button
             className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
             onClick={() => navigate("/tour-de-controle")}
@@ -179,7 +179,7 @@ const Compte = () => {
       )}
 
       {/* Déconnexion */}
-      <div className="flex justify-center px-4">
+      <div className="flex justify-center">
         <Button
           className="w-full max-w-[42rem] border-0 rounded-md h-auto px-4 py-4"
           onClick={async () => {

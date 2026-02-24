@@ -92,7 +92,7 @@ const Matches = () => {
   // Affichage de la liste des trajets si pas de trajetId
   if (!trajetId) {
     return (
-      <section className="flex flex-col gap-4 pb-6 items-center px-4">
+      <section className="flex flex-col gap-4 pb-6 items-center">
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Matches.</h1>
         
         {userTrajets.length === 0 ? (
@@ -217,7 +217,7 @@ const Matches = () => {
   })();
 
   return (
-    <section className="flex flex-col gap-4 pb-6 items-center px-4">
+    <section className="flex flex-col gap-4 pb-6 items-center">
       <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Matches.</h1>
 
       {/* Accordion principal avec la date */}

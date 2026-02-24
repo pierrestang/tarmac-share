@@ -178,7 +178,7 @@ const Paiement = () => {
   }
 
   return (
-    <section className="flex flex-col items-center px-4 pb-6">
+    <section className="flex flex-col items-center pb-6">
       <div className="w-full max-w-[42rem]">
         <h1 className="text-[24px] font-semibold mb-4">Paiement.</h1>
 

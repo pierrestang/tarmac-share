@@ -120,7 +120,7 @@ const DemandeConsulter = () => {
   };
 
   return (
-    <section className="flex flex-col gap-4 pb-6 items-center px-4">
+    <section className="flex flex-col gap-4 pb-6 items-center">
       {/* Titre = Date */}
       <h1 className="text-[24px] font-semibold text-heading w-full max-w-[42rem]">
         {(() => {
