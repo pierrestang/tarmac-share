@@ -211,7 +211,36 @@ const Trajets = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  {renderDemandeList(enCours)}
+                  {enCours.map((demande) => {
+                    const myTrajetId = demande.fromProfileId === currentProfileId
+                      ? demande.fromTrajetId
+                      : demande.toTrajetId;
+                    const myTrajet = getTrajetById(myTrajetId);
+                    const formattedDate = (() => {
+                      if (!myTrajet) return null;
+                      try {
+                        const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
+                        return format(parsed, "EEE d MMMM", { locale: fr }).replace(/^\w/, c => c.toUpperCase());
+                      } catch {
+                        return myTrajet.date;
+                      }
+                    })();
+
+                    return (
+                      <div key={demande.id} className="flex flex-col gap-2">
+                        {formattedDate && (
+                          <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                        )}
+                        <DemandeCard
+                          demande={demande}
+                          otherProfile={getOtherProfile(demande)}
+                          trajet={getTrajet(demande)}
+                          currentProfileId={currentProfileId}
+                          onRefuse={handleRefuse}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </AccordionContent>
