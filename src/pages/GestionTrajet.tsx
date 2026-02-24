@@ -16,6 +16,7 @@ const GestionTrajet = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const conversationId = searchParams.get("conversationId") || "";
+  const demandeId = searchParams.get("demandeId") || "";
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   return (
@@ -27,6 +28,14 @@ const GestionTrajet = () => {
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Gestion du trajet.</h1>
 
       <div className="flex flex-col gap-3">
+        {demandeId && (
+          <button
+            onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
+            className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
+            style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+            <span>Voir le trajet</span>
+          </button>
+        )}
         <button
           onClick={() =>
             navigate(`/messages?conversationId=${conversationId}&action=close`)
