@@ -42,8 +42,11 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
   const scoreColor = getScoreColor(compatibilityScore);
 
   return (
-    <Card className="w-full max-w-[42rem] border-0 overflow-hidden">
-      <CardContent className="flex flex-col gap-3 p-4">
+    <Card className="w-full max-w-[42rem] border-0 overflow-hidden relative">
+      <button type="button" onClick={() => navigate("/score-de-matching")} className="absolute top-3 right-3 z-10">
+        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+      </button>
+      <CardContent className="flex flex-col gap-3 p-4 pr-8">
         {/* Optional title */}
         {title && <h2 className="text-[18px] font-semibold">{title}</h2>}
 
@@ -86,7 +89,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
         </div>
 
         {/* Compatibility score */}
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex-shrink-0">
           <div 
             className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center"
             style={{ borderColor: scoreColor }}
@@ -95,9 +98,6 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
               {Math.round(compatibilityScore)}%
             </span>
           </div>
-          <button type="button" onClick={() => navigate("/score-de-matching")} className="flex-shrink-0">
-            <HelpCircle className="h-4 w-4 text-muted-foreground" />
-          </button>
         </div>
       </div>
 
