@@ -240,55 +240,44 @@ const ChatView = ({
       }
 
       {/* Input - fixed at bottom */}
-      <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
-        {!isFullyClosed && !isClosedByUser &&
-        <>
-            {
-          <>
-                {/* Free text input */}
-                <form
-              className="flex items-center gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const text = inputText.trim();
-                if (!text) return;
-                onSendMessage(text);
-                setInputText("");
-                if (text === "Je suis arrivé au point de rencontre") {
-                  const otherAlreadyArrived = messages.some(
-                    (m) => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
-                  );
-                  toast({
-                    description: otherAlreadyArrived ?
-                    "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver." :
-                    "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
-                    style: { backgroundColor: "#7BA87B", color: "#F0EEE9" }
-                  });
-                }
-              }}>
-
-                  <Input
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Écrire un message..."
-                className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#F0EEE9]"
-                style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }} />
-
-                  <button
-                type="submit"
-                disabled={!inputText.trim()}
-                className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
-                style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-
-                    <SendHorizontal className="h-4 w-4" />
-                  </button>
-                </form>
-
-              </>
-          }
-          </>
-        }
-      </div>
+      {!isFullyClosed && !isClosedByUser && (
+        <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
+          <form
+            className="flex items-center gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const text = inputText.trim();
+              if (!text) return;
+              onSendMessage(text);
+              setInputText("");
+              if (text === "Je suis arrivé au point de rencontre") {
+                const otherAlreadyArrived = messages.some(
+                  (m) => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
+                );
+                toast({
+                  description: otherAlreadyArrived ?
+                  "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver." :
+                  "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
+                  style: { backgroundColor: "#7BA87B", color: "#F0EEE9" }
+                });
+              }
+            }}>
+            <Input
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Écrire un message..."
+              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#F0EEE9]"
+              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }} />
+            <button
+              type="submit"
+              disabled={!inputText.trim()}
+              className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
+              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+              <SendHorizontal className="h-4 w-4" />
+            </button>
+          </form>
+        </div>
+      )}
       {/* Cancel Trip Dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md">
