@@ -192,6 +192,26 @@ const ChatView = ({
       <div className="pt-4">
         {!isFullyClosed && !isClosedByUser && (
           <>
+            {!messages.some(m => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system") && (
+              <button
+                onClick={() => {
+                  onSendMessage("Je suis arrivé au point de rencontre");
+                  const otherAlreadyArrived = messages.some(
+                    m => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
+                  );
+                  toast({
+                    description: otherAlreadyArrived
+                      ? "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver."
+                      : "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
+                    style: { backgroundColor: "#7BA87B", color: "#F0EEE9" },
+                  });
+                }}
+                className="w-full rounded-full px-4 py-3 text-[14px] font-semibold border-0 mb-3"
+                style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}
+              >
+                Je suis arrivé au point de rencontre
+              </button>
+            )}
             {(
               <>
                 {/* Free text input */}

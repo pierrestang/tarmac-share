@@ -36,14 +36,7 @@ const GestionTrajet = () => {
           <span>Trajet effectué ?</span>
         </button>
 
-        <button
-          onClick={() =>
-            navigate(`/messages?conversationId=${conversationId}&action=arrived`)
-          }
-          className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}>
-          <span>Je suis arrivé au point de rencontre</span>
-        </button>
+
 
         <button
           onClick={() => setShowCancelDialog(true)}
