@@ -160,26 +160,31 @@ const ChatView = ({
 
               {otherLocation && (
                 <Card className="border border-green-200 bg-green-50 shadow-sm animate-in fade-in slide-in-from-bottom-2">
-                  <CardContent className="p-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse ring-4 ring-green-500/20" />
-                      <span className="text-sm font-medium text-green-900">
-                        {otherProfile.firstName} est à {myLocation ? 
-                          (calculateDistance(
-                            { lat: myLocation.latitude, lng: myLocation.longitude },
-                            { lat: otherLocation.latitude, lng: otherLocation.longitude }
-                          ) ?? 0).toFixed(1) : "?"
-                        }km
-                      </span>
+                  <CardContent className="p-3 flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse ring-4 ring-green-500/20" />
+                        <span className="text-sm font-medium text-green-900">
+                          {otherProfile.firstName} est à {myLocation ? 
+                            (calculateDistance(
+                              { lat: myLocation.latitude, lng: myLocation.longitude },
+                              { lat: otherLocation.latitude, lng: otherLocation.longitude }
+                            ) ?? 0).toFixed(1) : "?"
+                          }km
+                        </span>
+                      </div>
                     </div>
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${otherLocation.latitude},${otherLocation.longitude}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-semibold text-green-700 hover:text-green-800 hover:underline flex items-center gap-1"
-                    >
-                      Voir sur la carte
-                    </a>
+                    <div className="rounded-md overflow-hidden border border-green-200" style={{ height: 200 }}>
+                      <iframe
+                        title="Position du voyageur"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""}&q=${otherLocation.latitude},${otherLocation.longitude}&zoom=14`}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               )}
