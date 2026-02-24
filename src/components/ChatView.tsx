@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, HelpCircle } from "lucide-react";
+import { ArrowLeft, HelpCircle, Send, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,7 +16,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import ChatBubble from "./ChatBubble";
-import QuickMessages from "./QuickMessages";
 import type { Message, Conversation } from "@/types/message";
 import type { Profile } from "@/types/profile";
 
@@ -47,6 +47,7 @@ const ChatView = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [inputText, setInputText] = useState("");
 
   // Detect if both participants sent "Je suis prêt à partir"
   const bothReady = conversation.participants.every(participantId =>
@@ -138,7 +139,8 @@ const ChatView = ({
             {bothReady ? (
               <div className="flex flex-col gap-3 mt-4">
                 <Button
-                  className="w-full rounded-full bg-success text-success-foreground border-0 hover:bg-success/80"
+                  className="w-full rounded-full border-0 hover:opacity-80"
+                  style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                   onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
                 >
                   Afficher le code
@@ -146,6 +148,7 @@ const ChatView = ({
                 <Button
                   variant="outline"
                   className="w-full rounded-full"
+                  style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                   onClick={onCloseConversation}
                 >
                   Le trajet a-t-il eu lieu ?
@@ -153,31 +156,58 @@ const ChatView = ({
               </div>
             ) : (
               <>
-                <QuickMessages
-                  onSend={(msg) => {
-                    if (msg === "Je dois annuler") {
-                      setShowCancelDialog(true);
-                    } else {
-                      onSendMessage(msg);
-                    if (msg === "Je suis arrivé au point de rencontre") {
-                        const otherAlreadyArrived = messages.some(
-                          m => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
-                        );
-                        toast({
-                          description: otherAlreadyArrived
-                            ? "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver."
-                            : "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
-                          style: { backgroundColor: "#7BA87B", color: "#F0EEE9" },
-                        });
-                      }
+                {/* Free text input */}
+                <form
+                  className="flex items-center gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const text = inputText.trim();
+                    if (!text) return;
+                    onSendMessage(text);
+                    setInputText("");
+                    if (text === "Je suis arrivé au point de rencontre") {
+                      const otherAlreadyArrived = messages.some(
+                        m => m.senderId !== currentProfileId && m.content === "Je suis arrivé au point de rencontre"
+                      );
+                      toast({
+                        description: otherAlreadyArrived
+                          ? "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver."
+                          : "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
+                        style: { backgroundColor: "#7BA87B", color: "#F0EEE9" },
+                      });
                     }
                   }}
-                />
-                
-                <div className="mt-4">
+                >
+                  <Input
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder="Écrire un message..."
+                    className="flex-1 rounded-full"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!inputText.trim()}
+                    className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
+                    style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </form>
+
+                {/* Cancel + Close buttons */}
+                <div className="flex flex-col gap-2 mt-3">
+                  <button
+                    onClick={() => setShowCancelDialog(true)}
+                    className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[14px] border-0"
+                    style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}
+                  >
+                    <XCircle className="h-4 w-4" />
+                    <span>Je dois annuler</span>
+                  </button>
                   <Button
                     variant="outline"
                     className="w-full rounded-full"
+                    style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                     onClick={onCloseConversation}
                   >
                     Le trajet a-t-il eu lieu ?
