@@ -132,9 +132,7 @@ const ChatView = ({
 
               let arrivalStatus: string | null = null;
               if (isArrivalMessage) {
-                if (currentArrived && otherArrived) {
-                  arrivalStatus = "Tout le monde est arrivé ! Vous pouvez maintenant générer vos codes pour vous identifier.";
-                } else if (isOwn && currentArrived && !otherArrived) {
+                if (isOwn && currentArrived && !otherArrived) {
                   arrivalStatus = "Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.";
                 } else if (!isOwn && otherArrived && !currentArrived) {
                   arrivalStatus = `${otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.`;
