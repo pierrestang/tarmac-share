@@ -108,6 +108,7 @@ const Publier = () => {
 
   // Time sheet state
   const [timeSheetOpen, setTimeSheetOpen] = useState(false);
+  const [companionsSheetOpen, setCompanionsSheetOpen] = useState(false);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
 
   // Get active hour from current departureTime
@@ -512,32 +513,57 @@ const Publier = () => {
           <div className="h-px bg-border mx-4" />
 
           {/* Voyageur(s) */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <div className="flex items-center w-full px-4 py-4 cursor-pointer gap-3">
-                <CircleUserRound className="h-4 w-4 flex-shrink-0 text-card-foreground" />
-                <span className="text-base font-semibold md:text-sm">
-                  {form.companions === "1" ? "1 voyageur" : `${form.companions} voyageurs`}
-                </span>
+          <div
+            className="flex items-center w-full px-4 py-4 cursor-pointer gap-3"
+            onClick={() => setCompanionsSheetOpen(true)}
+          >
+            <CircleUserRound className="h-4 w-4 flex-shrink-0 text-card-foreground" />
+            <span className="text-base font-semibold md:text-sm">
+              {form.companions === "1" ? "1 voyageur" : `${form.companions} voyageurs`}
+            </span>
+          </div>
+
+          {/* Companions Sheet plein écran */}
+          <Sheet open={companionsSheetOpen} onOpenChange={setCompanionsSheetOpen}>
+            <SheetContent
+              side="bottom"
+              className="h-[100dvh] p-0 bg-background border-0 flex flex-col [&>button]:hidden"
+            >
+              <div className="flex-shrink-0 px-6 pt-8 pb-4">
+                <button
+                  type="button"
+                  onClick={() => setCompanionsSheetOpen(false)}
+                  className="text-foreground mb-6"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+                <h2 className="text-2xl font-bold text-heading">Combien de voyageurs êtes-vous ?</h2>
               </div>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <div className="flex flex-col">
-                {["1", "2", "3"].map((val, index) => (
-                  <div
-                    key={val}
-                    className={cn(
-                      "px-4 py-3 cursor-pointer text-[14px]",
-                      index < 2 && "border-b border-border"
-                    )}
-                    onClick={() => setForm((prev) => ({ ...prev, companions: val }))}
-                  >
-                    {val === "1" ? "1 voyageur" : `${val} voyageurs`}
-                  </div>
-                ))}
+
+              <div className="flex-1 overflow-y-auto px-6 pb-8">
+                <div className="grid grid-cols-3 gap-4 mt-4">
+                  {["1", "2", "3"].map((val) => (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => {
+                        setForm((prev) => ({ ...prev, companions: val }));
+                        setCompanionsSheetOpen(false);
+                      }}
+                      className={cn(
+                        "h-16 rounded-full text-lg font-semibold transition-colors",
+                        form.companions === val
+                          ? "bg-primary text-primary-foreground"
+                          : "text-foreground/80 hover:bg-primary/20"
+                      )}
+                    >
+                      {val}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </PopoverContent>
-          </Popover>
+            </SheetContent>
+          </Sheet>
 
           <div className="h-px bg-border mx-4" />
 

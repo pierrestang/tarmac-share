@@ -300,21 +300,15 @@ const Trajets = () => {
                     })();
                     
                     return (
-                      <Accordion key={trajet.id} type="multiple" defaultValue={[`date-${trajet.id}`]} className="w-full">
-                        <AccordionItem value={`date-${trajet.id}`} className="border-0">
-                          <AccordionTrigger className="text-[16px] font-semibold hover:no-underline text-heading px-0">
-                            {formattedDate}
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-3 pb-0 flex flex-col gap-4">
-                            <MonTrajetCard
-                              trajet={trajet}
-                              profile={activeProfile!}
-                              canEditOrDelete={!hasDemandesForTrajet(trajet.id)}
-                              onDelete={handleDelete}
-                            />
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
+                      <div key={trajet.id} className="flex flex-col gap-2">
+                        <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                        <MonTrajetCard
+                          trajet={trajet}
+                          profile={activeProfile!}
+                          canEditOrDelete={!hasDemandesForTrajet(trajet.id)}
+                          onDelete={handleDelete}
+                        />
+                      </div>
                     );
                   })}
                 </div>
