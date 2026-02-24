@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, XCircle, CircleCheck, MapPin } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -33,8 +33,6 @@ const GestionTrajet = () => {
           }
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-
-          <CircleCheck className="h-4 w-4" />
           <span>Trajet effectué ?</span>
         </button>
 
@@ -44,15 +42,13 @@ const GestionTrajet = () => {
           }
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}>
-          <MapPin className="h-4 w-4" />
-          <span>Je suis arrivé</span>
+          <span>Je suis arrivé au point de rencontre</span>
         </button>
 
         <button
           onClick={() => setShowCancelDialog(true)}
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
           style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}>
-          <XCircle className="h-4 w-4" />
           <span>Je dois annuler</span>
         </button>
       </div>

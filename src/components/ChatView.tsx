@@ -191,7 +191,7 @@ const ChatView = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Écrire un message..."
-                    className="flex-1 rounded-full border-0 placeholder:text-[#F0EEE9]"
+                    className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#F0EEE9]"
                     style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                   />
                   <button

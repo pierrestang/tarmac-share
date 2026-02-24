@@ -115,7 +115,7 @@ const Messages = () => {
         } else if (action === "cancel") {
           setTimeout(() => handleCancelTrip(), 0);
         } else if (action === "arrived") {
-          setTimeout(() => handleSendMessage("Je suis arrivé"), 0);
+          setTimeout(() => handleSendMessage("Je suis arrivé au point de rencontre"), 0);
         }
       }
     }
