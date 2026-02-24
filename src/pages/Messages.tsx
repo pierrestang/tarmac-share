@@ -248,7 +248,7 @@ const Messages = () => {
   // Chat view
   if (selectedConversation && otherProfile) {
     return (
-      <section aria-label="Conversation" className="h-[calc(100vh-180px)]">
+      <section aria-label="Conversation" className="h-[calc(100dvh-10rem)]">
         <ChatView
           conversation={selectedConversation}
           messages={currentMessages}
