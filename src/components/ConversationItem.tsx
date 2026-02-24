@@ -52,7 +52,7 @@ const ConversationItem = ({
         </span>
 
         {status === "active" && (
-          <Badge className="ml-auto border-0 hover:opacity-100" style={{ backgroundColor: "#89B1D6", color: "#4E657A" }}>
+          <Badge className="ml-auto border-0 hover:opacity-100" style={{ backgroundColor: "#A9A9A9", color: "#5F5F5F" }}>
             Trajet en cours
           </Badge>
         )}
