@@ -145,7 +145,7 @@ const DemandeHistorique = () => {
         <button onClick={handleBack} className="text-foreground self-start">
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-[24px] font-semibold">Historique.</h1>
+        <h1 className="text-[24px] font-semibold">Consulter le trajet.</h1>
       </div>
 
       {/* Date */}

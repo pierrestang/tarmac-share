@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+import { ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -121,8 +122,15 @@ const DemandeConsulter = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center">
-      {/* Titre = Date */}
-      <h1 className="text-[24px] font-semibold text-heading w-full max-w-[42rem]">
+      <div className="w-full max-w-[42rem] flex flex-col gap-2">
+        <button onClick={handleBack} className="text-foreground self-start">
+          <ArrowLeft className="h-6 w-6" />
+        </button>
+        <h1 className="text-[24px] font-semibold w-full">Consulter le trajet.</h1>
+      </div>
+
+      {/* Date */}
+      <p className="text-[16px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
@@ -131,7 +139,7 @@ const DemandeConsulter = () => {
             return myTrajet.date;
           }
         })()}
-      </h1>
+      </p>
 
 
       {/* Carte Mon trajet */}
