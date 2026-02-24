@@ -25,6 +25,7 @@ const Trajets = () => {
 
   // Ratings for completed demandes: demandeId -> tripRealized (true = both yes, false = at least one no)
   const [tripRealizedMap, setTripRealizedMap] = useState<Record<string, boolean>>({});
+  const [ratingsLoaded, setRatingsLoaded] = useState(false);
 
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
@@ -57,7 +58,7 @@ const Trajets = () => {
   // Fetch ratings for completed demandes to determine tripRealized
   useEffect(() => {
     const completedDemandes = historique.filter((d) => d.status === "completed" && !d.wasCancelled);
-    if (completedDemandes.length === 0) return;
+    if (completedDemandes.length === 0) { setRatingsLoaded(true); return; }
 
     const fetchRatings = async () => {
       const map: Record<string, boolean> = {};
@@ -74,6 +75,7 @@ const Trajets = () => {
         }
       }
       setTripRealizedMap(map);
+      setRatingsLoaded(true);
     };
     fetchRatings();
   }, [historique, getConversationByDemandeId]);
@@ -169,7 +171,7 @@ const Trajets = () => {
 
   const hasEnAttenteContent = myPendingTrajets.length > 0;
 
-  if (!demandesLoaded || !trajetsLoaded || !profilesLoaded) return null;
+  if (!demandesLoaded || !trajetsLoaded || !profilesLoaded || !ratingsLoaded) return null;
 
   return (
     <section aria-label="Trajets" className="flex flex-col gap-4 pb-6">

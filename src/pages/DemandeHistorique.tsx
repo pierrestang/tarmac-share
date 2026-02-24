@@ -35,6 +35,7 @@ const DemandeHistorique = () => {
 
   // Ratings state: map of raterId -> wasUseful
   const [ratings, setRatings] = useState<Record<string, boolean>>({});
+  const [ratingsLoaded, setRatingsLoaded] = useState(false);
 
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
@@ -45,9 +46,9 @@ const DemandeHistorique = () => {
 
   // Fetch ratings for this demande's conversation
   useEffect(() => {
-    if (!demandeId) return;
+    if (!demandeId) { setRatingsLoaded(true); return; }
     const conversation = getConversationByDemandeId(demandeId);
-    if (!conversation) return;
+    if (!conversation) { setRatingsLoaded(true); return; }
     supabase
       .from("conversation_ratings")
       .select("rater_id, was_useful")
@@ -58,6 +59,7 @@ const DemandeHistorique = () => {
           data.forEach((r: any) => { map[r.rater_id] = r.was_useful; });
           setRatings(map);
         }
+        setRatingsLoaded(true);
       });
   }, [demandeId, getConversationByDemandeId]);
 
@@ -133,7 +135,7 @@ const DemandeHistorique = () => {
     return cancellationNotif?.relatedProfileId || null;
   })();
 
-  if (!isLoaded || !demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
+  if (!isLoaded || !ratingsLoaded || !demande || !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile) {
     return null;
   }
 
