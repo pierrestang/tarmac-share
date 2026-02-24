@@ -109,6 +109,7 @@ const Publier = () => {
   // Time sheet state
   const [timeSheetOpen, setTimeSheetOpen] = useState(false);
   const [companionsSheetOpen, setCompanionsSheetOpen] = useState(false);
+  const [baggageSheetOpen, setBaggageSheetOpen] = useState(false);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
 
   // Get active hour from current departureTime
@@ -568,135 +569,123 @@ const Publier = () => {
           <div className="h-px bg-border mx-4" />
 
           {/* Bagages */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <div className="flex items-center w-full px-4 py-4 cursor-pointer gap-3">
-                <Briefcase className={cn(
-                  "h-4 w-4 flex-shrink-0",
-                  currentCapacity > 0 ? "text-card-foreground" : "text-muted-foreground"
-                )} />
-                <span className={cn(
-                  "text-base font-semibold md:text-sm",
-                  currentCapacity === 0 && "text-muted-foreground"
-                )}>
-                  {(() => {
-                    const parts: string[] = [];
-                    if (form.baggage.small > 0) parts.push(`${form.baggage.small} petit${form.baggage.small > 1 ? 's' : ''}`);
-                    if (form.baggage.medium > 0) parts.push(`${form.baggage.medium} moyen${form.baggage.medium > 1 ? 's' : ''}`);
-                    if (form.baggage.large > 0) parts.push(`${form.baggage.large} grand${form.baggage.large > 1 ? 's' : ''}`);
-                    return parts.length > 0 ? parts.join(', ') : "Pas de bagage";
-                  })()}
-                </span>
+          <div
+            className="flex items-center w-full px-4 py-4 cursor-pointer gap-3"
+            onClick={() => setBaggageSheetOpen(true)}
+          >
+            <Briefcase className={cn(
+              "h-4 w-4 flex-shrink-0",
+              currentCapacity > 0 ? "text-card-foreground" : "text-muted-foreground"
+            )} />
+            <span className={cn(
+              "text-base font-semibold md:text-sm",
+              currentCapacity === 0 && "text-muted-foreground"
+            )}>
+              {(() => {
+                const parts: string[] = [];
+                if (form.baggage.small > 0) parts.push(`${form.baggage.small} petit${form.baggage.small > 1 ? 's' : ''}`);
+                if (form.baggage.medium > 0) parts.push(`${form.baggage.medium} moyen${form.baggage.medium > 1 ? 's' : ''}`);
+                if (form.baggage.large > 0) parts.push(`${form.baggage.large} grand${form.baggage.large > 1 ? 's' : ''}`);
+                return parts.length > 0 ? parts.join(', ') : "Pas de bagage";
+              })()}
+            </span>
+          </div>
+
+          {/* Baggage Sheet plein écran */}
+          <Sheet open={baggageSheetOpen} onOpenChange={setBaggageSheetOpen}>
+            <SheetContent
+              side="bottom"
+              className="h-[100dvh] p-0 bg-background border-0 flex flex-col [&>button]:hidden"
+            >
+              <div className="flex-shrink-0 px-6 pt-8 pb-4">
+                <button
+                  type="button"
+                  onClick={() => setBaggageSheetOpen(false)}
+                  className="text-foreground mb-6"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+                <h2 className="text-2xl font-bold text-heading">Combien de bagages avez-vous ?</h2>
+                <p className="text-sm text-foreground/60 mt-2">Capacité : {currentCapacity}/{MAX_CAPACITY}</p>
               </div>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-3" align="start">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between text-[12px] text-muted-foreground">
-                  <span>Capacité</span>
-                  <span>{currentCapacity}/{MAX_CAPACITY}</span>
-                </div>
-                
-                {/* Petit */}
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px]">Petit</span>
-                    <span className="text-[12px] text-muted-foreground">(50)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("small", -1)}
-                      disabled={form.baggage.small === 0}
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-6 text-center text-[16px] font-medium">
-                      {form.baggage.small}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("small", 1)}
-                      disabled={!canAddBaggage("small")}
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
-                  </div>
-                </div>
 
-                {/* Moyen */}
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px]">Moyen</span>
-                    <span className="text-[12px] text-muted-foreground">(70)</span>
+              <div className="flex-1 overflow-y-auto px-6 pb-8">
+                <div className="flex flex-col gap-8 mt-4">
+                  {/* Petit */}
+                  <div className="flex flex-col gap-3">
+                    <p className="text-lg font-semibold text-heading">Petit <span className="text-foreground/50 font-normal text-sm">(sac à main, sacoche)</span></p>
+                    <div className="flex items-center gap-3">
+                      {[0, 1, 2, 3].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          disabled={val > 0 && currentCapacity - form.baggage.small * BAGGAGE_SIZES.small + val * BAGGAGE_SIZES.small > MAX_CAPACITY}
+                          onClick={() => setForm((prev) => ({ ...prev, baggage: { ...prev.baggage, small: val } }))}
+                          className={cn(
+                            "h-14 w-14 rounded-full text-lg font-semibold transition-colors",
+                            form.baggage.small === val
+                              ? "bg-primary text-primary-foreground"
+                              : "text-foreground/80 hover:bg-primary/20",
+                            val > 0 && currentCapacity - form.baggage.small * BAGGAGE_SIZES.small + val * BAGGAGE_SIZES.small > MAX_CAPACITY && "opacity-30 cursor-not-allowed"
+                          )}
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("medium", -1)}
-                      disabled={form.baggage.medium === 0}
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-6 text-center text-[16px] font-medium">
-                      {form.baggage.medium}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("medium", 1)}
-                      disabled={!canAddBaggage("medium")}
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
-                  </div>
-                </div>
 
-                {/* Grand */}
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px]">Grand</span>
-                    <span className="text-[12px] text-muted-foreground">(120)</span>
+                  {/* Moyen */}
+                  <div className="flex flex-col gap-3">
+                    <p className="text-lg font-semibold text-heading">Moyen <span className="text-foreground/50 font-normal text-sm">(valise cabine)</span></p>
+                    <div className="flex items-center gap-3">
+                      {[0, 1, 2, 3].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          disabled={val > 0 && currentCapacity - form.baggage.medium * BAGGAGE_SIZES.medium + val * BAGGAGE_SIZES.medium > MAX_CAPACITY}
+                          onClick={() => setForm((prev) => ({ ...prev, baggage: { ...prev.baggage, medium: val } }))}
+                          className={cn(
+                            "h-14 w-14 rounded-full text-lg font-semibold transition-colors",
+                            form.baggage.medium === val
+                              ? "bg-primary text-primary-foreground"
+                              : "text-foreground/80 hover:bg-primary/20",
+                            val > 0 && currentCapacity - form.baggage.medium * BAGGAGE_SIZES.medium + val * BAGGAGE_SIZES.medium > MAX_CAPACITY && "opacity-30 cursor-not-allowed"
+                          )}
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("large", -1)}
-                      disabled={form.baggage.large === 0}
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-6 text-center text-[16px] font-medium">
-                      {form.baggage.large}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateBaggage("large", 1)}
-                      disabled={!canAddBaggage("large")}
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
+
+                  {/* Grand */}
+                  <div className="flex flex-col gap-3">
+                    <p className="text-lg font-semibold text-heading">Grand <span className="text-foreground/50 font-normal text-sm">(grosse valise)</span></p>
+                    <div className="flex items-center gap-3">
+                      {[0, 1, 2, 3].map((val) => (
+                        <button
+                          key={val}
+                          type="button"
+                          disabled={val > 0 && currentCapacity - form.baggage.large * BAGGAGE_SIZES.large + val * BAGGAGE_SIZES.large > MAX_CAPACITY}
+                          onClick={() => setForm((prev) => ({ ...prev, baggage: { ...prev.baggage, large: val } }))}
+                          className={cn(
+                            "h-14 w-14 rounded-full text-lg font-semibold transition-colors",
+                            form.baggage.large === val
+                              ? "bg-primary text-primary-foreground"
+                              : "text-foreground/80 hover:bg-primary/20",
+                            val > 0 && currentCapacity - form.baggage.large * BAGGAGE_SIZES.large + val * BAGGAGE_SIZES.large > MAX_CAPACITY && "opacity-30 cursor-not-allowed"
+                          )}
+                        >
+                          {val}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </PopoverContent>
-          </Popover>
+            </SheetContent>
+          </Sheet>
 
           {/* Bouton Publier */}
           <Button
