@@ -169,8 +169,8 @@ const ChatView = ({
       <div className="pt-4">
         {!isFullyClosed && !isClosedByUser && (
           <>
-            {bothReady ? (
-              <div className="flex flex-col gap-3 mt-4">
+            {bothReady && (
+              <div className="flex flex-col gap-3 mb-3">
                 <Button
                   className="w-full rounded-full border-0 hover:opacity-80"
                   style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
@@ -179,7 +179,8 @@ const ChatView = ({
                   Afficher le code
                 </Button>
               </div>
-            ) : (
+            )}
+            {(
               <>
                 {/* Free text input */}
                 <form
