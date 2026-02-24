@@ -70,7 +70,7 @@ const ChatView = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 border-b mb-4">
+      <div className="flex items-center gap-3 pb-4 mb-4">
         <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center">
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -142,7 +142,7 @@ const ChatView = ({
       </div>
 
       {/* Input */}
-      <div className="border-t pt-4">
+      <div className="pt-4">
         {!isFullyClosed && !isClosedByUser && (
           <>
             {bothReady ? (
@@ -191,7 +191,7 @@ const ChatView = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Écrire un message..."
-                    className="flex-1 rounded-full border-0 placeholder:text-[#F0EEE9]/60"
+                    className="flex-1 rounded-full border-0 placeholder:text-[#F0EEE9]"
                     style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
                   />
                   <button
