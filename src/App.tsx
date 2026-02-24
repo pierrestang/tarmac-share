@@ -34,6 +34,7 @@ import TourDeControle from "./pages/TourDeControle";
 import VotreTiming from "./pages/VotreTiming";
 import ScoreDeMatching from "./pages/ScoreDeMatching";
 import RetrouvezVous from "./pages/RetrouvezVous";
+import GestionTrajet from "./pages/GestionTrajet";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
             <Route path="votre-timing" element={<VotreTiming />} />
             <Route path="score-de-matching" element={<ScoreDeMatching />} />
             <Route path="retrouvez-vous" element={<RetrouvezVous />} />
+            <Route path="gestion-trajet" element={<GestionTrajet />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
