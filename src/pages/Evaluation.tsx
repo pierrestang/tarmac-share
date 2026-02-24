@@ -112,36 +112,44 @@ const Evaluation = () => {
         <button onClick={() => navigate(-1)} className="p-1 self-start">
           <ArrowLeft className="h-6 w-6 text-heading" />
         </button>
-        <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
-          Le trajet a-t-il eu lieu ?
+         <h1 className="text-[22px] font-semibold text-heading whitespace-nowrap">
+          Clôturer le trajet
         </h1>
       </div>
 
       <div className="flex-1 px-4 pb-6">
         <div className="max-w-[42rem] mx-auto">
-          <Card className="border-0 rounded-md shadow-none bg-transparent">
-            <CardContent className="p-0 flex flex-col gap-6">
+          <Card className="border-0 rounded-md shadow-none" style={{ backgroundColor: "#FFFFFF" }}>
+            <CardContent className="p-4 flex flex-col gap-4">
+              <p className="text-[14px]" style={{ color: "#4E657A" }}>
+                Une fois votre rencontre effectuée, confirmez que le trajet a bien eu lieu pour finaliser votre mise en relation et mettre à jour votre historique. En cas d'imprévu, vous pouvez également signaler ici si le trajet n'a pas pu se dérouler.
+              </p>
+
+              <p className="text-[16px] font-semibold text-heading">
+                Le trajet a-t-il eu lieu ?
+              </p>
+
               <div className="flex gap-3">
                 <Button
                   onClick={() => handleAnswer(true)}
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full text-[24px]"
+                  className="flex-1 rounded-full text-[16px] font-semibold border-0"
+                  style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}
                 >
-                  {isSubmitting ? "Envoi..." : "👍"}
+                  {isSubmitting ? "Envoi..." : "Oui"}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleAnswer(false)}
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full text-[24px]"
+                  className="flex-1 rounded-full text-[16px] font-semibold border-0"
+                  style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}
                 >
-                  👎
+                  Non
                 </Button>
               </div>
-
             </CardContent>
           </Card>
-
         </div>
       </div>
     </div>
