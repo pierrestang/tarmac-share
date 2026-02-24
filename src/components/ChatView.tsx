@@ -166,7 +166,7 @@ const ChatView = ({
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#7BA87B" }}>
                         <div className="px-4 py-3">
                           <p className="text-[14px] font-semibold text-center" style={{ color: "#F0EEE9" }}>
-                            Le trajet est terminé ✅
+                            Le trajet est terminé
                           </p>
                         </div>
                       </div>
