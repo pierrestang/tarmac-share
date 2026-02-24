@@ -1,73 +1,32 @@
 
-## Sélecteur de date plein écran dans /publier
 
-### Objectif
-Remplacer le Popover + Calendar compact par un écran plein écran style "Quand partez-vous ?" inspiré de la capture, adapté à la palette de l'app (beige `#F0EEE9`, bleu-gris `#4E657A`, fond bleu `#89B1D6`).
+## Plan : Barre de saisie stylisee et menu trois points
 
-### Ce que ça donne visuellement
+### Changements visuels
 
-```text
-┌────────────────────────────────────┐
-│  ×                                 │
-│                                    │
-│  Quand partez-vous ?               │  ← titre bold, beige
-│                                    │
-│  février                           │  ← nom du mois, bold
-│                                    │
-│   1   2   3   4   5   6   7        │  ← pas d'en-têtes lun/mar/...
-│   8   9  10  11  12  13  14        │
-│  15  16  17  [18] 19  20  21       │  ← jour sélectionné = cercle plein
-│  22  23  24  25  26  27  28        │
-│                                    │
-│  mars                              │
-│   ...                              │
-└────────────────────────────────────┘
-```
+**1. Barre de saisie "Ecrire un message"**
+- Appliquer un fond `#4E657A` et un texte `#F0EEE9` a l'input de saisie
+- Le placeholder sera egalement en `#F0EEE9` avec une opacite reduite pour rester lisible
 
-- Fond : couleur `background` de l'app (`#89B1D6`, bleu doux)
-- Texte titre + mois : couleur `heading` (`#F0EEE9`, beige)
-- Jours : texte beige `#F0EEE9`, taille normale
-- Jour sélectionné : cercle plein bleu-gris `#4E657A` (= `primary`), texte blanc
-- Aujourd'hui (non sélectionné) : cercle fin en contour beige
-- Bouton × : icône beige en haut à gauche
-- Pas d'en-têtes de jours (lun., mar., etc.) — supprimés
-- Calendrier scrollable sur 12 mois (mois courant + 11 suivants)
-- Sélection d'un jour → fermeture automatique de l'écran
+**2. Menu trois points en haut a droite du header**
+- Ajouter une icone `MoreVertical` (lucide-react) a droite du header de la conversation, a cote du prenom
+- Au clic, ouvrir un `DropdownMenu` (composant deja disponible dans le projet) avec deux options :
+  - "Je dois annuler" -- declenche le dialogue de confirmation d'annulation
+  - "Le trajet a-t-il eu lieu ?" -- appelle `onCloseConversation`
+- Ces deux options ne seront visibles que si la conversation n'est pas cloturee (`!isFullyClosed && !isClosedByUser`)
 
-### Ce qui change dans `src/pages/Publier.tsx`
+**3. Retrait des boutons du bas**
+- Supprimer les boutons "Je dois annuler" et "Le trajet a-t-il eu lieu ?" de la zone sous le champ de saisie
+- Seuls le champ de saisie et le bouton d'envoi resteront en bas de l'ecran
 
-**Supprimé :**
-- Le `<Popover open={datePopoverOpen}>` + `<Calendar>` existant pour la date
-- `datePopoverOpen` state
+### Details techniques
 
-**Ajouté :**
-- `dateSheetOpen` state (boolean) pour contrôler le Sheet
-- Import de `Sheet`, `SheetContent`, `SheetClose` depuis `@/components/ui/sheet`
-- Import de `X` depuis `lucide-react`
-- Une fonction `buildMonths(count: number)` qui génère `count` mois depuis le mois courant (tableau de `Date`)
-- Une fonction `buildDaysGrid(year, month)` qui retourne le tableau de jours du mois avec le décalage lundi-en-premier (cellules vides pour l'offset)
-- Le `<Sheet>` plein écran avec :
-  - `side="bottom"` + `className="h-[100dvh] p-0 bg-background border-0"` → plein écran, fond bleu de l'app
-  - Bouton × en haut à gauche (beige)
-  - Titre "Quand partez-vous ?" en bold beige
-  - Zone scrollable avec les 12 mois
-  - Pour chaque mois : nom du mois en bold beige + grille 7 colonnes des jours (sans en-têtes de semaine)
+Fichier modifie : `src/components/ChatView.tsx`
 
-**Conservé :**
-- Le trigger visuel identique (icône CalendarIcon + texte formaté `formatDateShort`)
-- La valeur stockée en format `dd/MM/yyyy`
-- Toute la logique du reste du formulaire
+- Import de `MoreVertical` depuis `lucide-react`
+- Import de `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem` depuis `@/components/ui/dropdown-menu`
+- Dans le header, ajouter le bouton trois points et le dropdown menu
+- Appliquer `style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}` sur le composant `Input`
+- Ajouter une classe CSS pour le placeholder en `#F0EEE9` avec opacite (via une classe Tailwind inline ou un style global)
+- Supprimer le bloc "Cancel + Close buttons" (lignes 197-215) de la zone input
 
-### Palette de couleurs appliquée
-
-| Élément | Couleur |
-|---|---|
-| Fond Sheet | `bg-background` = `#89B1D6` bleu doux |
-| Titre + mois | `text-heading` = `#F0EEE9` beige |
-| Jours normaux | `text-foreground` = `#F0EEE9` beige, opacité 80% |
-| Jour sélectionné | `bg-primary text-primary-foreground` = `#4E657A` fond, blanc texte |
-| Aujourd'hui | cercle avec `border border-foreground/50` |
-| Bouton × | `text-foreground` = `#F0EEE9` |
-
-### Fichier modifié
-- **`src/pages/Publier.tsx`** uniquement
