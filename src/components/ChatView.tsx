@@ -91,7 +91,7 @@ const ChatView = ({
         <CardContent className="p-4">
           <div className="flex items-center gap-1 mb-1">
             <p className="text-[14px] font-semibold" style={{ color: "#4E657A" }}>
-              Point de rencontre : Parking Express 📍
+              Point de rencontre recommandé : Parking Express 📍
             </p>
             <button type="button" onClick={() => navigate("/retrouvez-vous")}>
               <HelpCircle className="h-4 w-4" style={{ color: "#4E657A" }} />
