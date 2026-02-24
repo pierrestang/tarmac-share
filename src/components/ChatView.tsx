@@ -139,23 +139,46 @@ const ChatView = ({
                 }
               }
 
+              const isBothReadySystem = message.type === "system" && message.content.includes("Vous êtes tous les deux arrivés au point de rencontre");
+
               return (
                 <div key={message.id}>
-                  <ChatBubble
-                    message={message}
-                    isOwn={isOwn}
-                    showAvatar={showAvatar(index)}
-                    showTimestamp={isLastInGroup}
-                    senderProfile={isOwn ? undefined : otherProfile}
-                  />
-                  {arrivalStatus && (
+                  {isBothReadySystem ? (
                     <div className="flex justify-center my-2">
-                      <div className="px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
-                        <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
-                          {arrivalStatus}
-                        </p>
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#F0EEE9" }}>
+                        <div className="px-4 py-3">
+                          <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                            {message.content}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
+                          className="w-full py-3 text-[14px] font-semibold border-0"
+                          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+                        >
+                          Afficher le code
+                        </button>
                       </div>
                     </div>
+                  ) : (
+                    <>
+                      <ChatBubble
+                        message={message}
+                        isOwn={isOwn}
+                        showAvatar={showAvatar(index)}
+                        showTimestamp={isLastInGroup}
+                        senderProfile={isOwn ? undefined : otherProfile}
+                      />
+                      {arrivalStatus && (
+                        <div className="flex justify-center my-2">
+                          <div className="px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
+                            <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                              {arrivalStatus}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               );
@@ -169,17 +192,6 @@ const ChatView = ({
       <div className="pt-4">
         {!isFullyClosed && !isClosedByUser && (
           <>
-            {bothReady && (
-              <div className="flex flex-col gap-3 mb-3">
-                <Button
-                  className="w-full rounded-full border-0 hover:opacity-80"
-                  style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
-                  onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
-                >
-                  Afficher le code
-                </Button>
-              </div>
-            )}
             {(
               <>
                 {/* Free text input */}
