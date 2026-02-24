@@ -9,7 +9,7 @@ interface ConversationListProps {
   getLastMessage: (conversationId: string) => Message | undefined;
   hasUnreadMessages: (conversationId: string) => boolean;
   onSelectConversation: (conversation: Conversation) => void;
-  getConversationStatus?: (conversation: Conversation) => "cancelled" | "completed" | null;
+  getConversationStatus?: (conversation: Conversation) => "active" | "cancelled" | "completed" | null;
   getConversationDate?: (conversation: Conversation) => string | undefined;
 }
 

@@ -318,7 +318,7 @@ const Messages = () => {
             hasUnreadMessages={(conversationId) => profileId ? hasUnreadMessages(conversationId, profileId) : false}
             onSelectConversation={handleSelectConversation}
             getConversationStatus={(conversation) => {
-              if (!isConversationFullyClosed(conversation)) return null;
+              if (!isConversationFullyClosed(conversation)) return "active";
               const msgs = getMessages(conversation.id);
               const hasCancelMessage = msgs.some(m => m.content === "Je dois annuler" && m.type !== "system");
               return hasCancelMessage ? "cancelled" : "completed";

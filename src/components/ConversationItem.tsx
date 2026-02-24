@@ -11,7 +11,7 @@ interface ConversationItemProps {
   lastMessageContent?: string;
   lastMessageTime?: number;
   isUnread?: boolean;
-  status?: "cancelled" | "completed" | null;
+  status?: "active" | "cancelled" | "completed" | null;
   onClick: () => void;
 }
 
@@ -51,6 +51,11 @@ const ConversationItem = ({
           {otherProfile.firstName}
         </span>
 
+        {status === "active" && (
+          <Badge className="ml-auto border-0 hover:opacity-100" style={{ backgroundColor: "#89B1D6", color: "#4E657A" }}>
+            Trajet en cours
+          </Badge>
+        )}
         {status === "cancelled" && (
           <Badge className="ml-auto bg-[#e34454]/15 text-[#e34454] border-0 hover:bg-[#e34454]/15">
             Trajet annulé
