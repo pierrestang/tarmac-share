@@ -101,45 +101,8 @@ const ChatView = ({
         </CardContent>
       </Card>
 
-      {/* Arrival status card */}
-      {(() => {
-        const currentArrived = messages.some(m => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre");
-        const otherArrived = messages.some(m => m.senderId !== currentProfileId && m.type !== "system" && m.content === "Je suis arrivé au point de rencontre");
-        if (currentArrived && otherArrived) {
-          return (
-            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-              <CardContent className="p-4">
-                <p className="text-[14px] italic" style={{ color: "#4E657A" }}>
-                  Tout le monde est arrivé ! Vous pouvez maintenant générer vos codes pour vous identifier.
-                </p>
-              </CardContent>
-            </Card>
-          );
-        }
-        if (currentArrived) {
-          return (
-            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-              <CardContent className="p-4">
-                <p className="text-[14px] italic" style={{ color: "#4E657A" }}>
-                  Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.
-                </p>
-              </CardContent>
-            </Card>
-          );
-        }
-        if (otherArrived) {
-          return (
-            <Card className="border-0 rounded-md mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-              <CardContent className="p-4">
-                <p className="text-[14px] italic" style={{ color: "#4E657A" }}>
-                  {otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.
-                </p>
-              </CardContent>
-            </Card>
-          );
-        }
-        return null;
-      })()}
+
+
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto pb-4">
@@ -163,15 +126,40 @@ const ChatView = ({
               const isOwn = message.senderId === currentProfileId;
               const next = messages[index + 1];
               const isLastInGroup = !next || next.senderId !== message.senderId || next.type === "system";
+              const isArrivalMessage = message.content === "Je suis arrivé au point de rencontre" && message.type !== "system";
+              const currentArrived = messages.some(m => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system");
+              const otherArrived = messages.some(m => m.senderId !== currentProfileId && m.type !== "system" && m.content === "Je suis arrivé au point de rencontre");
+
+              let arrivalStatus: string | null = null;
+              if (isArrivalMessage) {
+                if (currentArrived && otherArrived) {
+                  arrivalStatus = "Tout le monde est arrivé ! Vous pouvez maintenant générer vos codes pour vous identifier.";
+                } else if (isOwn && currentArrived && !otherArrived) {
+                  arrivalStatus = "Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.";
+                } else if (!isOwn && otherArrived && !currentArrived) {
+                  arrivalStatus = `${otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.`;
+                }
+              }
+
               return (
-                <ChatBubble
-                  key={message.id}
-                  message={message}
-                  isOwn={isOwn}
-                  showAvatar={showAvatar(index)}
-                  showTimestamp={isLastInGroup}
-                  senderProfile={isOwn ? undefined : otherProfile}
-                />
+                <div key={message.id}>
+                  <ChatBubble
+                    message={message}
+                    isOwn={isOwn}
+                    showAvatar={showAvatar(index)}
+                    showTimestamp={isLastInGroup}
+                    senderProfile={isOwn ? undefined : otherProfile}
+                  />
+                  {arrivalStatus && (
+                    <div className="flex justify-center my-2">
+                      <div className="px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
+                        <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                          {arrivalStatus}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             })}
             
