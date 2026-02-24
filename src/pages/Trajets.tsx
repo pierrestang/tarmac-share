@@ -103,12 +103,26 @@ const Trajets = () => {
   // Vérifier si l'utilisateur a un trajet en cours (demande acceptée)
   const hasActiveTrip = enCours.length > 0;
 
+  // Trajet IDs that already have a pending demande involving the current user
+  const trajetsWithPendingDemandes = useMemo(() => {
+    const trajetIds = new Set<string>();
+    enAttenteDemandes.forEach((d) => {
+      trajetIds.add(d.fromTrajetId);
+      trajetIds.add(d.toTrajetId);
+    });
+    return trajetIds;
+  }, [enAttenteDemandes]);
+
   // Trajets publiés à afficher dans "En attente"
   // Si l'utilisateur a un voyage en cours, seuls les trajets republiés sont affichés
   const myPendingTrajets = useMemo(() => {
     return myPublishedTrajets.filter((t) => {
       // Toujours exclure les trajets directement liés à une demande accepted ou completed
       if (trajetsWithAcceptedDemandes.has(t.id) || trajetsWithCompletedDemandes.has(t.id)) {
+        return false;
+      }
+      // Exclure les trajets qui ont déjà une demande pending (affichés comme DemandeCard)
+      if (trajetsWithPendingDemandes.has(t.id)) {
         return false;
       }
       
@@ -120,7 +134,7 @@ const Trajets = () => {
       // Sinon, afficher tous les trajets non liés à une demande
       return true;
     });
-  }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, hasActiveTrip]);
+  }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, trajetsWithPendingDemandes, hasActiveTrip]);
   // Get profile for a demande (the other person)
   const getOtherProfile = (demande: typeof demandes[0]) => {
     const otherId =
@@ -169,7 +183,7 @@ const Trajets = () => {
     await deleteTrajet(id);
   };
 
-  const hasEnAttenteContent = myPendingTrajets.length > 0;
+  const hasEnAttenteContent = myPendingTrajets.length > 0 || enAttenteDemandes.length > 0;
 
   if (!demandesLoaded || !trajetsLoaded || !profilesLoaded || !ratingsLoaded) return null;
 
@@ -221,7 +235,39 @@ const Trajets = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
-                  {/* Mes trajets publiés - groupés par date dans un accordéon */}
+                  {/* Demandes en attente */}
+                  {enAttenteDemandes.map((demande) => {
+                    const myTrajetId = demande.fromProfileId === currentProfileId
+                      ? demande.fromTrajetId
+                      : demande.toTrajetId;
+                    const myTrajet = getTrajetById(myTrajetId);
+                    const formattedDate = (() => {
+                      if (!myTrajet) return null;
+                      try {
+                        const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
+                        return format(parsed, "EEE d MMMM", { locale: fr }).replace(/^\w/, c => c.toUpperCase());
+                      } catch {
+                        return myTrajet.date;
+                      }
+                    })();
+
+                    return (
+                      <div key={demande.id} className="flex flex-col gap-2">
+                        {formattedDate && (
+                          <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                        )}
+                        <DemandeCard
+                          demande={demande}
+                          otherProfile={getOtherProfile(demande)}
+                          trajet={getTrajet(demande)}
+                          currentProfileId={currentProfileId}
+                          onRefuse={handleRefuse}
+                        />
+                      </div>
+                    );
+                  })}
+
+                  {/* Mes trajets publiés sans demande */}
                   {myPendingTrajets.map((trajet) => {
                     const formattedDate = (() => {
                       try {
