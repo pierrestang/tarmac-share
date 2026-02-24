@@ -114,10 +114,9 @@ const Trajets = () => {
   }, [enAttenteDemandes]);
 
   // Trajets publiés à afficher dans "En attente"
-  // Si l'utilisateur a un voyage en cours, seuls les trajets republiés sont affichés
   const myPendingTrajets = useMemo(() => {
     return myPublishedTrajets.filter((t) => {
-      // Toujours exclure les trajets directement liés à une demande accepted ou completed
+      // Exclure les trajets directement liés à une demande accepted ou completed
       if (trajetsWithAcceptedDemandes.has(t.id) || trajetsWithCompletedDemandes.has(t.id)) {
         return false;
       }
@@ -125,16 +124,9 @@ const Trajets = () => {
       if (trajetsWithPendingDemandes.has(t.id)) {
         return false;
       }
-      
-      // Si l'utilisateur a un voyage en cours, n'afficher que les trajets republiés
-      if (hasActiveTrip) {
-        return t.isRepublished === true;
-      }
-      
-      // Sinon, afficher tous les trajets non liés à une demande
       return true;
     });
-  }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, trajetsWithPendingDemandes, hasActiveTrip]);
+  }, [myPublishedTrajets, trajetsWithAcceptedDemandes, trajetsWithCompletedDemandes, trajetsWithPendingDemandes]);
   // Get profile for a demande (the other person)
   const getOtherProfile = (demande: typeof demandes[0]) => {
     const otherId =
