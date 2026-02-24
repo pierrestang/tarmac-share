@@ -70,22 +70,25 @@ const ChatView = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 pb-4 mb-4">
-        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center">
+      <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#F0EEE9" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold flex-1">{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1" style={{ color: "#F0EEE9" }}>{otherProfile.firstName}</span>
         {!isFullyClosed && !isClosedByUser && (
           <button
             type="button"
             onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}`)}
             className="h-8 w-8 p-0 flex items-center justify-center"
+            style={{ color: "#F0EEE9" }}
           >
             <MoreVertical className="h-5 w-5" />
           </button>
         )}
       </div>
 
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto px-4 pt-4 bg-background">
       {/* Meeting point card - always visible */}
       <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#F0EEE9" }}>
         <button type="button" onClick={() => navigate("/retrouvez-vous")} className="absolute top-3 right-3">
@@ -105,7 +108,7 @@ const ChatView = ({
 
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto pb-4">
+      <div className="pb-4">
         {messages.length > 0 && (
           <div className="flex flex-col">
             {messages.map((msg, index) => {
@@ -210,9 +213,10 @@ const ChatView = ({
           </div>
         )}
       </div>
+      </div>
 
-      {/* Input */}
-      <div className="pt-4">
+      {/* Input - fixed at bottom */}
+      <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
         {!isFullyClosed && !isClosedByUser && (
           <>
             {!messages.some(m => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system") && (
