@@ -234,7 +234,7 @@ const ChatView = ({
               });
             }}
             className="w-full rounded-full px-4 py-3 text-[14px] font-semibold border-0 mb-3"
-            style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+            style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
 
                 Je suis arrivé au point de rencontre 📍
               </button>
