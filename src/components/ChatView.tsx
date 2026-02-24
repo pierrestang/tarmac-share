@@ -150,7 +150,7 @@ const ChatView = ({
                     <div className="flex justify-center my-2">
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#A25B5B" }}>
                         <div className="px-4 py-3 text-center">
-                          <p className="text-[14px] font-semibold" style={{ color: "#F0EEE9" }}>
+                          <p className="text-[14px] font-semibold" style={{ color: "#E34454" }}>
                             {message.content}
                           </p>
                         </div>
