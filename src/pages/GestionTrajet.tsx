@@ -17,6 +17,7 @@ const GestionTrajet = () => {
   const [searchParams] = useSearchParams();
   const conversationId = searchParams.get("conversationId") || "";
   const demandeId = searchParams.get("demandeId") || "";
+  const isClosed = searchParams.get("closed") === "true";
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   return (
@@ -36,21 +37,25 @@ const GestionTrajet = () => {
             <span>Voir le trajet</span>
           </button>
         )}
-        <button
-          onClick={() =>
-            navigate(`/messages?conversationId=${conversationId}&action=close`)
-          }
-          className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-          <span>Clôturer le trajet</span>
-        </button>
+        {!isClosed && (
+          <>
+            <button
+              onClick={() =>
+                navigate(`/messages?conversationId=${conversationId}&action=close`)
+              }
+              className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
+              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+              <span>Clôturer le trajet</span>
+            </button>
 
-        <button
-          onClick={() => setShowCancelDialog(true)}
-          className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}>
-          <span>Annuler le trajet</span>
-        </button>
+            <button
+              onClick={() => setShowCancelDialog(true)}
+              className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
+              style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}>
+              <span>Annuler le trajet</span>
+            </button>
+          </>
+        )}
       </div>
 
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
