@@ -215,11 +215,10 @@ const ChatView = ({
       </div>
       </div>
 
-      {/* Input - fixed at bottom */}
-      <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
-        {!isFullyClosed && !isClosedByUser &&
-        <>
-            {!messages.some((m) => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system") &&
+      {/* Arrival button - above input bar */}
+      {!isFullyClosed && !isClosedByUser &&
+        !messages.some((m) => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system") &&
+        <div className="px-4 py-2 bg-background">
           <button
             onClick={() => {
               onSendMessage("Je suis arrivé au point de rencontre");
@@ -233,12 +232,17 @@ const ChatView = ({
                 style: { backgroundColor: "#7BA87B", color: "#F0EEE9" }
               });
             }}
-            className="w-full rounded-full px-4 py-3 text-[14px] font-semibold border-0 mb-3"
+            className="w-full rounded-full px-4 py-3 text-[14px] font-semibold border-0"
             style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+            Je suis arrivé au point de rencontre 📍
+          </button>
+        </div>
+      }
 
-                Je suis arrivé au point de rencontre 📍
-              </button>
-          }
+      {/* Input - fixed at bottom */}
+      <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
+        {!isFullyClosed && !isClosedByUser &&
+        <>
             {
           <>
                 {/* Free text input */}
