@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+import { ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -135,7 +136,12 @@ const DemandeEnvoyer = () => {
   if (isLoading) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter.</h1>
+        <div className="w-full max-w-[42rem] flex flex-col gap-2">
+          <button onClick={() => navigate(-1)} className="text-foreground self-start">
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+          <h1 className="text-[24px] font-semibold w-full">Envoyer la demande.</h1>
+        </div>
         <Card className="w-full max-w-[42rem]">
           <CardContent className="flex flex-col gap-4 p-4">
             <p className="text-muted-foreground text-center py-8">
@@ -149,10 +155,15 @@ const DemandeEnvoyer = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6 items-center">
-      <h1 className="text-[24px] font-semibold w-full max-w-[42rem]">Contacter.</h1>
+      <div className="w-full max-w-[42rem] flex flex-col gap-2">
+        <button onClick={() => navigate(-1)} className="text-foreground self-start">
+          <ArrowLeft className="h-6 w-6" />
+        </button>
+        <h1 className="text-[24px] font-semibold w-full">Envoyer la demande.</h1>
+      </div>
 
       {/* Date */}
-      <p className="text-[18px] font-semibold w-full max-w-[42rem]">
+      <p className="text-[16px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
