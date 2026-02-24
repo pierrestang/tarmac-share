@@ -121,12 +121,11 @@ const Evaluation = () => {
         <div className="max-w-[42rem] mx-auto">
           <Card className="border-0 rounded-md shadow-none" style={{ backgroundColor: "#FFFFFF" }}>
             <CardContent className="p-4 flex flex-col gap-4">
-              <p className="text-[14px]" style={{ color: "#4E657A" }}>
-                Une fois votre rencontre effectuée, confirmez que le trajet a bien eu lieu pour finaliser votre mise en relation et mettre à jour votre historique. En cas d'imprévu, vous pouvez également signaler ici si le trajet n'a pas pu se dérouler.
+              <p className="text-[16px] font-semibold" style={{ color: "#4E657A" }}>
+                Le trajet a-t-il eu lieu ?
               </p>
 
-              <p className="text-[16px] font-semibold text-heading">
-                Le trajet a-t-il eu lieu ?
+              <p className="text-[14px]" style={{ color: "#4E657A" }}>
               </p>
 
               <div className="flex gap-3">
