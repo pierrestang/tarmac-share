@@ -163,9 +163,9 @@ const ChatView = ({
                     </div>
                   ) : isCompletedSystem ? (
                     <div className="flex justify-center my-2">
-                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#F0EEE9" }}>
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#7BA87B" }}>
                         <div className="px-4 py-3">
-                          <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                          <p className="text-[14px] font-semibold text-center" style={{ color: "#F0EEE9" }}>
                             Le trajet est terminé ✅
                           </p>
                         </div>
