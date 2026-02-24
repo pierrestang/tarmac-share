@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, XCircle, CheckCircle } from "lucide-react";
+import { ArrowLeft, XCircle, CircleCheck } from "lucide-react";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -9,8 +9,8 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  AlertDialogTitle } from
+"@/components/ui/alert-dialog";
 
 const GestionTrajet = () => {
   const navigate = useNavigate();
@@ -29,20 +29,20 @@ const GestionTrajet = () => {
       <div className="flex flex-col gap-3">
         <button
           onClick={() =>
-            navigate(`/messages?conversationId=${conversationId}&action=close`)
+          navigate(`/messages?conversationId=${conversationId}&action=close`)
           }
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
-        >
-          <CheckCircle className="h-4 w-4" />
+          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+
+          <CircleCheck className="h-4 w-4" />
           <span>Trajet effectué ?</span>
         </button>
 
         <button
           onClick={() => setShowCancelDialog(true)}
           className="flex items-center justify-center gap-2 w-full rounded-full px-4 py-3 text-[16px] font-semibold border-0"
-          style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}
-        >
+          style={{ backgroundColor: "#e34454", color: "#FFFFFF" }}>
+
           <XCircle className="h-4 w-4" />
           <span>Je dois annuler</span>
         </button>
@@ -59,20 +59,20 @@ const GestionTrajet = () => {
           <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
             <AlertDialogAction
               onClick={() =>
-                navigate(
-                  `/messages?conversationId=${conversationId}&action=cancel`
-                )
+              navigate(
+                `/messages?conversationId=${conversationId}&action=cancel`
+              )
               }
-              className="rounded-md"
-            >
+              className="rounded-md">
+
               Oui
             </AlertDialogAction>
             <AlertDialogCancel className="rounded-md">Non</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default GestionTrajet;
