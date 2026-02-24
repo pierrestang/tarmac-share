@@ -60,7 +60,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         {showAvatar ? (
           <Avatar className="h-8 w-8 flex-shrink-0">
             {senderProfile?.photo ? (
-              <AvatarImage src={senderProfile.photo} alt={senderProfile.firstName} />
+              <AvatarImage src={senderProfile.photo} alt={senderProfile.firstName} referrerPolicy="no-referrer" />
             ) : null}
             <AvatarFallback className="text-[12px]">{initials}</AvatarFallback>
           </Avatar>
