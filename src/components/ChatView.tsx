@@ -154,7 +154,7 @@ const ChatView = ({
                         <button
                           onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
                           className="w-full py-3 text-[14px] font-semibold border-0"
-                          style={{ backgroundColor: "#D3E4D1", color: "#4E657A" }}
+                          style={{ backgroundColor: "#D3E4D1", color: "#F0EEE9" }}
                         >
                           Afficher le code
                         </button>
