@@ -174,7 +174,7 @@ const Paiement = () => {
   } else if (type === "acceptation") {
     explanatoryText = "En acceptant cette demande, vous acceptez d'être débité de 1,99 €.";
   } else {
-    explanatoryText = "En envoyant cette demande, vous acceptez d'être débité de 1,99 € seulement si le voyageur accepte votre proposition.";
+    explanatoryText = "En envoyant cette demande, vous acceptez d'être débité de 1,99 € au titre des frais de mise en relation, uniquement si l'autre voyageur accepte.";
   }
 
   return (
