@@ -188,7 +188,7 @@ const Paiement = () => {
               {explanatoryText}
             </p>
             <p className="text-[14px] text-muted-foreground italic">
-              Les frais correspondent exclusivement au service de mise en relation. Le transport est organisé librement entre voyageurs.
+              Le transport est organisé librement entre voyageurs. La plateforme ne fournit aucun service de transport.
             </p>
 
             <p className="text-[18px] font-semibold">
