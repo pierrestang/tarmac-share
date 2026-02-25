@@ -22,7 +22,7 @@ function getInitials(firstName: string, lastName: string): string {
 
 export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId }: VoyageurCardSmallProps) {
   const navigate = useNavigate();
-  const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
+  const { trajet, profile, detourMin, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
 
   const scoreColor = getScoreColor(compatibilityScore);
 
@@ -67,9 +67,9 @@ export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId 
               )}
             </div>
 
-            {/* Distance */}
+            {/* Détour */}
             <span className="text-[12px] text-muted-foreground">
-              à {distance}km
+              +{Math.round(detourMin)} min de détour
             </span>
           </div>
 

@@ -37,7 +37,7 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
 export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId }: VoyageurCardProps) {
   const navigate = useNavigate();
   const { getConversationByDemandeId } = useMessages();
-  const { trajet, profile, distance, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
+  const { trajet, profile, detourMin, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
 
   const scoreColor = getScoreColor(compatibilityScore);
 
@@ -82,9 +82,9 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
             )}
           </div>
 
-          {/* Distance */}
+          {/* Détour */}
           <span className="text-[12px] text-muted-foreground">
-            à {Math.round(distance * 10) / 10}km
+            +{Math.round(detourMin)} min de détour
           </span>
         </div>
 

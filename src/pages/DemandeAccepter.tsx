@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { VoyageurCard } from "@/components/VoyageurCard";
-import { useTrajets, calculateDistance, calculateMatchScore } from "@/hooks/use-trajets";
+import { useTrajets, calculateMatchScore } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
@@ -50,20 +50,16 @@ const DemandeAccepter = () => {
   const myTrajet = demande ? getTrajetById(demande.toTrajetId) : null;
   const myProfile = getActiveProfile();
 
-  // Calculate distance and score
-  const distance = myTrajet && voyageurTrajet 
-    ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords)
-    : null;
-  
+  // Calculate score (detourMin not available here, use 0 as fallback)
   const compatibilityScore = myTrajet && voyageurTrajet
-    ? calculateMatchScore(myTrajet, voyageurTrajet)
+    ? calculateMatchScore(myTrajet, voyageurTrajet, 0)
     : 0;
 
   // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
-    distance: distance ?? 0,
+    detourMin: 0,
     compatibilityScore,
     receivedDemandeId: null,
     sentDemandeId: null,

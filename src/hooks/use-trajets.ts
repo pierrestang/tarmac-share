@@ -10,7 +10,9 @@ const BAGGAGE_SIZES = {
 } as const;
 
 const MAX_CAPACITY = 360;
-const DEFAULT_MAX_DETOUR = 5;
+const MAX_DETOUR_MIN = 15;
+const MAX_TOTAL_TRIP_MIN = 45;
+const HAVERSINE_PRE_FILTER_KM = 30;
 
 function mapRow(row: any): Trajet {
   return {
@@ -66,7 +68,6 @@ function calculateBaggageVolume(baggage: Baggage): number {
 }
 
 function parseTime(timeStr: string): number | null {
-  // Support slot format "10:00-10:30" or "10h00-10h30" by extracting the first time
   const slotMatch = timeStr.match(/^(\d{1,2})[h:](\d{2})\s*-/);
   if (slotMatch) {
     return parseInt(slotMatch[1]) * 60 + parseInt(slotMatch[2]);
@@ -91,6 +92,48 @@ export function calculateDistance(coords1?: Coordinates, coords2?: Coordinates):
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+interface DetourResult {
+  directMinA: number;
+  directMinB: number;
+  totalMinAB: number;
+  totalMinBA: number;
+  detourA: number;
+  detourB: number;
+  bestOrder: "AB" | "BA";
+}
+
+export async function calculateDetourTimes(
+  departureStation: Coordinates,
+  myDestination: Coordinates,
+  candidateDestinations: Coordinates[]
+): Promise<(DetourResult | null)[]> {
+  try {
+    const pairs = candidateDestinations.map((dest) => ({
+      destinationA: myDestination,
+      destinationB: dest,
+    }));
+
+    const { data, error } = await supabase.functions.invoke("driving-distance", {
+      body: {
+        mode: "detour",
+        departureStation,
+        pairs,
+      },
+    });
+
+    if (error || !data?.results) {
+      console.warn("Detour API failed:", error);
+      return candidateDestinations.map(() => null);
+    }
+
+    return data.results;
+  } catch (e) {
+    console.warn("Detour API error:", e);
+    return candidateDestinations.map(() => null);
+  }
+}
+
+// Keep legacy function for backward compatibility
 export async function calculateDrivingDistance(
   origin: Coordinates,
   destinations: Coordinates[]
@@ -120,7 +163,7 @@ export function getScoreColor(score: number): string {
   return "#7BA87B";
 }
 
-export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, drivingDistance?: number | null): number {
+export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, detourMin?: number | null): number {
   const time1 = parseTime(trajet1.departureTime);
   const time2 = parseTime(trajet2.departureTime);
   const timeDiff = time1 !== null && time2 !== null ? Math.abs(time1 - time2) : 9999;
@@ -128,24 +171,21 @@ export function calculateMatchScore(trajet1: Trajet, trajet2: Trajet, drivingDis
   // A. Créneau horaire (50 pts max)
   let timeScore = 0;
   if (timeDiff === 0) timeScore = 50;
-  else if (timeDiff <= 30) timeScore = 25;
+  else if (timeDiff <= 30) timeScore = 35;
+  else if (timeDiff <= 45) timeScore = 20;
 
-  // B. Distance géographique (50 pts max)
-  const distance = drivingDistance ?? calculateDistance(trajet1.destinationCoords, trajet2.destinationCoords);
-  let distScore = 0;
-  if (distance !== null) {
-    if (distance <= 1) distScore = 50;
-    else if (distance <= 2) distScore = 40;
-    else if (distance <= 3) distScore = 30;
-    else if (distance <= 4) distScore = 20;
-    else if (distance <= 5) distScore = 10;
+  // B. Détour en minutes (50 pts max)
+  let detourScore = 0;
+  if (detourMin !== null && detourMin !== undefined) {
+    if (detourMin <= 5) detourScore = 50;
+    else if (detourMin <= 10) detourScore = 35;
+    else if (detourMin <= 15) detourScore = 15;
   }
 
-  return Math.min(100, timeScore + distScore);
+  return Math.min(100, timeScore + detourScore);
 }
 
 export function getArchivedTrajet(_id: string): Trajet | null {
-  // Archive is no longer needed with Supabase - demandes store snapshots
   return null;
 }
 
@@ -235,7 +275,7 @@ export function useTrajets() {
       const currentPersons = currentTrajet.companions;
       const currentDateNormalized = normalizeDate(currentTrajet.date);
 
-      // Pre-filter candidates using basic criteria (no distance yet)
+      // Pre-filter candidates using basic criteria
       const candidates: Trajet[] = [];
 
       for (const trajet of trajets) {
@@ -254,53 +294,63 @@ export function useTrajets() {
         if (currentBaggageVolume + trajetBaggageVolume > MAX_CAPACITY) continue;
 
         if (!trajet.destinationCoords || !currentTrajet.destinationCoords) continue;
+        if (!currentTrajet.departureStationCoords) continue;
 
-        // Pre-filter with Haversine (generous threshold to avoid missing matches)
+        // Pre-filter with Haversine (generous 30km threshold)
         const haversine = calculateDistance(currentTrajet.destinationCoords, trajet.destinationCoords);
-        if (haversine === null || haversine > DEFAULT_MAX_DETOUR * 1.5) continue;
+        if (haversine === null || haversine > HAVERSINE_PRE_FILTER_KM) continue;
 
         candidates.push(trajet);
       }
 
       if (candidates.length === 0) return [];
 
-      // Get driving distances for all candidates in one batch call
-      const destinationCoords = candidates.map((t) => t.destinationCoords!);
-      const drivingDistances = await calculateDrivingDistance(
+      // Calculate detour times for all candidates via edge function
+      const candidateDestinations = candidates.map((t) => t.destinationCoords!);
+      const detourResults = await calculateDetourTimes(
+        currentTrajet.departureStationCoords!,
         currentTrajet.destinationCoords!,
-        destinationCoords
+        candidateDestinations
       );
 
       const matches: MatchedTraveler[] = [];
 
       for (let i = 0; i < candidates.length; i++) {
         const trajet = candidates[i];
-        let distance = drivingDistances[i];
-        if (distance === null) continue;
-        if (distance > DEFAULT_MAX_DETOUR) continue;
-        if (distance < 0.5) distance = 0;
+        const detourResult = detourResults[i];
+        
+        if (!detourResult) continue;
+
+        // Use the max detour between the two passengers
+        const maxDetour = Math.max(detourResult.detourA, detourResult.detourB);
+        const bestTotalTrip = detourResult.bestOrder === "AB" 
+          ? detourResult.totalMinAB 
+          : detourResult.totalMinBA;
+
+        // Exclusion filters
+        if (maxDetour > MAX_DETOUR_MIN) continue;
+        if (bestTotalTrip > MAX_TOTAL_TRIP_MIN) continue;
 
         const timeDiff = Math.abs(parseTime(currentTrajet.departureTime)! - parseTime(trajet.departureTime)!);
 
         // A. Créneau horaire (50 pts max)
         let timeScore = 0;
         if (timeDiff === 0) timeScore = 50;
-        else if (timeDiff <= 30) timeScore = 25;
+        else if (timeDiff <= 30) timeScore = 35;
+        else if (timeDiff <= 45) timeScore = 20;
 
-        // B. Distance géographique (50 pts max)
-        let distScore = 0;
-        if (distance <= 1) distScore = 50;
-        else if (distance <= 2) distScore = 40;
-        else if (distance <= 3) distScore = 30;
-        else if (distance <= 4) distScore = 20;
-        else if (distance <= 5) distScore = 10;
+        // B. Détour (50 pts max)
+        let detourScore = 0;
+        if (maxDetour <= 5) detourScore = 50;
+        else if (maxDetour <= 10) detourScore = 35;
+        else if (maxDetour <= 15) detourScore = 15;
 
-        const score = Math.min(100, timeScore + distScore);
+        const score = Math.min(100, timeScore + detourScore);
 
         matches.push({
           trajet,
           profile: { id: trajet.profileId, firstName: "", lastName: "", description: "", photo: null, createdAt: 0 },
-          distance: Math.round(distance * 10) / 10,
+          detourMin: Math.round(maxDetour),
           compatibilityScore: Math.round(score),
         });
       }

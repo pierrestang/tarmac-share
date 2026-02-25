@@ -15,7 +15,7 @@ interface DemandeCardProps {
   trajet: Trajet | null;
   currentProfileId: string;
   compatibilityScore?: number;
-  distance?: number;
+  detourMin?: number;
   /** Rating result for completed demandes: true = both said yes, false = at least one said no, undefined = no ratings yet */
   tripRealized?: boolean;
   onAccept?: (id: string) => void;
@@ -29,7 +29,7 @@ export function DemandeCard({
   trajet,
   currentProfileId,
   compatibilityScore = 100,
-  distance = 0,
+  detourMin = 0,
   tripRealized,
   onAccept,
   onRefuse,
@@ -138,7 +138,7 @@ export function DemandeCard({
 
             <div className="flex items-center gap-2">
               <span className="text-[12px] text-muted-foreground">
-                à {Math.round(distance * 10) / 10}km
+                +{Math.round(detourMin)} min de détour
               </span>
             </div>
           </div>
