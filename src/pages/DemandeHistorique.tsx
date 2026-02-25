@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useTrajets, calculateDistance, calculateMatchScore, getArchivedTrajet } from "@/hooks/use-trajets";
+import { useTrajets, calculateMatchScore, getArchivedTrajet } from "@/hooks/use-trajets";
 import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
@@ -114,12 +114,8 @@ const DemandeHistorique = () => {
     ? (isSender ? demande.snapshot!.toProfile : demande.snapshot!.fromProfile)
     : voyageurProfileId ? getFallbackProfile(voyageurProfileId) : null;
 
-  const distance = myTrajet && voyageurTrajet 
-    ? calculateDistance(myTrajet.destinationCoords, voyageurTrajet.destinationCoords)
-    : null;
-  
   const compatibilityScore = myTrajet && voyageurTrajet
-    ? calculateMatchScore(myTrajet, voyageurTrajet)
+    ? calculateMatchScore(myTrajet, voyageurTrajet, 0)
     : 0;
 
   const handleBack = () => {
@@ -277,11 +273,9 @@ const DemandeHistorique = () => {
                 </span>
               )}
               <div className="flex items-center gap-2">
-                {distance !== null && (
-                  <span className="text-[12px] text-muted-foreground">
-                    à {Math.round(distance * 10) / 10}km
-                  </span>
-                )}
+                <span className="text-[12px] text-muted-foreground">
+                  Trajet partagé
+                </span>
               </div>
             </div>
           </div>

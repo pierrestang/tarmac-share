@@ -31,7 +31,7 @@ export interface Trajet {
 export interface MatchedTraveler {
   trajet: Trajet;
   profile: Profile;
-  distance: number; // km entre destinations
+  detourMin: number; // détour en minutes pour le passager le plus impacté
   compatibilityScore: number; // 40-100%
 }
 

@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { VoyageurCard } from "@/components/VoyageurCard";
-import { useTrajets, calculateMatchScore, calculateDrivingDistance } from "@/hooks/use-trajets";
+import { useTrajets, calculateMatchScore, calculateDetourTimes } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
@@ -52,31 +52,36 @@ const DemandeEnvoyer = () => {
     ) || null;
   }
 
-  // Use driving distance for consistency with /matches
-  const [drivingDist, setDrivingDist] = useState<number | null>(null);
-  const [distLoaded, setDistLoaded] = useState(false);
+  // Use detour times for consistency with /matches
+  const [detourMin, setDetourMin] = useState<number | null>(null);
+  const [detourLoaded, setDetourLoaded] = useState(false);
 
   useEffect(() => {
-    setDistLoaded(false);
-    if (myTrajet?.destinationCoords && voyageurTrajet?.destinationCoords) {
-      calculateDrivingDistance(myTrajet.destinationCoords, [voyageurTrajet.destinationCoords])
+    setDetourLoaded(false);
+    if (myTrajet?.destinationCoords && voyageurTrajet?.destinationCoords && myTrajet?.departureStationCoords) {
+      calculateDetourTimes(myTrajet.departureStationCoords, myTrajet.destinationCoords, [voyageurTrajet.destinationCoords])
         .then((results) => {
-          setDrivingDist(results[0]);
-          setDistLoaded(true);
+          const result = results[0];
+          if (result) {
+            const maxDetour = Math.max(result.detourA, result.detourB);
+            setDetourMin(Math.round(maxDetour));
+          } else {
+            setDetourMin(0);
+          }
+          setDetourLoaded(true);
         });
     }
-  }, [myTrajet?.destinationCoords?.lat, myTrajet?.destinationCoords?.lng, voyageurTrajet?.destinationCoords?.lat, voyageurTrajet?.destinationCoords?.lng]);
+  }, [myTrajet?.destinationCoords?.lat, myTrajet?.destinationCoords?.lng, voyageurTrajet?.destinationCoords?.lat, voyageurTrajet?.destinationCoords?.lng, myTrajet?.departureStationCoords?.lat, myTrajet?.departureStationCoords?.lng]);
 
-  const distance = drivingDist;
-  const compatibilityScore = myTrajet && voyageurTrajet && distLoaded
-    ? calculateMatchScore(myTrajet, voyageurTrajet, drivingDist) 
+  const compatibilityScore = myTrajet && voyageurTrajet && detourLoaded
+    ? calculateMatchScore(myTrajet, voyageurTrajet, detourMin) 
     : null;
 
   // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
-    distance: distance ?? 0,
+    detourMin: detourMin ?? 0,
     compatibilityScore: compatibilityScore ?? 0,
     receivedDemandeId: null,
     sentDemandeId: null,
@@ -131,7 +136,7 @@ const DemandeEnvoyer = () => {
     }
   };
 
-  const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile || !distLoaded;
+  const isLoading = !voyageurTrajet || !voyageurProfile || !myTrajet || !myProfile || !detourLoaded;
 
   if (isLoading) {
     return (

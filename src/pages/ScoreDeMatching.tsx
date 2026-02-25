@@ -30,14 +30,14 @@ const ScoreDeMatching = () => {
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: "#3D2B3D" }}>
             <p className="text-[18px] font-semibold mb-2">Comment calculons-nous votre compatibilité ?</p>
             <p>
-              Pour vous garantir un trajet fluide et économique, Tarmac analyse chaque demande en temps réel afin d'établir un score de compatibilité basé sur deux piliers essentiels :
+              Pour vous garantir un trajet fluide et économique, Tarmac analyse chaque demande en temps réel afin d'établir un score de compatibilité sur 100 points, basé sur deux piliers essentiels :
             </p>
             <ul className="mt-3 flex flex-col gap-3">
               <li>
-                <strong>Le timing :</strong> La ponctualité est notre priorité. Plus vos horaires d'arrivée sont proches, plus le score de match est élevé.
+                <strong>Le timing (50 pts) :</strong> Plus vos créneaux horaires sont proches, plus le score est élevé. Un créneau identique donne le maximum de points, tandis qu'un décalage de plus de 60 minutes exclut le match.
               </li>
               <li>
-                <strong>La proximité :</strong> Nous calculons le détour routier réel via Google Maps. L’objectif est de minimiser votre trajet : le score est optimal si vos destinations sont voisines.
+                <strong>Le détour (50 pts) :</strong> Nous calculons le détour en minutes que chaque passager devra effectuer pour un trajet partagé. Moins le détour est long, plus le score est élevé. Au-delà de 15 minutes de détour, le match est exclu.
               </li>
             </ul>
           </CardContent>
