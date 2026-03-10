@@ -8,7 +8,7 @@ const CommentCaMarche = () => {
   return (
     <section className="flex flex-col min-h-[100dvh] px-3 pt-6 pb-6">
       <div className="flex justify-center px-4">
-        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Comment ça marche.</h1>
+        <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Comment ça marche ?</h1>
       </div>
 
       <div className="flex flex-col gap-3 items-center px-4 mt-6 flex-1">
