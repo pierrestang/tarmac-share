@@ -415,7 +415,7 @@ const Publier = () => {
               onClick={() => setTimeSheetOpen(true)}
             >
               <span className={cn(
-                "text-base font-semibold md:text-sm whitespace-nowrap",
+                "text-base md:text-sm whitespace-nowrap",
                 !form.departureTime && "text-muted-foreground"
               )}>
                 {form.departureTime || "Heure"}
