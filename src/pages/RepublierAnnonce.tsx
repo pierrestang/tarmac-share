@@ -132,7 +132,7 @@ const RepublierAnnonce = () => {
         <div className="flex flex-col gap-2 w-full max-w-[42rem]">
           <Button
             onClick={handleRepublish}
-            className="rounded-full"
+            className=""
           >
             Republier
           </Button>
