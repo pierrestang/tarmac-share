@@ -578,7 +578,7 @@ const Publier = () => {
               currentCapacity > 0 ? "text-card-foreground" : "text-muted-foreground"
             )} />
             <span className={cn(
-              "text-base font-semibold md:text-sm",
+              "text-base md:text-sm",
               currentCapacity === 0 && "text-muted-foreground"
             )}>
               {(() => {
