@@ -120,7 +120,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
       {/* Dual buttons for accept/refuse */}
       {showDualButtons && (
         <div className="flex gap-3">
-          <Button onClick={onAccept} className="flex-1 rounded-full">
+          <Button onClick={onAccept} className="flex-1">
             Accepter
           </Button>
           <Button onClick={onRefuse} variant="outline" className="flex-1 rounded-full">
