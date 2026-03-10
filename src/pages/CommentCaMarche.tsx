@@ -13,30 +13,26 @@ const CommentCaMarche = () => {
 
       <div className="flex flex-col gap-3 items-center px-4 mt-6 flex-1">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="font-semibold mb-1">1. Publiez votre arrivée</p>
-            <p>Indiquez votre heure d'arrivée à l'aéroport de Bordeaux et votre destination finale.</p>
-          </CardContent>
-        </Card>
-
-        <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="font-semibold mb-1">2. Matching intelligent</p>
-            <p>Nous trouvons un voyageur qui arrive en même temps que vous et va dans la même direction.</p>
-          </CardContent>
-        </Card>
-
-        <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="font-semibold mb-1">3. Mise en relation</p>
-            <p>Dès qu'un match est trouvé, vous recevez un lien WhatsApp pour échanger.</p>
-          </CardContent>
-        </Card>
-
-        <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="font-semibold mb-1">4. Partagez le trajet</p>
-            <p>Retrouvez-vous à l'aéroport, choisissez votre transport et divisez les frais !</p>
+          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed flex flex-col gap-4">
+            <div>
+              <p className="font-semibold mb-1">1. Publiez votre arrivée</p>
+              <p>Indiquez votre heure d'arrivée à l'aéroport de Bordeaux et votre destination finale.</p>
+            </div>
+            <div className="h-px bg-border" />
+            <div>
+              <p className="font-semibold mb-1">2. Matching intelligent</p>
+              <p>Nous trouvons un voyageur qui arrive en même temps que vous et va dans la même direction.</p>
+            </div>
+            <div className="h-px bg-border" />
+            <div>
+              <p className="font-semibold mb-1">3. Mise en relation</p>
+              <p>Dès qu'un match est trouvé, vous recevez un lien WhatsApp pour échanger.</p>
+            </div>
+            <div className="h-px bg-border" />
+            <div>
+              <p className="font-semibold mb-1">4. Partagez le trajet</p>
+              <p>Retrouvez-vous à l'aéroport, choisissez votre transport et divisez les frais !</p>
+            </div>
           </CardContent>
         </Card>
 
