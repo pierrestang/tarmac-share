@@ -11,7 +11,7 @@ const CommunicationLancement = () => {
         <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Bordeaux, notre point de départ.</h1>
       </div>
 
-      <div className="flex flex-col gap-3 items-center px-4">
+      <div className="flex flex-col gap-3 items-center px-4 flex-1">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: '#3D2B3D' }}>
             <p className="font-semibold mb-1">Où nous trouver ?</p>
@@ -45,8 +45,10 @@ const CommunicationLancement = () => {
           </CardContent>
         </Card>
 
+        <div className="flex-1" />
+
         <button
-          className="w-full max-w-[42rem] rounded-md h-auto py-4 mt-2 text-[16px] font-semibold border-0"
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 text-[16px] font-semibold border-0"
           style={{ backgroundColor: '#3D2B3D', color: '#F0EEE9' }}
           onClick={() => navigate("/publier")}
         >
