@@ -107,7 +107,7 @@ const ConfirmAnnulation = () => {
                 <Button
                   variant="outline"
                   onClick={() => navigate(-1)}
-                  className="flex-1 rounded-full"
+                  className="flex-1"
                 >
                   Non
                 </Button>

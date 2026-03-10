@@ -140,7 +140,7 @@ const RepublierAnnonce = () => {
           <Button
             variant="outline"
             onClick={handleCancel}
-            className="rounded-full"
+            className=""
           >
             Non merci
           </Button>

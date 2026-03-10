@@ -123,7 +123,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
           <Button onClick={onAccept} className="flex-1">
             Accepter
           </Button>
-          <Button onClick={onRefuse} variant="outline" className="flex-1 rounded-full">
+          <Button onClick={onRefuse} variant="outline" className="flex-1">
             Refuser
           </Button>
         </div>
