@@ -100,7 +100,7 @@ const ConfirmAnnulation = () => {
               <div className="flex gap-3">
                 <Button
                   onClick={handleConfirm}
-                  className="flex-1 rounded-full"
+                   className="flex-1"
                 >
                   Oui
                 </Button>
