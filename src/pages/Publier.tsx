@@ -258,7 +258,7 @@ const Publier = () => {
            {/* Départ (fixe) */}
           <div className="flex items-center px-4 py-4 gap-3">
             <Circle className="h-4 w-4 flex-shrink-0 text-card-foreground" strokeWidth={3} />
-            <span className="text-base font-semibold md:text-sm">Aéroport de Bordeaux</span>
+            <span className="text-base md:text-sm">Aéroport de Bordeaux</span>
           </div>
 
           <div className="h-px bg-border mx-4" />
