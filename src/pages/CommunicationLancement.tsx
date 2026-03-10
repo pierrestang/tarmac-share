@@ -19,10 +19,10 @@ const CommunicationLancement = () => {
               Pour son lancement, Tarmac se concentre sur un trajet unique afin de vous garantir un maximum de partenaires de partage :
             </p>
             <p className="mt-3">
-              <strong>Départ :</strong> Aéroport de Bordeaux (BOD)
+              📍 <strong>Départ :</strong> Aéroport de Bordeaux (BOD)
             </p>
             <p>
-              <strong>Destination :</strong> Bordeaux Intra-muros
+              📍 <strong>Destination :</strong> Bordeaux Intra-muros
             </p>
             <p className="mt-3">
               Cette zone nous permet de maximiser vos chances de trouver immédiatement un voyageur avec qui diviser la facture.
