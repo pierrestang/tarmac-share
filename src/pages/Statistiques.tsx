@@ -218,7 +218,7 @@ const Statistiques = () => {
 
 
               {/* Export */}
-              <Button onClick={exportCsv} className="flex items-center gap-2 rounded-full">
+              <Button onClick={exportCsv} className="flex items-center gap-2">
                 <Download size={16} /> Exporter CSV
               </Button>
 
