@@ -132,7 +132,7 @@ const RepublierAnnonce = () => {
         <div className="flex flex-col gap-2 w-full max-w-[42rem]">
           <Button
             onClick={handleRepublish}
-            className="rounded-full"
+            className=""
           >
             Republier
           </Button>
@@ -140,7 +140,7 @@ const RepublierAnnonce = () => {
           <Button
             variant="outline"
             onClick={handleCancel}
-            className="rounded-full"
+            className=""
           >
             Non merci
           </Button>

@@ -22,14 +22,14 @@ const Auth = () => {
 
       <div className="flex w-full max-w-sm flex-col gap-3 mb-20">
         <Button
-          className="w-full h-auto py-4 rounded-full"
+          className="w-full h-auto py-4"
           onClick={() => navigate("/inscription")}>
 
           S'inscrire sur Tarmac
         </Button>
         <Button
           variant="outline"
-          className="w-full h-auto py-4 rounded-full"
+          className="w-full h-auto py-4"
           onClick={() => navigate("/connexion")}>
 
           J'ai déjà un compte

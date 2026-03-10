@@ -132,7 +132,7 @@ const Evaluation = () => {
                 <Button
                   onClick={() => handleAnswer(true)}
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full text-[16px] font-semibold border-0"
+                   className="flex-1 text-[16px] font-semibold border-0"
                   style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}
                 >
                   {isSubmitting ? "Envoi..." : "Oui"}
@@ -141,7 +141,7 @@ const Evaluation = () => {
                   variant="outline"
                   onClick={() => handleAnswer(false)}
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full text-[16px] font-semibold border-0"
+                  className="flex-1 text-[16px] font-semibold border-0"
                   style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}
                 >
                   Non
