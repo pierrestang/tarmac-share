@@ -13,7 +13,7 @@ const CommentCaMarche = () => {
 
       <div className="flex flex-col gap-3 items-center px-4 mt-6 flex-1">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed flex flex-col gap-4">
+          <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed flex flex-col gap-2">
             <div>
               <p className="font-semibold mb-1">1. Publiez votre arrivée</p>
               <p>Indiquez votre heure d'arrivée à l'aéroport de Bordeaux et votre destination finale.</p>
