@@ -38,7 +38,7 @@ const CommentCaMarche = () => {
 
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-card-foreground text-[14px] leading-relaxed">
-            <p className="font-semibold mb-1">Mise en relation OFFERTE 🤝</p>
+            <p className="font-semibold mb-1">Mise en relation OFFERTE ✨</p>
             <p>Profitez gratuitement de la mise en relation pour le lancement de Tarmac.</p>
           </CardContent>
         </Card>
