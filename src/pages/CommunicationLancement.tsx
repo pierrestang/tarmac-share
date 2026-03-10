@@ -46,7 +46,7 @@ const CommunicationLancement = () => {
         </Card>
 
         <button
-          className="w-full max-w-[42rem] rounded-full h-auto py-4 mt-2 text-[16px] font-semibold border-0"
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 mt-2 text-[16px] font-semibold border-0"
           style={{ backgroundColor: '#3D2B3D', color: '#F0EEE9' }}
           onClick={() => navigate("/publier")}
         >
