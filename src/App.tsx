@@ -25,7 +25,7 @@ import DemandeAccepter from "./pages/DemandeAccepter";
 import DemandeConsulter from "./pages/DemandeConsulter";
 import DemandeHistorique from "./pages/DemandeHistorique";
 import Paiement from "./pages/Paiement";
-import Evaluation from "./pages/Evaluation";
+
 import RepublierAnnonce from "./pages/RepublierAnnonce";
 import ConfirmAnnulation from "./pages/ConfirmAnnulation";
 import Numero from "./pages/Numero";
@@ -65,7 +65,7 @@ const App = () => (
               <Route path="demande-consulter" element={<DemandeConsulter />} />
               <Route path="demande-historique" element={<DemandeHistorique />} />
               <Route path="paiement" element={<Paiement />} />
-              <Route path="evaluation" element={<Evaluation />} />
+              
               <Route path="republier-annonce" element={<RepublierAnnonce />} />
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
               <Route path="numero" element={<Numero />} />
