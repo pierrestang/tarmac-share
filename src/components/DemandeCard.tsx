@@ -161,9 +161,6 @@ export function DemandeCard({
                   {Math.round(compatibilityScore)}%
                 </span>
               </div>
-              <button type="button" onClick={() => navigate("/score-de-matching")} className="flex-shrink-0">
-                <HelpCircle className="h-4 w-4 text-muted-foreground" />
-              </button>
             </div>
           )}
         </div>
