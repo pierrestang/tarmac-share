@@ -35,7 +35,7 @@ export function TrajetCard({ trajet, matchCount, canEditOrDelete = false, onDele
 
   return (
     <>
-      <Card>
+      <Card className="overflow-hidden">
         <CardContent className="flex flex-col gap-3 p-4">
           <div className="flex items-start justify-between gap-2">
             <div className="flex flex-col gap-1">
@@ -77,15 +77,15 @@ export function TrajetCard({ trajet, matchCount, canEditOrDelete = false, onDele
               </Button>
             </div>
           )}
-
-          <Button
-            variant="outline"
-            className="w-full rounded-t-none rounded-b-md"
-            onClick={() => navigate(`/matches?trajetId=${trajet.id}`)}
-          >
-            Voir les résultats
-          </Button>
         </CardContent>
+
+        <Button
+          variant="outline"
+          className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
+          onClick={() => navigate(`/matches?trajetId=${trajet.id}`)}
+        >
+          Voir les résultats
+        </Button>
       </Card>
 
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
