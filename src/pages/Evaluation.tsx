@@ -27,13 +27,14 @@ const Evaluation = () => {
   const conversationId = searchParams.get("conversationId");
   const ratedProfileId = searchParams.get("ratedProfileId");
 
-  const { closeConversation, addSystemMessage, saveRating } = useMessages();
+  const { closeConversation, addSystemMessage, saveRating, getConversationById, sendMessage } = useMessages();
   const { getActiveProfile } = useProfiles();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
-  const { markReadByDemandeId } = useNotifications();
+  const { markReadByDemandeId, createNotification } = useNotifications();
 
   const activeProfile = getActiveProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
   const hasRedirected = useRef(false);
 
   useEffect(() => {
