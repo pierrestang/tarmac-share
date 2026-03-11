@@ -31,7 +31,7 @@ const ConversationItem = ({
       className="cursor-pointer border-0"
       onClick={onClick}
     >
-      <CardContent className="flex items-center gap-3 p-6">
+      <CardContent className="flex items-center gap-3 p-4">
         <div className="relative">
           <Avatar className="h-12 w-12">
             {otherProfile.photo ? (
