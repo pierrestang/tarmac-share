@@ -106,7 +106,7 @@ const Inscription = () => {
             </CardContent>
             <Button
               className="w-full rounded-none h-auto py-4"
-              onClick={() => navigate("/connexion")}
+              onClick={() => navigate("/auth")}
             >
               Retour à la connexion
             </Button>
