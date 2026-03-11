@@ -35,6 +35,7 @@ const Matches = () => {
   const [trajet, setTrajet] = useState<Trajet | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [matches, setMatches] = useState<EnrichedMatchedTraveler[]>([]);
+  const [matchesLoaded, setMatchesLoaded] = useState(false);
 
   const activeProfile = getActiveProfile();
   
