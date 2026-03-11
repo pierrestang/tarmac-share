@@ -28,7 +28,7 @@ const VotreTiming = () => {
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: "#3D2B3D" }}>
-            <p className="text-[18px] font-semibold mb-2">Temps de transit estimé</p>
+            <p className="text-[14px] font-semibold mb-2">Temps de transit estimé</p>
             <p>
               Estimez votre heure de sortie pour que votre partenaire ne vous attende pas trop longtemps à l'arrivée.
             </p>
