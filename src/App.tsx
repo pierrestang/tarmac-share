@@ -68,7 +68,6 @@ const App = () => (
               
               
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
-              <Route path="numero" element={<Numero />} />
               <Route path="statistiques" element={<Statistiques />} />
               <Route path="tour-de-controle" element={<TourDeControle />} />
               <Route path="tarmac-dans-ma-ville" element={<TarmacDansMaVille />} />
@@ -77,6 +76,7 @@ const App = () => (
             <Route path="score-de-matching" element={<ScoreDeMatching />} />
             <Route path="retrouvez-vous" element={<RetrouvezVous />} />
             <Route path="gestion-trajet" element={<GestionTrajet />} />
+            <Route path="numero" element={<Numero />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
