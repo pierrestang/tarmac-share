@@ -123,7 +123,7 @@ const RepublierAnnonce = () => {
               Votre trajet a été annulé ?
             </p>
             <p className="text-[14px] text-card-foreground leading-relaxed">
-              Vous pouvez choisir de le republier immédiatement pour retrouver un partenaire. Pour vous aider à repartir sans frais, nous vous offrons <span className="font-bold">2 actions gratuites</span> (envois ou acceptations de demandes) valables uniquement sur ce trajet.
+              Vous pouvez choisir de le republier immédiatement pour retrouver un partenaire.{!isFreeMode && <> Pour vous aider à repartir sans frais, nous vous offrons <span className="font-bold">2 actions gratuites</span> (envois ou acceptations de demandes) valables uniquement sur ce trajet.</>}
             </p>
           </CardContent>
         </Card>
