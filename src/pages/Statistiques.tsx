@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Upload } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 
