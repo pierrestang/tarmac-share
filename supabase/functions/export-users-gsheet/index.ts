@@ -221,30 +221,56 @@ Deno.serve(async (req) => {
 
       if (demandesError) throw demandesError;
 
-      // Fetch trajets and profiles
+      // Fetch trajets, profiles, conversations and ratings
       const trajetIds = new Set<string>();
-      const profileIds = new Set<string>();
       for (const d of (demandes || []) as any[]) {
         trajetIds.add(d.from_trajet_id);
         trajetIds.add(d.to_trajet_id);
-        profileIds.add(d.from_profile_id);
-        profileIds.add(d.to_profile_id);
       }
 
-      const { data: trajets } = await supabase.from("trajets").select("*").in("id", [...trajetIds]);
+      const [trajetsRes, profilesRes, convsRes, ratingsRes] = await Promise.all([
+        supabase.from("trajets").select("*").in("id", [...trajetIds]),
+        supabase.from("profiles").select("id, first_name, last_name"),
+        supabase.from("conversations").select("id, demande_id"),
+        supabase.from("conversation_ratings").select("conversation_id, was_useful"),
+      ]);
+
       const trajetMap = new Map<string, any>();
-      for (const t of (trajets || []) as any[]) trajetMap.set(t.id, t);
+      for (const t of (trajetsRes.data || []) as any[]) trajetMap.set(t.id, t);
 
-      const { data: profiles } = await supabase.from("profiles").select("id, first_name, last_name");
       const profileMap = new Map<string, string>();
-      for (const p of (profiles || []) as any[]) profileMap.set(p.id, `${p.first_name} ${p.last_name}`);
+      for (const p of (profilesRes.data || []) as any[]) profileMap.set(p.id, `${p.first_name} ${p.last_name}`);
 
-      const header = ["Statut", "Annulé", "Voyageur 1", "Trajet 1 (Gare → Destination)", "Voyageur 2", "Trajet 2 (Gare → Destination)", "Date demande", "Dernière MAJ"];
+      // Map demande_id -> conversation_id
+      const demandeToConv = new Map<string, string>();
+      for (const c of (convsRes.data || []) as any[]) demandeToConv.set(c.demande_id, c.id);
+
+      // Map conversation_id -> ratings
+      const ratingsByConv: Record<string, { useful: number; total: number }> = {};
+      for (const r of (ratingsRes.data || []) as any[]) {
+        if (!ratingsByConv[r.conversation_id]) ratingsByConv[r.conversation_id] = { useful: 0, total: 0 };
+        ratingsByConv[r.conversation_id].total++;
+        if (r.was_useful) ratingsByConv[r.conversation_id].useful++;
+      }
+
+      const getResultat = (d: any): string => {
+        if (d.status !== "completed") return "En cours";
+        if (d.was_cancelled) return "Annulé";
+        const convId = demandeToConv.get(d.id);
+        if (!convId || !ratingsByConv[convId]) return "En attente d'évaluation";
+        const r = ratingsByConv[convId];
+        if (r.total >= 2 && r.useful >= 2) return "Réalisé";
+        if (r.total >= 1 && r.useful < r.total) return "Non réalisé";
+        return "En attente d'évaluation";
+      };
+
+      const header = ["Statut", "Résultat", "Annulé", "Voyageur 1", "Trajet 1 (Gare → Destination)", "Voyageur 2", "Trajet 2 (Gare → Destination)", "Date demande", "Dernière MAJ"];
       const rows = (demandes || []).map((d: any) => {
         const t1 = trajetMap.get(d.from_trajet_id);
         const t2 = trajetMap.get(d.to_trajet_id);
         return [
           d.status,
+          getResultat(d),
           d.was_cancelled ? "Oui" : "Non",
           profileMap.get(d.from_profile_id) || d.from_profile_id,
           t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
