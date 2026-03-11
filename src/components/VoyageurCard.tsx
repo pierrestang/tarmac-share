@@ -124,7 +124,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
 
       {/* Dual buttons for accept/refuse */}
       {showDualButtons && (
-        <div className="flex gap-3">
+        <div className="flex gap-3 px-4 pb-4">
           <button onClick={onAccept} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
             Accepter
           </button>
