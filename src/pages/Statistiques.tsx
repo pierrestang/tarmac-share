@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Upload } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 const ADMIN_EMAIL = "pierres-19@hotmail.fr";
 
@@ -74,6 +75,7 @@ const Statistiques = () => {
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -218,9 +220,47 @@ const Statistiques = () => {
 
 
               {/* Export */}
-              <Button onClick={exportCsv} className="flex items-center gap-2">
-                <Download size={16} /> Exporter CSV
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={exportCsv} className="flex-1 flex items-center gap-2 rounded-full">
+                  <Download size={16} /> CSV
+                </Button>
+                <Button
+                  onClick={async () => {
+                    setExporting(true);
+                    try {
+                      const { data: { session } } = await supabase.auth.getSession();
+                      if (!session) return;
+                      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=stats&days=${days}`;
+                      const res = await fetch(url, {
+                        headers: {
+                          Authorization: `Bearer ${session.access_token}`,
+                          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                        },
+                      });
+                      if (!res.ok) throw new Error("Export failed");
+                      toast({
+                        title: "Statistiques exportées vers Google Sheets",
+                        className: "bg-transparent border-0 shadow-none",
+                        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+                      });
+                    } catch (e) {
+                      toast({
+                        title: "Erreur lors de l'export",
+                        className: "bg-transparent border-0 shadow-none",
+                        style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+                      });
+                      console.error(e);
+                    } finally {
+                      setExporting(false);
+                    }
+                  }}
+                  disabled={exporting}
+                  variant="outline"
+                  className="flex-1 flex items-center gap-2 rounded-full"
+                >
+                  <Upload size={16} /> {exporting ? "Export..." : "Google Sheets"}
+                </Button>
+              </div>
 
             </>
           ) : (
