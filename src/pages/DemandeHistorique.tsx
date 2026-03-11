@@ -272,11 +272,6 @@ const DemandeHistorique = () => {
                   et {voyageurTrajet.companions === 2 ? "un" : voyageurTrajet.companions === 3 ? "deux" : voyageurTrajet.companions - 1} voyageur{voyageurTrajet.companions > 2 ? "s" : ""}
                 </span>
               )}
-              <div className="flex items-center gap-2">
-                <span className="text-[12px] text-muted-foreground">
-                  Trajet partagé
-                </span>
-              </div>
             </div>
           </div>
 
