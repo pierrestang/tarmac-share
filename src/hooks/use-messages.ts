@@ -235,6 +235,8 @@ export function useMessages() {
     if (!state[conversationId]) state[conversationId] = {};
     state[conversationId][profileId] = Date.now();
     writeReadState(state);
+    // Notify other hooks in the same tab
+    window.dispatchEvent(new Event("conversationReadStateChanged"));
   }, []);
 
   const hasUnreadMessages = useCallback((conversationId: string, profileId: string): boolean => {
