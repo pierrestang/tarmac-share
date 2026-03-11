@@ -17,9 +17,9 @@ const GestionTrajet = () => {
   const [searchParams] = useSearchParams();
   const conversationId = searchParams.get("conversationId") || "";
   const demandeId = searchParams.get("demandeId") || "";
+  const ratedProfileId = searchParams.get("ratedProfileId") || "";
   const isClosed = searchParams.get("closed") === "true";
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const [showCloseDialog, setShowCloseDialog] = useState(false);
 
   return (
     <div className="p-4">
