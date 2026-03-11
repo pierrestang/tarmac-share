@@ -248,9 +248,9 @@ const DemandeConsulter = () => {
             <button onClick={() => { handleWithdraw(); setShowWithdrawDialog(false); }} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
               Oui
             </button>
-            <AlertDialogCancel className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0 mt-0" style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+            <button onClick={() => setShowWithdrawDialog(false)} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
               Non
-            </AlertDialogCancel>
+            </button>
           </div>
         </AlertDialogContent>
       </AlertDialog>
