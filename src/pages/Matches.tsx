@@ -288,7 +288,7 @@ const Matches = () => {
             {/* Cartes voyageurs */}
             {!matchesLoaded ? null : matches.length === 0 ? (
               <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
-                <p className="text-center text-[14px]" style={{ color: "#4E657A" }}>
+                <p className="text-center text-[14px] italic" style={{ color: "#4E657A" }}>
                   Pas de passagers pour ce créneau... pour l'instant !
                 </p>
               </div>
