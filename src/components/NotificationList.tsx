@@ -18,7 +18,10 @@ export function NotificationList() {
   const { getNotifications, markAsRead, isLoaded: notificationsLoaded } = useNotifications();
   const { getActiveProfile, isLoaded: profilesLoaded } = useProfiles();
   const { getConversationByDemandeId } = useMessages();
-  const { getDemandeById } = useDemandes();
+  const { getDemandeById, saveDemandeSnapshot } = useDemandes();
+  const { getTrajetById, createTrajet } = useTrajets();
+  const { isFreeMode } = useAppSettings();
+  const [expandedCancellationId, setExpandedCancellationId] = useState<string | null>(null);
 
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
