@@ -109,30 +109,6 @@ const Statistiques = () => {
     fetchStats();
   }, [authorized, days]);
 
-  const exportCsv = () => {
-    if (!data) return;
-    const rows = [
-      ["Métrique", "Valeur"],
-      ["Annonces publiées", data.kpis.trajetsPublies],
-      ["Nombre de matchs", data.kpis.matchsConfirmes],
-      ["Taux de match (%)", data.kpis.matchRate],
-      ["Trajets complétés", data.kpis.trajetsCompletes],
-      ["Trajets complétés (%)", data.kpis.trajetsCompletesPct],
-      ["Trajets réalisés", data.kpis.trajetsRealises],
-      ["Trajets réalisés (%)", data.kpis.tauxRealises],
-      ["Nombre d'annulations", data.kpis.annulations],
-      ["Taux annulation (%)", data.kpis.tauxAnnulation],
-      ["Non réalisés (hors annulation)", data.kpis.nonRealises],
-      ["Non réalisés (hors annulation) (%)", data.kpis.tauxNonRealises],
-    ];
-    const csv = rows.map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `stats-${days}j.csv`;
-    a.click();
-  };
-
   if (!authorized) return null;
 
   return (
