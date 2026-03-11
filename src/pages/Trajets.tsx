@@ -200,13 +200,7 @@ const Trajets = () => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="pt-3">
-              {enCours.length === 0 ? (
-                <div className="pb-2">
-                   <span className="text-[14px] text-foreground">
-                    Aucune demande pour le moment
-                  </span>
-                </div>
-              ) : (
+              {enCours.length === 0 ? null : (
                 <div className="flex flex-col gap-3">
                   {enCours.map((demande) => {
                     const myTrajetId = demande.fromProfileId === currentProfileId
@@ -258,13 +252,7 @@ const Trajets = () => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="pt-3 pb-0">
-              {!hasEnAttenteContent ? (
-                <div className="pb-2">
-                   <span className="text-[14px] text-foreground">
-                    Aucune demande pour le moment
-                  </span>
-                </div>
-              ) : (
+              {!hasEnAttenteContent ? null : (
                 <div className="flex flex-col gap-2">
                   {/* Demandes en attente */}
                   {enAttenteDemandes.map((demande) => {
@@ -341,13 +329,7 @@ const Trajets = () => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="pt-3">
-              {historique.length === 0 ? (
-                <div className="pb-2">
-                  <span className="text-[14px] text-foreground">
-                    Aucune demande pour le moment
-                  </span>
-                </div>
-              ) : (
+              {historique.length === 0 ? null : (
                 <div className="flex flex-col gap-3">
                   {historique.map((demande) => {
                     const trajetId = demande.fromProfileId === currentProfileId
