@@ -329,13 +329,7 @@ const Trajets = () => {
               </AccordionTrigger>
             </div>
             <AccordionContent className="pt-3">
-              {historique.length === 0 ? (
-                <div className="pb-2">
-                  <span className="text-[14px] text-foreground">
-                    Aucune demande pour le moment
-                  </span>
-                </div>
-              ) : (
+              {historique.length === 0 ? null : (
                 <div className="flex flex-col gap-3">
                   {historique.map((demande) => {
                     const trajetId = demande.fromProfileId === currentProfileId
