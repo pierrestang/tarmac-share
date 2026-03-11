@@ -36,6 +36,7 @@ const GestionTrajet = () => {
   const activeProfile = getActiveProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showEndDialog, setShowEndDialog] = useState(false);
   const hasRedirected = useRef(false);
 
   const handleAnswer = async (wasUseful: boolean) => {
