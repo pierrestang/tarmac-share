@@ -91,8 +91,11 @@ export function DemandeCard({
   };
 
   return (
-    <div className="rounded-md bg-card overflow-hidden flex flex-col">
-      <div className="p-4 flex flex-col gap-3">
+    <div className="rounded-md bg-card overflow-hidden flex flex-col relative">
+      <button type="button" onClick={() => navigate("/score-de-matching")} className="absolute top-3 right-3 z-10">
+        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+      </button>
+      <div className="p-4 pr-8 flex flex-col gap-3">
         {/* Top section: Avatar, info, and score */}
         <div className="flex items-start gap-3">
           {/* Avatar */}
