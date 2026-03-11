@@ -66,7 +66,7 @@ const App = () => (
               <Route path="demande-historique" element={<DemandeHistorique />} />
               <Route path="paiement" element={<Paiement />} />
               
-              <Route path="republier-annonce" element={<RepublierAnnonce />} />
+              
               <Route path="confirm-annulation" element={<ConfirmAnnulation />} />
               <Route path="numero" element={<Numero />} />
               <Route path="statistiques" element={<Statistiques />} />
