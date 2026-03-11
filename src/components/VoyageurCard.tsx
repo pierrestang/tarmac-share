@@ -122,6 +122,8 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
         </p>
       </div>
 
+      </CardContent>
+
       {/* Dual buttons for accept/refuse */}
       {showDualButtons && (
         <div className="flex gap-3 px-4 pb-4">
@@ -133,7 +135,6 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
           </button>
         </div>
       )}
-      </CardContent>
 
       {/* Single button - attached to bottom of card */}
       {showButton && !showDualButtons && (
