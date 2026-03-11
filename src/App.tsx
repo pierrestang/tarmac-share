@@ -76,6 +76,7 @@ const App = () => (
             <Route path="score-de-matching" element={<ScoreDeMatching />} />
             <Route path="retrouvez-vous" element={<RetrouvezVous />} />
             <Route path="gestion-trajet" element={<GestionTrajet />} />
+            <Route path="numero" element={<Numero />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
