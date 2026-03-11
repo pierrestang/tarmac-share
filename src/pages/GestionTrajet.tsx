@@ -73,11 +73,15 @@ const GestionTrajet = () => {
                 `/messages?conversationId=${conversationId}&action=cancel`
               )
               }
-              className="rounded-md">
-
+              className="rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
               Oui
             </AlertDialogAction>
-            <AlertDialogCancel className="rounded-md">Non</AlertDialogCancel>
+            <AlertDialogCancel
+              className="rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
