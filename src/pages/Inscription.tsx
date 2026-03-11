@@ -217,21 +217,20 @@ const Inscription = () => {
 
             <div className="px-4 py-4 flex items-center gap-2">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
               />
-              <Popover>
-                <PopoverTrigger type="button" className="flex items-center justify-center w-5 h-5 rounded-full border border-muted-foreground text-muted-foreground text-xs font-medium shrink-0">
-                  ?
-                </PopoverTrigger>
-                <PopoverContent side="left" className="max-w-[220px] text-xs p-3">
-                  Le mot de passe doit comporter au moins 8 caractères dont 1 lettre, 1 chiffre et 1 caractère spécial.
-                </PopoverContent>
-              </Popover>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-muted-foreground shrink-0"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
 
             {error && (
