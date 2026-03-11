@@ -60,7 +60,7 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
         <p className="text-[13px] text-card-foreground line-clamp-2 mt-0.5">
           {notification.message}
         </p>
-        <span className="text-[12px] text-muted-foreground mt-1 block">
+        <span className="text-[14px] text-muted-foreground mt-1 block">
           {formatRelativeTime(notification.createdAt)}
         </span>
       </div>
