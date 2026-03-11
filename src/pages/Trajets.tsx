@@ -243,7 +243,7 @@ const Trajets = () => {
             </div>
             <AccordionContent className="pt-4 pb-0">
               {!hasEnAttenteContent ? null : (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                   {/* Demandes en attente */}
                   {enAttenteDemandes.map((demande) => {
                     const myTrajetId = demande.fromProfileId === currentProfileId
