@@ -191,9 +191,9 @@ const Trajets = () => {
           <AccordionItem value="en-cours" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
               <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
-                <span className="flex items-center gap-2">
+                <span className="relative">
                   En cours
-                  <span className="inline-flex min-w-5 h-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
+                  <span className="absolute -right-4 -top-2 inline-flex min-w-4 h-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
                     {enCours.length}
                   </span>
                 </span>
@@ -249,9 +249,9 @@ const Trajets = () => {
           <AccordionItem value="en-attente" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
               <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
-                <span className="flex items-center gap-2">
+                <span className="relative">
                   En attente
-                  <span className="inline-flex min-w-5 h-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
+                  <span className="absolute -right-4 -top-2 inline-flex min-w-4 h-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
                     {enAttenteDemandes.length + myPendingTrajets.length}
                   </span>
                 </span>
@@ -332,9 +332,9 @@ const Trajets = () => {
           <AccordionItem value="historique" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
               <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
-                <span className="flex items-center gap-2">
+                <span className="relative">
                   Historique
-                  <span className="inline-flex min-w-5 h-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
+                  <span className="absolute -right-4 -top-2 inline-flex min-w-4 h-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
                     {historique.length}
                   </span>
                 </span>
