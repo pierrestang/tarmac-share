@@ -44,9 +44,9 @@ const ConversationList = ({
         if (!otherProfile) return null;
         
         return (
-          <div key={conversation.id} className="flex flex-col gap-1">
+          <div key={conversation.id} className="flex flex-col gap-3">
             {date && (
-              <p className="text-[18px] font-semibold">{date}</p>
+              <p className="text-[18px] font-semibold pt-2">{date}</p>
             )}
             <ConversationItem
               conversation={conversation}
