@@ -126,7 +126,7 @@ const DemandeConsulter = () => {
       </div>
 
       {/* Date */}
-      <p className="text-[16px] font-semibold w-full max-w-[42rem]">
+      <p className="text-[18px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
