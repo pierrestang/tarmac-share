@@ -146,7 +146,7 @@ const DemandeAccepter = () => {
             return myTrajet.date;
           }
         })()}
-      </p>
+      </h2>
 
       {/* Mes informations Card */}
       <Card className="w-full max-w-[42rem] border-0">
