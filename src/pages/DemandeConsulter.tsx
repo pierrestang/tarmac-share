@@ -153,14 +153,26 @@ const DemandeConsulter = () => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-[16px] font-medium">
-                {myProfile.firstName}
-                {myTrajet.companions > 1 && (
-                  <span className="text-muted-foreground font-normal">
-                    {" "}et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
-                  </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[16px] font-medium">
+                  {myProfile.firstName}
+                </span>
+                {demande.status === "refused" && isSender && (
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                    Demande envoyée
+                  </Badge>
                 )}
-              </span>
+                {demande.status === "refused" && !isSender && (
+                  <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+                    Demande refusée
+                  </Badge>
+                )}
+              </div>
+              {myTrajet.companions > 1 && (
+                <span className="text-[12px] text-muted-foreground">
+                  et {myTrajet.companions === 2 ? "un" : myTrajet.companions === 3 ? "deux" : myTrajet.companions - 1} voyageur{myTrajet.companions > 2 ? "s" : ""}
+                </span>
+              )}
             </div>
           </div>
 
@@ -196,6 +208,17 @@ const DemandeConsulter = () => {
         buttonLabel="Retirer ma demande"
         onButtonClick={() => setShowWithdrawDialog(true)}
         messagesDemandeId={demande.status === "accepted" ? demande.id : undefined}
+        customBadge={demande.status === "refused" ? (
+          isSender ? (
+            <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+              Demande refusée
+            </Badge>
+          ) : (
+            <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+              Demande envoyée
+            </Badge>
+          )
+        ) : undefined}
       />
 
       {/* Withdraw Confirmation Dialog */}

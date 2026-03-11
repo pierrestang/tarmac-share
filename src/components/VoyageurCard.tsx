@@ -20,6 +20,7 @@ interface VoyageurCardProps {
   onRefuse?: () => void;
   myTrajetId?: string;
   messagesDemandeId?: string;
+  customBadge?: React.ReactNode;
 }
 
 function getInitials(firstName: string, lastName: string): string {
@@ -34,7 +35,7 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
 
-export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId }: VoyageurCardProps) {
+export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId, customBadge }: VoyageurCardProps) {
   const navigate = useNavigate();
   const { getConversationByDemandeId } = useMessages();
   const { trajet, profile, detourMin, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
@@ -70,15 +71,19 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
                 et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
               </span>
             )}
-            {receivedDemandeId && (
-              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
-                Demande reçue
-              </Badge>
-            )}
-            {sentDemandeId && !receivedDemandeId && (
-              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
-                Demande envoyée
-              </Badge>
+            {customBadge ? customBadge : (
+              <>
+                {receivedDemandeId && (
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                    Demande reçue
+                  </Badge>
+                )}
+                {sentDemandeId && !receivedDemandeId && (
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                    Demande envoyée
+                  </Badge>
+                )}
+              </>
             )}
           </div>
 
