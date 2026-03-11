@@ -93,7 +93,7 @@ const ChatView = ({
         </button>
         <CardContent className="p-4 pr-8">
           <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>
-            Point de rencontre recommandé :
+            Point de rencontre recommandé 📍
           </p>
           <p className="text-[14px] italic" style={{ color: "#4E657A" }}>
             Au niveau du passage piéton central du Parking Express, face au Hall B.
