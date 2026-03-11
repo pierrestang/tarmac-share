@@ -264,7 +264,7 @@ Deno.serve(async (req) => {
         return "En attente d'évaluation";
       };
 
-      const header = ["Statut", "Résultat", "Annulé", "Voyageur 1", "Trajet 1 (Gare → Destination)", "Voyageur 2", "Trajet 2 (Gare → Destination)", "Date demande", "Dernière MAJ"];
+      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Trajet accepteur (Gare → Destination)", "Date demande", "Dernière MAJ"];
       const rows = (demandes || []).map((d: any) => {
         const t1 = trajetMap.get(d.from_trajet_id);
         const t2 = trajetMap.get(d.to_trajet_id);
