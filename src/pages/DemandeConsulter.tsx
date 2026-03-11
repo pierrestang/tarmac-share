@@ -208,6 +208,17 @@ const DemandeConsulter = () => {
         buttonLabel="Retirer ma demande"
         onButtonClick={() => setShowWithdrawDialog(true)}
         messagesDemandeId={demande.status === "accepted" ? demande.id : undefined}
+        customBadge={demande.status === "refused" ? (
+          isSender ? (
+            <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+              Demande refusée
+            </Badge>
+          ) : (
+            <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+              Demande envoyée
+            </Badge>
+          )
+        ) : undefined}
       />
 
       {/* Withdraw Confirmation Dialog */}
