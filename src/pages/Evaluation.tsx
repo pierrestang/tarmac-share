@@ -122,7 +122,54 @@ const Evaluation = () => {
     navigate("/trajets", { replace: true });
   };
 
-  return (
+  const handleCancel = async () => {
+    if (isSubmitting || hasRedirected.current) return;
+    if (!activeProfile || !conversationId) return;
+
+    const conversation = getConversationById(conversationId);
+    if (!conversation) return;
+
+    const otherProfileId = conversation.participants.find((p) => p !== activeProfile.id);
+    if (!otherProfileId) return;
+
+    setIsSubmitting(true);
+
+    await sendMessage(conversationId, activeProfile.id, "Je dois annuler");
+
+    try {
+      await createNotification({
+        profileId: otherProfileId,
+        type: "cancellation",
+        title: "Trajet annulé",
+        message: "Votre voyageur a annulé. Souhaitez-vous republier votre annonce ?",
+        demandeId: conversation.demandeId,
+        relatedProfileId: activeProfile.id,
+      });
+    } catch (e) {
+      console.error("Erreur notification:", e);
+    }
+
+    await closeConversation(conversationId, activeProfile.id, otherProfileId);
+    await addSystemMessage(conversationId, `[CANCELLED_BY:${activeProfile.id}] ${activeProfile.firstName} a annulé le trajet. Le trajet est considéré comme terminé.`);
+
+    const ratingBase = {
+      conversationId,
+      score: 0,
+      wasUseful: false,
+      comment: "",
+    };
+    await saveRating({ ...ratingBase, raterId: activeProfile.id, ratedProfileId: otherProfileId });
+    await saveRating({ ...ratingBase, raterId: otherProfileId, ratedProfileId: activeProfile.id });
+
+    await completeDemande(conversation.demandeId);
+    await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", conversation.demandeId);
+    await saveDemandeSnapshot(conversation.demandeId);
+    await markReadByDemandeId(conversation.demandeId);
+
+    hasRedirected.current = true;
+    navigate("/messages", { replace: true });
+  };
+
     <div className="flex flex-col min-h-full">
       <div className="flex flex-col gap-2 pt-6 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 self-start">
