@@ -50,6 +50,7 @@ const Matches = () => {
 
   useEffect(() => {
     if (trajetId && profilesLoaded) {
+      setMatchesLoaded(false);
       const t = getTrajetById(trajetId);
       setTrajet(t);
       if (t) {
