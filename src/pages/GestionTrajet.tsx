@@ -62,8 +62,7 @@ const GestionTrajet = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-foreground">
-              Êtes-vous sûr de vouloir annuler ce trajet ?
+            <AlertDialogDescription className="hidden">
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
