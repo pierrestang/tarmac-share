@@ -223,6 +223,10 @@ const DemandeConsulter = () => {
               Demande envoyée
             </Badge>
           )
+        ) : demande.status === "accepted" && isSender ? (
+          <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+            Demande acceptée
+          </Badge>
         ) : undefined}
       />
 
