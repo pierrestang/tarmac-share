@@ -48,7 +48,7 @@ const Matches = () => {
   });
 
   useEffect(() => {
-    if (trajetId) {
+    if (trajetId && profilesLoaded) {
       const t = getTrajetById(trajetId);
       setTrajet(t);
       if (t) {
@@ -87,7 +87,7 @@ const Matches = () => {
       }
     }
     setProfile(getActiveProfile());
-  }, [trajetId, trajets, getTrajetById, findMatches, getActiveProfile, demandes]);
+  }, [trajetId, trajets, profilesLoaded, getTrajetById, findMatches, getActiveProfile, getProfileById, demandes]);
 
   // Affichage de la liste des trajets si pas de trajetId
   if (!trajetId) {
