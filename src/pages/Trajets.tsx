@@ -194,9 +194,9 @@ const Trajets = () => {
                 En cours
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3">
+            <AccordionContent className="pt-4">
               {enCours.length === 0 ? null : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                   {enCours.map((demande) => {
                     const myTrajetId = demande.fromProfileId === currentProfileId
                       ? demande.fromTrajetId
@@ -213,7 +213,7 @@ const Trajets = () => {
                     })();
 
                     return (
-                      <div key={demande.id} className="flex flex-col gap-2">
+                      <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
                           <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
                         )}
@@ -241,9 +241,9 @@ const Trajets = () => {
                 En attente
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3 pb-0">
+            <AccordionContent className="pt-4 pb-0">
               {!hasEnAttenteContent ? null : (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                   {/* Demandes en attente */}
                   {enAttenteDemandes.map((demande) => {
                     const myTrajetId = demande.fromProfileId === currentProfileId
@@ -261,7 +261,7 @@ const Trajets = () => {
                     })();
 
                     return (
-                      <div key={demande.id} className="flex flex-col gap-2">
+                      <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
                           <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
                         )}
@@ -288,7 +288,7 @@ const Trajets = () => {
                     })();
                     
                     return (
-                      <div key={trajet.id} className="flex flex-col gap-2">
+                      <div key={trajet.id} className="flex flex-col gap-3">
                         <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
                         <MonTrajetCard
                           trajet={trajet}
@@ -313,9 +313,9 @@ const Trajets = () => {
                 Historique
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3">
+            <AccordionContent className="pt-4">
               {historique.length === 0 ? null : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                   {historique.map((demande) => {
                     const trajetId = demande.fromProfileId === currentProfileId
                       ? demande.fromTrajetId
@@ -332,7 +332,7 @@ const Trajets = () => {
                     })();
 
                     return (
-                      <div key={demande.id} className="flex flex-col gap-2">
+                      <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
                           <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
                         )}
