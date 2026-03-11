@@ -233,21 +233,23 @@ const GestionTrajet = () => {
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
-            <AlertDialogDescription className="hidden" />
+            <AlertDialogTitle>Annuler ce trajet ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px]" style={{ color: "#4E657A" }}>
+              Utilisez cette option uniquement si vous ne pouvez plus vous rendre disponible. Votre partenaire sera immédiatement prévenu de ce changement de programme.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+            <AlertDialogCancel
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              Conserver le trajet
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCancel}
               className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
-              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
-              Oui
-            </AlertDialogAction>
-            <AlertDialogCancel
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
               style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
-              Non
-            </AlertDialogCancel>
+              Confirmer l'annulation
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
