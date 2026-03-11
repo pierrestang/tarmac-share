@@ -236,16 +236,20 @@ const DemandeConsulter = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Retirer ma demande ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-foreground">
-              Êtes-vous sûr de vouloir retirer votre demande ? Aucun montant ne sera prélevé.
-            </AlertDialogDescription>
+            {!isFreeMode && (
+              <AlertDialogDescription className="text-foreground">
+                Aucun montant ne sera prélevé.
+              </AlertDialogDescription>
+            )}
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
-            <AlertDialogAction onClick={handleWithdraw} className="rounded-md">
-              Confirmer
-            </AlertDialogAction>
-            <AlertDialogCancel className="rounded-md">Annuler</AlertDialogCancel>
-          </AlertDialogFooter>
+          <div className="flex gap-3 pt-2">
+            <button onClick={() => { handleWithdraw(); setShowWithdrawDialog(false); }} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              Oui
+            </button>
+            <AlertDialogCancel className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0 mt-0" style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </section>
