@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { VoyageurCard } from "@/components/VoyageurCard";
-import { useTrajets, calculateMatchScore, calculateDetourTimes } from "@/hooks/use-trajets";
+import { useTrajets, calculateMatchScore, calculateDetourTimes, calculateDistance } from "@/hooks/use-trajets";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
