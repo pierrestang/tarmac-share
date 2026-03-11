@@ -87,7 +87,7 @@ const Inscription = () => {
     return (
       <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
         <div className="px-4">
-          <button onClick={() => navigate("/connexion")} className="text-heading">
+          <button onClick={() => navigate("/auth")} className="text-heading">
             <ArrowLeft size={24} />
           </button>
         </div>
@@ -106,7 +106,7 @@ const Inscription = () => {
             </CardContent>
             <Button
               className="w-full rounded-none h-auto py-4"
-              onClick={() => navigate("/connexion")}
+              onClick={() => navigate("/auth")}
             >
               Retour à la connexion
             </Button>
