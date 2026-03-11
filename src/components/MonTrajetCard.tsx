@@ -109,7 +109,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
         </CardContent>
         
         <Button
-          className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
+          className="w-full !rounded-none h-12 text-[16px]"
           onClick={() => navigate(`/matches?trajetId=${trajet.id}`)}
         >
           Voir les matches
