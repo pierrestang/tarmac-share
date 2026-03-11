@@ -150,8 +150,8 @@ export function DemandeCard({
             </div>
           </div>
 
-          {/* Compatibility score - hidden for completed and accepted */}
-          {!isCompleted && !isAccepted && (
+          {/* Compatibility score - hidden for completed */}
+          {!isCompleted && (
             <div className="flex items-center gap-1 flex-shrink-0">
               <div 
                 className="h-12 w-12 rounded-full border-[3px] flex items-center justify-center"
