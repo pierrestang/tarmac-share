@@ -27,7 +27,7 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
   const badgeClasses = {
     default: "bg-muted text-muted-foreground",
     green: "bg-success text-success-foreground border border-success-foreground/20",
-    red: "bg-[#e34454]/15 text-[#e34454] border border-[#e34454]/30",
+    red: "bg-[#e34454]/15 text-[#e34454] border border-[#e34454]/30"
   };
   return (
     <button
@@ -36,8 +36,8 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
         "w-full flex items-start gap-3 p-4 text-left transition-colors",
         muted ? "opacity-60 cursor-default" : "hover:bg-muted/50",
         !notification.read && !muted && "bg-muted/30"
-      )}
-    >
+      )}>
+      
 
       {/* Content */}
       <div className="flex-1 min-w-0">
@@ -48,22 +48,22 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
           )}>
             {notification.title}
           </span>
-          {!notification.read && !muted && (
-            <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
-          )}
-          {badge && (
-            <span className={cn("text-[11px] px-2 py-0.5 rounded-full font-medium flex-shrink-0", badgeClasses[badgeVariant])}>
+          {!notification.read && !muted &&
+          <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+          }
+          {badge &&
+          <span className={cn("text-[11px] px-2 py-0.5 rounded-full font-medium flex-shrink-0", badgeClasses[badgeVariant])}>
               {badge}
             </span>
-          )}
+          }
         </div>
         <p className="text-[13px] text-card-foreground line-clamp-2 mt-0.5">
           {notification.message}
         </p>
-        <span className="text-[14px] text-muted-foreground mt-1 block">
+        <span className="text-muted-foreground mt-1 block text-xs">
           {formatRelativeTime(notification.createdAt)}
         </span>
       </div>
-    </button>
-  );
+    </button>);
+
 }
