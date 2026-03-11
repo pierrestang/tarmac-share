@@ -43,7 +43,7 @@ const ForgotPassword = () => {
               </p>
             </CardContent>
             <Button
-              className="w-full h-auto py-4"
+              className="w-full h-auto py-4 rounded-none rounded-b-md"
               onClick={() => navigate("/connexion")}
             >
               Retour à la connexion
