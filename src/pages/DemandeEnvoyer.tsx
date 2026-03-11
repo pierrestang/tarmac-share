@@ -63,7 +63,10 @@ const DemandeEnvoyer = () => {
         .then((results) => {
           const result = results[0];
           if (result) {
-            const maxDetour = Math.max(result.detourA, result.detourB);
+            const destDist = calculateDistance(myTrajet!.destinationCoords!, voyageurTrajet!.destinationCoords!);
+            const maxDetour = (destDist !== null && destDist < 0.2)
+              ? 0
+              : Math.max(result.detourA, result.detourB);
             setDetourMin(Math.round(maxDetour));
           } else {
             setDetourMin(0);
