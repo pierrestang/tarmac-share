@@ -146,7 +146,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
                 : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
           ))}
-          className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
+          className="w-full !rounded-none h-12 text-[16px]"
         >
           {buttonLabel ?? "Voir le trajet"}
         </Button>
