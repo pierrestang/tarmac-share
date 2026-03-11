@@ -192,19 +192,17 @@ Deno.serve(async (req) => {
         profileMap.set(p.id, `${p.first_name} ${p.last_name}`);
       }
 
-      const header = ["Date", "Voyageur", "Gare de départ", "Destination", "Heure de départ", "Départ souhaité", "Accompagnants", "Petit bagage", "Moyen bagage", "Grand bagage", "Infos", "Republié", "Créé le"];
+      const header = ["Date", "Voyageur", "Gare de départ", "Destination", "Heure de départ", "Accompagnants", "Petit bagage", "Moyen bagage", "Grand bagage", "Republié", "Créé le"];
       const rows = (trajets || []).map((t: any) => [
         t.date,
         profileMap.get(t.profile_id) || t.profile_id,
         t.departure_station,
         t.destination,
         t.departure_time,
-        t.desired_departure,
         t.companions,
         t.baggage_small,
         t.baggage_medium,
         t.baggage_large,
-        t.additional_info,
         t.is_republished ? "Oui" : "Non",
         new Date(Number(t.created_at)).toLocaleDateString("fr-FR"),
       ]);
