@@ -174,6 +174,43 @@ Deno.serve(async (req) => {
         ["Non réalisés (%)", round(tauxNonRealises)],
       ];
       exportCount = values.length - 1;
+    } else if (exportType === "annonces") {
+      // --- Annonces export ---
+      sheetTab = "Annonces";
+
+      const { data: trajets, error: trajetsError } = await supabase
+        .from("trajets")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (trajetsError) throw trajetsError;
+
+      // Fetch profiles for names
+      const { data: profiles } = await supabase.from("profiles").select("id, first_name, last_name");
+      const profileMap = new Map<string, string>();
+      for (const p of (profiles || []) as any[]) {
+        profileMap.set(p.id, `${p.first_name} ${p.last_name}`);
+      }
+
+      const header = ["Date", "Voyageur", "Gare de départ", "Destination", "Heure de départ", "Départ souhaité", "Accompagnants", "Petit bagage", "Moyen bagage", "Grand bagage", "Infos", "Republié", "Créé le"];
+      const rows = (trajets || []).map((t: any) => [
+        t.date,
+        profileMap.get(t.profile_id) || t.profile_id,
+        t.departure_station,
+        t.destination,
+        t.departure_time,
+        t.desired_departure,
+        t.companions,
+        t.baggage_small,
+        t.baggage_medium,
+        t.baggage_large,
+        t.additional_info,
+        t.is_republished ? "Oui" : "Non",
+        new Date(Number(t.created_at)).toLocaleDateString("fr-FR"),
+      ]);
+
+      values = [header, ...rows];
+      exportCount = rows.length;
     } else {
       // --- Users export ---
       sheetTab = "Feuille 1";
