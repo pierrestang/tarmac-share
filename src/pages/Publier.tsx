@@ -414,10 +414,10 @@ const Publier = () => {
               className="flex items-center gap-2 cursor-pointer flex-1"
               onClick={() => setTimeSheetOpen(true)}
             >
-              <span className={cn(
-                "text-base md:text-sm whitespace-nowrap",
-                !form.departureTime && "text-muted-foreground"
-              )}>
+               <span className={cn(
+                 "text-sm whitespace-nowrap",
+                 !form.departureTime && "text-muted-foreground"
+               )}>
                 {form.departureTime || "Heure"}
               </span>
             </div>
