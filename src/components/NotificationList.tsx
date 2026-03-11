@@ -8,8 +8,16 @@ import { useTrajets } from "@/hooks/use-trajets";
 import { useRepublications } from "@/hooks/use-republications";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { NotificationItem } from "@/components/NotificationItem";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 import type { Notification } from "@/types/notification";
 
