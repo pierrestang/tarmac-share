@@ -313,7 +313,7 @@ const Trajets = () => {
                 Historique
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3">
+            <AccordionContent className="pt-4">
               {historique.length === 0 ? null : (
                 <div className="flex flex-col gap-3">
                   {historique.map((demande) => {
