@@ -77,7 +77,7 @@ const GestionTrajet = () => {
               Oui
             </AlertDialogAction>
             <AlertDialogCancel
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
               style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
               Non
             </AlertDialogCancel>
