@@ -26,8 +26,13 @@ const Evaluation = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const hasRedirected = useRef(false);
 
+  useEffect(() => {
+    if (!conversationId || !ratedProfileId) {
+      navigate("/messages", { replace: true });
+    }
+  }, [conversationId, ratedProfileId, navigate]);
+
   if (!conversationId || !ratedProfileId) {
-    navigate("/messages", { replace: true });
     return null;
   }
 
