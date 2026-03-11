@@ -288,7 +288,7 @@ const Messages = () => {
       
       <Tabs defaultValue="messages" className="w-full max-w-[42rem]">
         <TabsList className="w-full grid grid-cols-2 mb-4 bg-transparent border-0 h-auto p-0">
-          <TabsTrigger value="messages" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent rounded-none pb-2" style={{ color: "#4E657A", opacity: 0.7 }} data-active-style>
+          <TabsTrigger value="messages" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:opacity-100 rounded-none pb-2 opacity-50" style={{ color: "#4E657A", borderColor: "transparent" }} data-active-border="#4E657A">
             <span className="relative">
               Messages
               {unreadMessagesCount > 0 && (
@@ -298,7 +298,7 @@ const Messages = () => {
               )}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent rounded-none pb-2" style={{ color: "#4E657A", opacity: 0.7 }} data-active-style>
+          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:opacity-100 rounded-none pb-2 opacity-50" style={{ color: "#4E657A", borderColor: "transparent" }} data-active-border="#4E657A">
             <span className="relative">
               Notifications
               {unreadNotificationsCount > 0 && (
