@@ -577,10 +577,10 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               currentCapacity > 0 ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            <span className={cn(
-              "text-base md:text-sm",
-              currentCapacity === 0 && "text-muted-foreground"
-            )}>
+             <span className={cn(
+               "text-sm",
+               currentCapacity === 0 && "text-muted-foreground"
+             )}>
               {(() => {
                 const parts: string[] = [];
                 if (form.baggage.small > 0) parts.push(`${form.baggage.small} petit${form.baggage.small > 1 ? 's' : ''}`);
