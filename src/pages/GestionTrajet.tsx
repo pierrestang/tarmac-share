@@ -162,15 +162,6 @@ const GestionTrajet = () => {
 
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Mon trajet.</h1>
 
-      {demandeId && (
-        <button
-          onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
-          className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mb-4"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-          <span>Voir le trajet</span>
-        </button>
-      )}
-
       <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
         <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Votre feuille de route</p>
         <ul className="text-[14px] list-disc pl-4 space-y-1" style={{ color: "#4E657A" }}>
@@ -179,6 +170,15 @@ const GestionTrajet = () => {
           <li>Pour un empêchement avant le départ, utilisez <span className="font-bold">Annuler le trajet</span>.</li>
         </ul>
       </div>
+
+      {demandeId && (
+        <button
+          onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
+          className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mb-4"
+          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+          <span>Voir le trajet</span>
+        </button>
+      )}
 
       {!isClosed && (
         <div className="flex flex-col gap-3">
