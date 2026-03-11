@@ -202,28 +202,32 @@ const GestionTrajet = () => {
 
       {/* End trip dialog */}
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
-        <AlertDialogContent className="rounded-md">
-          <button onClick={() => setShowEndDialog(false)} className="p-1 self-start">
-            <ArrowLeft className="h-6 w-6 text-heading" />
-          </button>
+        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Le trajet a-t-il eu lieu ?</AlertDialogTitle>
-            <AlertDialogDescription className="hidden" />
+            <div className="flex items-center gap-2">
+              <button onClick={() => setShowEndDialog(false)} className="p-1">
+                <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
+              </button>
+              <AlertDialogTitle style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-[14px]" style={{ color: "#F0EEE9" }}>
+              Confirmez maintenant le bon déroulement de votre partage pour mettre à jour votre historique.
+            </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+          <AlertDialogFooter className="flex !flex-col gap-3 mt-2 w-full">
             <AlertDialogAction
               onClick={() => handleAnswer(true)}
               disabled={isSubmitting}
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
               style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
-              {isSubmitting ? "Envoi..." : "Oui"}
+              {isSubmitting ? "Envoi..." : "Oui, terminé !"}
             </AlertDialogAction>
             <AlertDialogCancel
               onClick={() => handleAnswer(false)}
               disabled={isSubmitting}
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
               style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
-              Non
+              Non, échec du RDV
             </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
