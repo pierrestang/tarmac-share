@@ -131,6 +131,10 @@ export function DemandeCard({
                 <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
                   Trajet terminé
                 </Badge>
+              ) : isRefused ? (
+                <Badge className="bg-[#e34454]/15 text-[#e34454] border-[#e34454]/30 text-[10px] px-1.5 py-0.5 hover:bg-[#e34454]/15">
+                  Demande refusée
+                </Badge>
               ) : !isAccepted ? (
                 getStatusBadge()
               ) : null}
