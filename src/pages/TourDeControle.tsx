@@ -94,7 +94,7 @@ const TourDeControle = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Réinitialiser les trajets ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
+            <AlertDialogDescription className="text-foreground">
               Cette action supprimera tous les trajets et demandes.
             </AlertDialogDescription>
           </AlertDialogHeader>

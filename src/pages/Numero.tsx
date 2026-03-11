@@ -20,11 +20,11 @@ const Numero = () => {
     <div className="fixed inset-0 flex items-center justify-center" style={{ backgroundColor: "#00C853" }}>
       <button
         onClick={() => navigate(`/messages?conversationId=${conversationId}`)}
-        className="absolute top-6 left-6 text-white"
+        className="absolute top-6 left-6 text-foreground"
       >
         <ArrowLeft className="h-8 w-8" />
       </button>
-      <span className="text-white font-bold" style={{ fontSize: "120px" }}>
+      <span className="text-foreground font-bold" style={{ fontSize: "120px" }}>
         {code}
       </span>
     </div>

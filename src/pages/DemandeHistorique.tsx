@@ -227,7 +227,7 @@ const DemandeHistorique = () => {
       </Card>
 
       {/* Voyageur Card */}
-      <h2 className="text-[18px] font-semibold text-white w-full max-w-[42rem]">Voyageur(s)</h2>
+      <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">Voyageur(s)</h2>
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
           <div className="flex items-center gap-3">

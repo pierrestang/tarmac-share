@@ -206,7 +206,7 @@ const DemandeConsulter = () => {
       </Card>
 
       {/* Voyageur(s) section */}
-      <h2 className="text-[18px] font-semibold text-white w-full max-w-[42rem]">Voyageur(s)</h2>
+      <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">Voyageur(s)</h2>
       <VoyageurCard 
         match={voyageurMatch} 
         showButton={demande.status === "pending"}
@@ -235,7 +235,7 @@ const DemandeConsulter = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Retirer ma demande ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
+            <AlertDialogDescription className="text-foreground">
               Êtes-vous sûr de vouloir retirer votre demande ? Aucun montant ne sera prélevé.
             </AlertDialogDescription>
           </AlertDialogHeader>
