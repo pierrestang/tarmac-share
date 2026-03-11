@@ -142,19 +142,88 @@ export function NotificationList() {
 
     const badgeData = (n: Notification) => getBadge(n);
 
+    const handleRepublish = async (demandeId: string) => {
+      if (!profileId) return;
+      const demande = getDemandeById(demandeId);
+      if (!demande) return;
+
+      const isFromUser = demande.fromProfileId === profileId;
+      const trajetId = isFromUser ? demande.fromTrajetId : demande.toTrajetId;
+      const originalTrajet = getTrajetById(trajetId);
+      if (!originalTrajet) return;
+
+      await saveDemandeSnapshot(demandeId);
+
+      const { id: _oldId, createdAt: _oldCreatedAt, ...trajetData } = originalTrajet;
+      const newTrajet = await createTrajet({
+        ...trajetData,
+        isRepublished: true,
+      });
+      localStorage.setItem("lastPublishedTrajetId", newTrajet.id);
+
+      const republished = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
+      if (!republished.includes(demandeId)) {
+        republished.push(demandeId);
+        localStorage.setItem("republishedDemandeIds", JSON.stringify(republished));
+      }
+
+      setExpandedCancellationId(null);
+      toast({
+        title: "Trajet republié ! Votre annonce est de nouveau visible.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+      });
+    };
+
+    const handleDeclineRepublish = (demandeId: string) => {
+      const declined = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
+      if (!declined.includes(demandeId)) {
+        declined.push(demandeId);
+        localStorage.setItem("declinedRepublishDemandeIds", JSON.stringify(declined));
+      }
+      setExpandedCancellationId(null);
+    };
+
     return (
       <div className="flex flex-col divide-y bg-card rounded-md">
         {notifications.map((notification) => {
           const b = badgeData(notification);
+          const isExpanded = expandedCancellationId === notification.id;
           return (
-            <NotificationItem
-              key={notification.id}
-              notification={notification}
-              onClick={handleClick}
-              muted={!isNotificationActionable(notification)}
-              badge={b?.text}
-              badgeVariant={b?.variant}
-            />
+            <div key={notification.id}>
+              <NotificationItem
+                notification={notification}
+                onClick={handleClick}
+                muted={!isNotificationActionable(notification)}
+                badge={b?.text}
+                badgeVariant={b?.variant}
+              />
+              {isExpanded && notification.type === "cancellation" && (
+                <div className="px-3 pb-3">
+                  <Card className="border-0 rounded-md">
+                    <CardContent className="p-4 flex flex-col gap-3">
+                      <p className="text-[14px] font-bold text-card-foreground">
+                        Republier cette annonce ?
+                      </p>
+                      <p className="text-[13px] text-card-foreground leading-relaxed">
+                        Vous pouvez republier immédiatement pour retrouver un partenaire.
+                        {!isFreeMode && (
+                          <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
+                        )}
+                      </p>
+                      <div className="flex flex-col gap-2">
+                        <Button onClick={() => handleRepublish(notification.demandeId)}>
+                          Republier
+                        </Button>
+                        <Button variant="outline" onClick={() => handleDeclineRepublish(notification.demandeId)}>
+                          Non merci
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
