@@ -203,13 +203,11 @@ const GestionTrajet = () => {
       {/* End trip dialog */}
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
         <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
+          <button onClick={() => setShowEndDialog(false)} className="p-1 self-start">
+            <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
+          </button>
           <AlertDialogHeader className="text-left">
-            <div className="flex items-center gap-2">
-              <button onClick={() => setShowEndDialog(false)} className="p-1">
-                <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
-              </button>
-              <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
-            </div>
+            <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
             <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
               Confirmez maintenant le bon déroulement de votre partage pour mettre à jour votre historique.
             </AlertDialogDescription>
