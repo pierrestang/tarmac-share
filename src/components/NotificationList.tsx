@@ -56,6 +56,16 @@ export function NotificationList() {
     return demande !== null;
   };
 
+  // Auto-mark muted (non-actionable) unread notifications as read
+  useEffect(() => {
+    notifications.forEach((n) => {
+      if (!n.read && !isNotificationActionable(n)) {
+        markAsRead(n.id);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notifications]);
+
   const handleClick = async (notification: Notification) => {
     // Mark as read
     await markAsRead(notification.id);
