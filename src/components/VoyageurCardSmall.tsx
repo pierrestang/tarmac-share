@@ -97,7 +97,7 @@ export function VoyageurCardSmall({ match, showButton = true, title, myTrajetId 
                 ? `/demande-consulter?demandeId=${sentDemandeId}`
                 : `/demande-envoyer?voyageurId=${trajet.id}${myTrajetId ? `&myTrajetId=${myTrajetId}` : ''}`
           )}
-          className="w-full rounded-t-none rounded-b-md h-12 text-[16px]"
+          className="w-full rounded-none rounded-b-md h-12 text-[16px]"
         >
           Voir le trajet
         </Button>
