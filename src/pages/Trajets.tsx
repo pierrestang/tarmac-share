@@ -334,11 +334,9 @@ const Trajets = () => {
               <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 <span className="flex items-center gap-2">
                   Historique
-                  {historique.length > 0 && (
-                    <span className="inline-flex min-w-5 h-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
-                      {historique.length}
-                    </span>
-                  )}
+                  <span className="inline-flex min-w-5 h-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold border border-[hsl(var(--button-border))] bg-[hsl(var(--button-bg))] text-[hsl(var(--button-fg))]">
+                    {historique.length}
+                  </span>
                 </span>
               </AccordionTrigger>
             </div>
