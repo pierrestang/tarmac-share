@@ -111,8 +111,8 @@ export function NotificationList() {
 
   if (notifications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <p className="text-[16px] text-foreground">
+      <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
+        <p className="text-center text-[14px] italic" style={{ color: "#4E657A" }}>
           Aucune notification pour le moment
         </p>
       </div>
