@@ -3,6 +3,16 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from "@/components/ui/alert-dialog";
 import { useMessages } from "@/hooks/use-messages";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
@@ -17,13 +27,14 @@ const Evaluation = () => {
   const conversationId = searchParams.get("conversationId");
   const ratedProfileId = searchParams.get("ratedProfileId");
 
-  const { closeConversation, addSystemMessage, saveRating } = useMessages();
+  const { closeConversation, addSystemMessage, saveRating, getConversationById, sendMessage } = useMessages();
   const { getActiveProfile } = useProfiles();
   const { completeDemande, saveDemandeSnapshot } = useDemandes();
-  const { markReadByDemandeId } = useNotifications();
+  const { markReadByDemandeId, createNotification } = useNotifications();
 
   const activeProfile = getActiveProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
   const hasRedirected = useRef(false);
 
   useEffect(() => {
@@ -111,6 +122,54 @@ const Evaluation = () => {
     navigate("/trajets", { replace: true });
   };
 
+  const handleCancel = async () => {
+    if (isSubmitting || hasRedirected.current) return;
+    if (!activeProfile || !conversationId) return;
+
+    const conversation = getConversationById(conversationId);
+    if (!conversation) return;
+
+    const otherProfileId = conversation.participants.find((p) => p !== activeProfile.id);
+    if (!otherProfileId) return;
+
+    setIsSubmitting(true);
+
+    await sendMessage(conversationId, activeProfile.id, "Je dois annuler");
+
+    try {
+      await createNotification({
+        profileId: otherProfileId,
+        type: "cancellation",
+        title: "Trajet annulé",
+        message: "Votre voyageur a annulé. Souhaitez-vous republier votre annonce ?",
+        demandeId: conversation.demandeId,
+        relatedProfileId: activeProfile.id,
+      });
+    } catch (e) {
+      console.error("Erreur notification:", e);
+    }
+
+    await closeConversation(conversationId, activeProfile.id, otherProfileId);
+    await addSystemMessage(conversationId, `[CANCELLED_BY:${activeProfile.id}] ${activeProfile.firstName} a annulé le trajet. Le trajet est considéré comme terminé.`);
+
+    const ratingBase = {
+      conversationId,
+      score: 0,
+      wasUseful: false,
+      comment: "",
+    };
+    await saveRating({ ...ratingBase, raterId: activeProfile.id, ratedProfileId: otherProfileId });
+    await saveRating({ ...ratingBase, raterId: otherProfileId, ratedProfileId: activeProfile.id });
+
+    await completeDemande(conversation.demandeId);
+    await supabase.from("demandes").update({ was_cancelled: true } as any).eq("id", conversation.demandeId);
+    await saveDemandeSnapshot(conversation.demandeId);
+    await markReadByDemandeId(conversation.demandeId);
+
+    hasRedirected.current = true;
+    navigate("/messages", { replace: true });
+  };
+
   return (
     <div className="flex flex-col min-h-full">
       <div className="flex flex-col gap-2 pt-6 pb-4">
@@ -154,8 +213,37 @@ const Evaluation = () => {
               </div>
             </CardContent>
           </Card>
+          <button
+            onClick={() => setShowCancelDialog(true)}
+            disabled={isSubmitting}
+            className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mt-3"
+            style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+            <span>Annuler le trajet</span>
+          </button>
         </div>
       </div>
+
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent className="rounded-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
+            <AlertDialogDescription className="hidden" />
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+            <AlertDialogAction
+              onClick={handleCancel}
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              Oui
+            </AlertDialogAction>
+            <AlertDialogCancel
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
