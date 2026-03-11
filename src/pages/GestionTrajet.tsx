@@ -66,7 +66,7 @@ const GestionTrajet = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Terminer le trajet ?</AlertDialogTitle>
-            <AlertDialogDescription style={{ color: "#4E657A" }}>
+            <AlertDialogDescription style={{ color: "#F0EEE9" }}>
               Confirmer si votre trajet a bien eu lieu pour finaliser la mise en relation et mettre à jour votre historique, ou signalez tout imprévu.
             </AlertDialogDescription>
           </AlertDialogHeader>
