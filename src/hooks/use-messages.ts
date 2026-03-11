@@ -235,6 +235,8 @@ export function useMessages() {
     if (!state[conversationId]) state[conversationId] = {};
     state[conversationId][profileId] = Date.now();
     writeReadState(state);
+    // Notify other hooks in the same tab
+    window.dispatchEvent(new Event("conversationReadStateChanged"));
   }, []);
 
   const hasUnreadMessages = useCallback((conversationId: string, profileId: string): boolean => {
@@ -296,6 +298,25 @@ export function useUnreadMessagesCount(profileId: string | undefined) {
       return;
     }
     setCount(getTotalUnreadCount(profileId));
+
+    // Listen for localStorage changes from markConversationAsRead
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "conversationReadState") {
+        setCount(getTotalUnreadCount(profileId));
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    // Also listen for custom event (same-tab localStorage writes)
+    const handleCustom = () => {
+      if (profileId) setCount(getTotalUnreadCount(profileId));
+    };
+    window.addEventListener("conversationReadStateChanged", handleCustom);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("conversationReadStateChanged", handleCustom);
+    };
   }, [profileId, getTotalUnreadCount]);
 
   return { count };
