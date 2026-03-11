@@ -33,7 +33,7 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
     <button
       onClick={() => onClick(notification)}
       className={cn(
-        "w-full flex items-start gap-3 p-4 text-left transition-colors",
+        "w-full flex items-start gap-3 p-3 text-left transition-colors",
         muted ? "opacity-60 cursor-default" : "hover:bg-muted/50",
         !notification.read && !muted && "bg-muted/30"
       )}>
