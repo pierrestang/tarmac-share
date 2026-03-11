@@ -80,7 +80,7 @@ export function TrajetCard({ trajet, matchCount, canEditOrDelete = false, onDele
 
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full rounded-t-none rounded-b-md"
             onClick={() => navigate(`/matches?trajetId=${trajet.id}`)}
           >
             Voir les résultats
