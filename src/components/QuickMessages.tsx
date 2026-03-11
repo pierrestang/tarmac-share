@@ -21,9 +21,7 @@ const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
           className={`
             flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity whitespace-nowrap
             disabled:opacity-50 disabled:pointer-events-none
-            py-3 border-0 text-[14px]
-            ${msg.customBg ? msg.customBg : "bg-card"}
-            ${msg.customText ? msg.customText : "text-card-foreground"}
+            py-3 border-0 text-[14px] bg-card text-card-foreground
           `}
         >
           {msg.emoji}
