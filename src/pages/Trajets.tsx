@@ -315,7 +315,7 @@ const Trajets = () => {
             </div>
             <AccordionContent className="pt-4">
               {historique.length === 0 ? null : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                   {historique.map((demande) => {
                     const trajetId = demande.fromProfileId === currentProfileId
                       ? demande.fromTrajetId
