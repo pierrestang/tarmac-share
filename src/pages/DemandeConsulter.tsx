@@ -48,6 +48,7 @@ const DemandeConsulter = () => {
   const { getActiveProfile, getProfileById, isLoaded: profilesLoaded } = useProfiles();
   const { getDemandeById, withdrawDemande, isLoaded: demandesLoaded } = useDemandes();
   const { createNotification } = useNotifications();
+  const { isFreeMode } = useAppSettings();
 
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
