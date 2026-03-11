@@ -66,19 +66,19 @@ const GestionTrajet = () => {
               Êtes-vous sûr de vouloir annuler ce trajet ?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-col">
+          <AlertDialogFooter className="flex flex-row gap-3 sm:flex-row">
             <AlertDialogAction
               onClick={() =>
               navigate(
                 `/messages?conversationId=${conversationId}&action=cancel`
               )
               }
-              className="rounded-md border-0 text-[16px] font-semibold py-3"
-              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
               Oui
             </AlertDialogAction>
             <AlertDialogCancel
-              className="rounded-md border-0 text-[16px] font-semibold py-3"
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
               style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
               Non
             </AlertDialogCancel>
