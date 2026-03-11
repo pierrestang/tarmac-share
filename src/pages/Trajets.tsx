@@ -190,7 +190,7 @@ const Trajets = () => {
         <Accordion type="multiple" defaultValue={enCours.length > 0 ? ["en-cours"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-cours" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="font-medium hover:no-underline px-4 text-card-foreground" disabled={enCours.length === 0}>
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 En cours
               </AccordionTrigger>
             </div>
@@ -243,7 +243,7 @@ const Trajets = () => {
         <Accordion type="multiple" defaultValue={hasEnAttenteContent ? ["en-attente"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-attente" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="font-medium hover:no-underline px-4 text-card-foreground" disabled={!hasEnAttenteContent}>
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 En attente
               </AccordionTrigger>
             </div>
@@ -321,7 +321,7 @@ const Trajets = () => {
         <Accordion type="multiple" className="w-full max-w-[42rem]">
           <AccordionItem value="historique" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="font-medium hover:no-underline px-4 text-card-foreground" disabled={historique.length === 0}>
+              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
                 Historique
               </AccordionTrigger>
             </div>
