@@ -107,7 +107,7 @@ export function DemandeCard({
           <div className="flex-1 flex flex-col gap-1 min-w-0">
             {/* Name, companions and badge */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[16px] font-medium text-card-foreground">
+              <span className="text-[16px] font-semibold text-card-foreground">
                 {otherProfile?.firstName || "Utilisateur"}
               </span>
               {trajet && trajet.companions > 1 && (

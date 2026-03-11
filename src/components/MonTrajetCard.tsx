@@ -74,7 +74,7 @@ export function MonTrajetCard({ trajet, profile, canEditOrDelete = true, onDelet
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-[16px] font-medium">
+              <span className="text-[16px] font-semibold">
                 {profile.firstName}
                 {trajet.companions > 1 && (
                   <span className="text-muted-foreground font-normal">

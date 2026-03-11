@@ -35,6 +35,7 @@ const Matches = () => {
   const [trajet, setTrajet] = useState<Trajet | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [matches, setMatches] = useState<EnrichedMatchedTraveler[]>([]);
+  const [matchesLoaded, setMatchesLoaded] = useState(false);
 
   const activeProfile = getActiveProfile();
   
@@ -49,6 +50,7 @@ const Matches = () => {
 
   useEffect(() => {
     if (trajetId && profilesLoaded) {
+      setMatchesLoaded(false);
       const t = getTrajetById(trajetId);
       setTrajet(t);
       if (t) {
@@ -83,6 +85,7 @@ const Matches = () => {
             };
           });
           setMatches(enrichedMatches);
+          setMatchesLoaded(true);
         })();
       }
     }
@@ -283,7 +286,7 @@ const Matches = () => {
             <h2 className="text-[18px] font-semibold text-heading">Voyageur(s)</h2>
             
             {/* Cartes voyageurs */}
-            {matches.length === 0 ? (
+            {!matchesLoaded ? null : matches.length === 0 ? (
               <p className="text-center text-heading py-4">
                 Pas de passagers pour ce créneau... pour l'instant !
               </p>
