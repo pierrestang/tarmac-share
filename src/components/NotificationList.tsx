@@ -200,27 +200,31 @@ export function NotificationList() {
               />
               {isExpanded && notification.type === "cancellation" && (
                 <div className="px-3 pb-3">
-                  <Card className="border-0 rounded-md">
-                    <CardContent className="p-4 flex flex-col gap-3">
-                      <p className="text-[14px] font-bold text-card-foreground">
-                        Republier cette annonce ?
-                      </p>
-                      <p className="text-[13px] text-card-foreground leading-relaxed">
-                        Vous pouvez republier immédiatement pour retrouver un partenaire.
-                        {!isFreeMode && (
-                          <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
-                        )}
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        <Button onClick={() => handleRepublish(notification.demandeId)}>
-                          Republier
-                        </Button>
-                        <Button variant="outline" onClick={() => handleDeclineRepublish(notification.demandeId)}>
-                          Non merci
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="rounded-md p-4 flex flex-col gap-3" style={{ backgroundColor: "#89B1D6" }}>
+                    <p className="text-[16px] font-semibold" style={{ color: "#F0EEE9" }}>
+                      Republier cette annonce ?
+                    </p>
+                    <p className="text-[14px] leading-relaxed" style={{ color: "#F0EEE9" }}>
+                      Vous pouvez republier immédiatement pour retrouver un partenaire.
+                      {!isFreeMode && (
+                        <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
+                      )}
+                    </p>
+                    <div className="flex flex-col gap-3 mt-2">
+                      <button
+                        onClick={() => handleRepublish(notification.demandeId)}
+                        className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
+                        style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+                        Republier
+                      </button>
+                      <button
+                        onClick={() => handleDeclineRepublish(notification.demandeId)}
+                        className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
+                        style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+                        Non merci
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
