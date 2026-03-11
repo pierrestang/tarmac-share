@@ -228,11 +228,12 @@ Deno.serve(async (req) => {
         trajetIds.add(d.to_trajet_id);
       }
 
-      const [trajetsRes, profilesRes, convsRes, ratingsRes] = await Promise.all([
+      const [trajetsRes, profilesRes, convsRes, ratingsRes, messagesRes] = await Promise.all([
         supabase.from("trajets").select("*").in("id", [...trajetIds]),
         supabase.from("profiles").select("id, first_name, last_name"),
         supabase.from("conversations").select("id, demande_id"),
-        supabase.from("conversation_ratings").select("conversation_id, was_useful"),
+        supabase.from("conversation_ratings").select("conversation_id, rater_id, was_useful"),
+        supabase.from("messages").select("conversation_id, content, type").eq("type", "system"),
       ]);
 
       const trajetMap = new Map<string, any>();
@@ -245,12 +246,22 @@ Deno.serve(async (req) => {
       const demandeToConv = new Map<string, string>();
       for (const c of (convsRes.data || []) as any[]) demandeToConv.set(c.demande_id, c.id);
 
-      // Map conversation_id -> ratings
+      // Map conversation_id -> cancelled_by profile_id
+      const cancelledByConv = new Map<string, string>();
+      for (const m of (messagesRes.data || []) as any[]) {
+        const match = m.content.match(/\[CANCELLED_BY:([^\]]+)\]/);
+        if (match) cancelledByConv.set(m.conversation_id, match[1]);
+      }
+
+      // Map conversation_id -> ratings with detail
       const ratingsByConv: Record<string, { useful: number; total: number }> = {};
+      const ratingsDetailByConv: Record<string, Array<{ rater_id: string; was_useful: boolean }>> = {};
       for (const r of (ratingsRes.data || []) as any[]) {
         if (!ratingsByConv[r.conversation_id]) ratingsByConv[r.conversation_id] = { useful: 0, total: 0 };
         ratingsByConv[r.conversation_id].total++;
         if (r.was_useful) ratingsByConv[r.conversation_id].useful++;
+        if (!ratingsDetailByConv[r.conversation_id]) ratingsDetailByConv[r.conversation_id] = [];
+        ratingsDetailByConv[r.conversation_id].push({ rater_id: r.rater_id, was_useful: r.was_useful });
       }
 
       const getResultat = (d: any): string => {
@@ -264,12 +275,29 @@ Deno.serve(async (req) => {
         return "En attente d'évaluation";
       };
 
+      const getCancelledBy = (d: any): string => {
+        if (!d.was_cancelled) return "";
+        const convId = demandeToConv.get(d.id);
+        if (!convId) return "";
+        const profileId = cancelledByConv.get(convId);
+        return profileId ? (profileMap.get(profileId) || profileId) : "";
+      };
+
+      const getRatingsDetail = (d: any): string => {
+        const convId = demandeToConv.get(d.id);
+        if (!convId || !ratingsDetailByConv[convId]) return "";
+        return ratingsDetailByConv[convId].map((r) => {
+          const name = profileMap.get(r.rater_id) || r.rater_id;
+          return `${name}: ${r.was_useful ? "Oui" : "Non"}`;
+        }).join(" | ");
+      };
+
       const formatDateTime = (ts: number) => {
         const d = new Date(Number(ts));
         return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
       };
 
-      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Date/heure demande", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Date/heure acceptation", "Trajet accepteur (Gare → Destination)"];
+      const header = ["Statut", "Résultat", "Annulé", "Annulé par", "Envoyeur (demande)", "Date/heure demande", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Date/heure acceptation", "Trajet accepteur (Gare → Destination)", "Bien arrivé ? (réponses)"];
       const rows = (demandes || []).map((d: any) => {
         const t1 = trajetMap.get(d.from_trajet_id);
         const t2 = trajetMap.get(d.to_trajet_id);
@@ -277,12 +305,14 @@ Deno.serve(async (req) => {
           d.status,
           getResultat(d),
           d.was_cancelled ? "Oui" : "Non",
+          getCancelledBy(d),
           profileMap.get(d.from_profile_id) || d.from_profile_id,
           formatDateTime(d.created_at),
           t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
           profileMap.get(d.to_profile_id) || d.to_profile_id,
           (d.status === "accepted" || d.status === "completed") ? formatDateTime(d.updated_at) : "",
           t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
+          getRatingsDetail(d),
         ];
       });
 
