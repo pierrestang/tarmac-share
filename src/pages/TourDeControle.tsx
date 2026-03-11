@@ -25,6 +25,7 @@ const TourDeControle = () => {
   const [authorized, setAuthorized] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [exportingAnnonces, setExportingAnnonces] = useState(false);
   const { isFreeMode, toggleFreeMode } = useAppSettings();
 
   useEffect(() => {
@@ -104,6 +105,45 @@ const TourDeControle = () => {
             }}
           >
             {exporting ? "Export en cours..." : "Exporter les utilisateurs"}
+          </Button>
+
+          {/* Export annonces */}
+          <Button
+            className="w-full rounded-full"
+            variant="outline"
+            disabled={exportingAnnonces}
+            onClick={async () => {
+              setExportingAnnonces(true);
+              try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=annonces`;
+                const res = await fetch(url, {
+                  headers: {
+                    Authorization: `Bearer ${session.access_token}`,
+                    apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                  },
+                });
+                if (!res.ok) throw new Error("Export failed");
+                const result = await res.json();
+                toast({
+                  title: `${result.exported} annonces exportées vers Google Sheets`,
+                  className: "bg-transparent border-0 shadow-none",
+                  style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+                });
+              } catch (e: any) {
+                toast({
+                  title: "Erreur lors de l'export",
+                  className: "bg-transparent border-0 shadow-none",
+                  style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+                });
+                console.error(e);
+              } finally {
+                setExportingAnnonces(false);
+              }
+            }}
+          >
+            {exportingAnnonces ? "Export en cours..." : "Exporter les annonces"}
           </Button>
 
           {/* Reset */}
