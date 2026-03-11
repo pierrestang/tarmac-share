@@ -165,8 +165,37 @@ const Evaluation = () => {
               </div>
             </CardContent>
           </Card>
+          <button
+            onClick={() => setShowCancelDialog(true)}
+            disabled={isSubmitting}
+            className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mt-3"
+            style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+            <span>Annuler le trajet</span>
+          </button>
         </div>
       </div>
+
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent className="rounded-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
+            <AlertDialogDescription className="hidden" />
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+            <AlertDialogAction
+              onClick={handleCancel}
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              Oui
+            </AlertDialogAction>
+            <AlertDialogCancel
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
