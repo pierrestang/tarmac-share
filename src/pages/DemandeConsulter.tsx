@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { VoyageurCard } from "@/components/VoyageurCard";
 import { useTrajets, calculateMatchScore } from "@/hooks/use-trajets";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useNotifications } from "@/hooks/use-notifications";
