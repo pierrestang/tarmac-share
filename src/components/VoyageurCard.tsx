@@ -71,15 +71,19 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
                 et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
               </span>
             )}
-            {receivedDemandeId && (
-              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
-                Demande reçue
-              </Badge>
-            )}
-            {sentDemandeId && !receivedDemandeId && (
-              <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
-                Demande envoyée
-              </Badge>
+            {customBadge ? customBadge : (
+              <>
+                {receivedDemandeId && (
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                    Demande reçue
+                  </Badge>
+                )}
+                {sentDemandeId && !receivedDemandeId && (
+                  <Badge className="bg-success text-success-foreground border-success-foreground/20 text-[10px] px-1.5 py-0.5 hover:bg-success">
+                    Demande envoyée
+                  </Badge>
+                )}
+              </>
             )}
           </div>
 
