@@ -173,7 +173,11 @@ const GestionTrajet = () => {
 
       <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
         <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Votre feuille de route</p>
-        <p className="text-[14px]" style={{ color: "#4E657A" }}>Retrouvez vos infos pour vous coordonner. Une fois à destination, cliquez sur <span className="font-bold">"Terminer le trajet"</span> pour confirmer son bon déroulement (ou signaler un rendez-vous manqué). Pour un empêchement avant le départ, utilisez <span className="font-bold">"Annuler le trajet"</span>.</p>
+        <ul className="text-[14px] list-disc pl-4 space-y-1" style={{ color: "#4E657A" }}>
+          <li>Retrouvez vos informations de trajet pour vous coordonner.</li>
+          <li>Une fois à destination, cliquez sur <span className="font-bold">Terminer le trajet</span> pour confirmer son bon déroulement (ou signaler un rendez-vous manqué).</li>
+          <li>Pour un empêchement avant le départ, utilisez <span className="font-bold">Annuler le trajet</span>.</li>
+        </ul>
       </div>
 
       {!isClosed && (
