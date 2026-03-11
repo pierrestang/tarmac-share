@@ -8,8 +8,16 @@ import { useTrajets } from "@/hooks/use-trajets";
 import { useRepublications } from "@/hooks/use-republications";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { NotificationItem } from "@/components/NotificationItem";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 import type { Notification } from "@/types/notification";
 
@@ -184,52 +192,55 @@ export function NotificationList() {
       setExpandedCancellationId(null);
     };
 
+    const expandedNotification = notifications.find(n => n.id === expandedCancellationId && n.type === "cancellation");
+
     return (
-      <div className="flex flex-col divide-y bg-card rounded-md">
-        {notifications.map((notification) => {
-          const b = badgeData(notification);
-          const isExpanded = expandedCancellationId === notification.id;
-          return (
-            <div key={notification.id}>
+      <>
+        <div className="flex flex-col divide-y bg-card rounded-md">
+          {notifications.map((notification) => {
+            const b = badgeData(notification);
+            return (
               <NotificationItem
+                key={notification.id}
                 notification={notification}
                 onClick={handleClick}
                 muted={!isNotificationActionable(notification)}
                 badge={b?.text}
                 badgeVariant={b?.variant}
               />
-              {isExpanded && notification.type === "cancellation" && (
-                <div className="px-3 pb-3">
-                  <div className="rounded-md p-4 flex flex-col gap-3" style={{ backgroundColor: "#89B1D6" }}>
-                    <p className="text-[16px] font-semibold" style={{ color: "#F0EEE9" }}>
-                      Republier cette annonce ?
-                    </p>
-                    <p className="text-[14px] leading-relaxed" style={{ color: "#F0EEE9" }}>
-                      Vous pouvez republier immédiatement pour retrouver un partenaire.
-                      {!isFreeMode && (
-                        <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
-                      )}
-                    </p>
-                    <div className="flex flex-col gap-3 mt-2">
-                      <button
-                        onClick={() => handleRepublish(notification.demandeId)}
-                        className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
-                        style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
-                        Republier
-                      </button>
-                      <button
-                        onClick={() => handleDeclineRepublish(notification.demandeId)}
-                        className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
-                        style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
-                        Non merci
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+
+        <AlertDialog open={!!expandedNotification} onOpenChange={(open) => { if (!open) setExpandedCancellationId(null); }}>
+          <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
+            <AlertDialogHeader className="text-left">
+              <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>
+                Republier cette annonce ?
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
+                Vous pouvez republier immédiatement pour retrouver un partenaire.
+                {!isFreeMode && (
+                  <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
+                )}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex !flex-col gap-3 mt-2 w-full">
+              <AlertDialogAction
+                onClick={() => expandedNotification && handleRepublish(expandedNotification.demandeId)}
+                className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
+                style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+                Republier
+              </AlertDialogAction>
+              <AlertDialogCancel
+                onClick={() => expandedNotification && handleDeclineRepublish(expandedNotification.demandeId)}
+                className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+                style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+                Non merci
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
     );
 }
