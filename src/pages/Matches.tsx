@@ -226,7 +226,7 @@ const Matches = () => {
           <AccordionTrigger className="text-[18px] font-semibold hover:no-underline text-heading">
             {formattedDate}
           </AccordionTrigger>
-          <AccordionContent className="pt-3 flex flex-col gap-4">
+          <AccordionContent className="pt-1 flex flex-col gap-4">
             
             {/* Titre Mon trajet (blanc sur fond bleu) */}
             
