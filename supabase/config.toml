@@ -1,1 +1,4 @@
 project_id = "aeomfpoyjhphtypfboym"
+
+[functions.export-users-gsheet]
+verify_jwt = false

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { toast } from "@/hooks/use-toast";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import {
   AlertDialog,
@@ -23,6 +24,7 @@ const TourDeControle = () => {
   const navigate = useNavigate();
   const [authorized, setAuthorized] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const { isFreeMode, toggleFreeMode } = useAppSettings();
 
   useEffect(() => {
@@ -68,6 +70,40 @@ const TourDeControle = () => {
             onClick={() => navigate("/statistiques")}
           >
             Statistiques
+          </Button>
+
+          {/* Export Google Sheets */}
+          <Button
+            className="w-full rounded-full"
+            variant="outline"
+            disabled={exporting}
+            onClick={async () => {
+              setExporting(true);
+              try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const { data, error } = await supabase.functions.invoke("export-users-gsheet", {
+                  headers: { Authorization: `Bearer ${session.access_token}` },
+                });
+                if (error) throw error;
+                toast({
+                  title: `${data.usersExported} utilisateurs exportés vers Google Sheets`,
+                  className: "bg-transparent border-0 shadow-none",
+                  style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+                });
+              } catch (e: any) {
+                toast({
+                  title: "Erreur lors de l'export",
+                  className: "bg-transparent border-0 shadow-none",
+                  style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+                });
+                console.error(e);
+              } finally {
+                setExporting(false);
+              }
+            }}
+          >
+            {exporting ? "Export en cours..." : "Exporter les utilisateurs"}
           </Button>
 
           {/* Reset */}
