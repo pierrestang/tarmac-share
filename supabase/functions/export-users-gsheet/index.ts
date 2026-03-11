@@ -213,7 +213,7 @@ Deno.serve(async (req) => {
       exportCount = rows.length;
     } else {
       // --- Users export ---
-      sheetTab = "Feuille 1";
+      sheetTab = "Utilisateurs";
 
       const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
@@ -254,6 +254,30 @@ Deno.serve(async (req) => {
 
     const serviceAccount = JSON.parse(serviceAccountJson);
     const accessToken = await getGoogleAccessToken(serviceAccount);
+
+    // Ensure the tab exists, create it if not
+    const spreadsheetRes = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties.title`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    const spreadsheetData = await spreadsheetRes.json();
+    const existingTabs = (spreadsheetData.sheets || []).map((s: any) => s.properties.title);
+
+    if (!existingTabs.includes(sheetTab)) {
+      await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            requests: [{ addSheet: { properties: { title: sheetTab } } }],
+          }),
+        }
+      );
+    }
 
     const range = `${sheetTab}!A:Z`;
 
