@@ -238,7 +238,7 @@ const ChatView = ({
 
       {/* Input - fixed at bottom */}
       {!isFullyClosed && !isClosedByUser && (
-        <div className="px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
+        <div className="px-4 py-3" style={{ backgroundColor: "#F0EEE9" }}>
           <form
             className="flex items-center gap-2"
             onSubmit={(e) => {
@@ -263,13 +263,13 @@ const ChatView = ({
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Écrire un message..."
-              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#F0EEE9]"
-              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }} />
+              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#4E657A]"
+              style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }} />
             <button
               type="submit"
               disabled={!inputText.trim()}
               className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
-              style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+              style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}>
               <SendHorizontal className="h-4 w-4" />
             </button>
           </form>
