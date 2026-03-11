@@ -125,18 +125,7 @@ const Statistiques = () => {
 
       <div className="flex justify-center">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
-          {/* Period filter */}
-          <div className="flex gap-2">
-            {[7, 30, 90].map((d) => (
-                <Button
-                  key={d}
-                  onClick={() => setDays(d)}
-                  className={`flex-1 rounded-full ${days === d ? "opacity-100" : "opacity-60"}`}
-                >
-                  {d}j
-                </Button>
-            ))}
-          </div>
+
 
           {loading ? (
             <Card className="p-8 text-center text-muted-foreground">Chargement...</Card>

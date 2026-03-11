@@ -80,9 +80,9 @@ Deno.serve(async (req) => {
       allConvs.filter((c: any) => fullyPositiveConvIds.has(c.id)).map((c: any) => c.demande_id)
     );
 
-    // Period filters
-    const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
-    const currentDemandes = allDemandes.filter((d: any) => d.created_at >= periodStart);
+    // Use all data (no period filter)
+    const currentTrajets = allTrajets;
+    const currentDemandes = allDemandes;
 
     // --- KPIs ---
     const annonces = currentTrajets.length;
