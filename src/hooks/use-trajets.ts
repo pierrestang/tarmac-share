@@ -321,8 +321,11 @@ export function useTrajets() {
         
         if (!detourResult) continue;
 
-        // Use the max detour between the two passengers
-        const maxDetour = Math.max(detourResult.detourA, detourResult.detourB);
+        // If destinations are essentially the same location (< 0.2 km), detour is 0
+        const destDistance = calculateDistance(currentTrajet.destinationCoords!, trajet.destinationCoords!);
+        const maxDetour = (destDistance !== null && destDistance < 0.2)
+          ? 0
+          : Math.max(detourResult.detourA, detourResult.detourB);
         const bestTotalTrip = detourResult.bestOrder === "AB" 
           ? detourResult.totalMinAB 
           : detourResult.totalMinBA;
