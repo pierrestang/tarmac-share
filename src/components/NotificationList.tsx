@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
@@ -17,22 +17,17 @@ export function NotificationList() {
   const activeProfile = getActiveProfile();
   const profileId = activeProfile?.id;
 
-  if (!notificationsLoaded || !profilesLoaded) return null;
-
-  const notifications = profileId ? getNotifications(profileId) : [];
+  const notifications = profileId && notificationsLoaded && profilesLoaded ? getNotifications(profileId) : [];
 
   // Check if a notification is still actionable
-  const isNotificationActionable = (notification: Notification): boolean => {
-    // Withdrawn and refused notifications are never actionable
+  const isNotificationActionable = useCallback((notification: Notification): boolean => {
     if (notification.type === "demande_withdrawn" || notification.type === "demande_refused") {
       return false;
     }
-    // For conversation_closing, check if the conversation exists
     if (notification.type === "conversation_closing") {
       const conversation = getConversationByDemandeId(notification.demandeId);
       return conversation !== null;
     }
-    // For cancellation, actionable only if demande exists AND not already republished AND not declined
     if (notification.type === "cancellation") {
       const demande = getDemandeById(notification.demandeId);
       if (!demande) return false;
@@ -40,22 +35,19 @@ export function NotificationList() {
       const declined: string[] = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
       return !republished.includes(notification.demandeId) && !declined.includes(notification.demandeId);
     }
-    // For demande_received, only actionable if demande is still pending
     if (notification.type === "demande_received") {
       const demande = getDemandeById(notification.demandeId);
       return demande !== null && demande.status === "pending";
     }
-    // For demande_accepted, only actionable if demande is still accepted and conversation exists
     if (notification.type === "demande_accepted") {
       const demande = getDemandeById(notification.demandeId);
       if (!demande || demande.status !== "accepted") return false;
       const conversation = getConversationByDemandeId(notification.demandeId);
       return conversation !== null;
     }
-    // For other types, check if the demande still exists
     const demande = getDemandeById(notification.demandeId);
     return demande !== null;
-  };
+  }, [getConversationByDemandeId, getDemandeById]);
 
   // Auto-mark muted (non-actionable) unread notifications as read
   useEffect(() => {
@@ -64,8 +56,9 @@ export function NotificationList() {
         markAsRead(n.id);
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [notifications]);
+  }, [notifications, isNotificationActionable, markAsRead]);
+
+  if (!notificationsLoaded || !profilesLoaded) return null;
 
   const handleClick = async (notification: Notification) => {
     // Mark as read
