@@ -66,7 +66,7 @@ const GestionTrajet = () => {
               Êtes-vous sûr de vouloir annuler ce trajet ?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-row gap-3 sm:flex-row">
+          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
             <AlertDialogAction
               onClick={() =>
               navigate(
