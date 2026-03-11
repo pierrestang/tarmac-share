@@ -71,7 +71,7 @@ const FunnelBar = ({ label, value, max }: { label: string; value: number; max: n
 
 const Statistiques = () => {
   const navigate = useNavigate();
-  const [days, setDays] = useState(7);
+  const [days] = useState(0);
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
