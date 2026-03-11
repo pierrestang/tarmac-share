@@ -194,7 +194,7 @@ const Trajets = () => {
                 En cours
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3">
+            <AccordionContent className="pt-4">
               {enCours.length === 0 ? null : (
                 <div className="flex flex-col gap-3">
                   {enCours.map((demande) => {
