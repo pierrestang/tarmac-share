@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +35,7 @@ const GestionTrajet = () => {
   const activeProfile = getActiveProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showEndDialog, setShowEndDialog] = useState(false);
   const hasRedirected = useRef(false);
 
   const handleAnswer = async (wasUseful: boolean) => {
@@ -168,47 +168,24 @@ const GestionTrajet = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        {demandeId && (
-          <button
-            onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
-            className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
-            style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-            <span>Voir le trajet</span>
-          </button>
-        )}
-
         {!isClosed && (
           <>
-            {/* Evaluation card */}
-            <Card className="border-0 rounded-md shadow-none" style={{ backgroundColor: "#FFFFFF" }}>
-              <CardContent className="p-4 flex flex-col gap-4">
-                <p className="text-[16px] font-semibold" style={{ color: "#4E657A" }}>
-                  Le trajet a-t-il eu lieu ?
-                </p>
-                <p className="text-[14px]" style={{ color: "#4E657A" }}>
-                  Confirmez si votre trajet a bien eu lieu pour finaliser la mise en relation et mettre à jour votre historique, ou signalez tout imprévu.
-                </p>
-                <div className="flex gap-3">
-                  <Button
-                    onClick={() => handleAnswer(true)}
-                    disabled={isSubmitting}
-                    className="flex-1 text-[16px] font-semibold border-0"
-                    style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}
-                  >
-                    {isSubmitting ? "Envoi..." : "Oui"}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => handleAnswer(false)}
-                    disabled={isSubmitting}
-                    className="flex-1 text-[16px] font-semibold border-0"
-                    style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}
-                  >
-                    Non
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {demandeId && (
+              <button
+                onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
+                className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
+                style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+                <span>Voir le trajet</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => setShowEndDialog(true)}
+              disabled={isSubmitting}
+              className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              <span>Terminer le trajet</span>
+            </button>
 
             <button
               onClick={() => setShowCancelDialog(true)}
@@ -219,8 +196,44 @@ const GestionTrajet = () => {
             </button>
           </>
         )}
+
+        {isClosed && demandeId && (
+          <button
+            onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
+            className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
+            style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+            <span>Voir le trajet</span>
+          </button>
+        )}
       </div>
 
+      {/* End trip dialog */}
+      <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
+        <AlertDialogContent className="rounded-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Le trajet a-t-il eu lieu ?</AlertDialogTitle>
+            <AlertDialogDescription className="hidden" />
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+            <AlertDialogAction
+              onClick={() => handleAnswer(true)}
+              disabled={isSubmitting}
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              {isSubmitting ? "Envoi..." : "Oui"}
+            </AlertDialogAction>
+            <AlertDialogCancel
+              onClick={() => handleAnswer(false)}
+              disabled={isSubmitting}
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
