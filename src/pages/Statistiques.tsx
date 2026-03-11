@@ -184,42 +184,6 @@ const Statistiques = () => {
               </Card>
 
 
-              {/* Export */}
-              <Button
-                onClick={async () => {
-                  setExporting(true);
-                  try {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) return;
-                    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=stats&days=${days}`;
-                    const res = await fetch(url, {
-                      headers: {
-                        Authorization: `Bearer ${session.access_token}`,
-                        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-                      },
-                    });
-                    if (!res.ok) throw new Error("Export failed");
-                    toast({
-                      title: "Statistiques exportées vers Google Sheets",
-                      className: "bg-transparent border-0 shadow-none",
-                      style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
-                    });
-                  } catch (e) {
-                    toast({
-                      title: "Erreur lors de l'export",
-                      className: "bg-transparent border-0 shadow-none",
-                      style: { backgroundColor: '#E34454', color: '#F0EEE9' },
-                    });
-                    console.error(e);
-                  } finally {
-                    setExporting(false);
-                  }
-                }}
-                disabled={exporting}
-                className="w-full flex items-center gap-2 rounded-full"
-              >
-                {exporting ? "Export en cours..." : "Exporter les statistiques"}
-              </Button>
 
             </>
           ) : (
