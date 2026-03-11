@@ -190,7 +190,7 @@ const Trajets = () => {
         <Accordion type="multiple" defaultValue={enCours.length > 0 ? ["en-cours"] : []} className="w-full max-w-[42rem]">
           <AccordionItem value="en-cours" className="border-0">
             <div className="bg-card rounded-md overflow-hidden">
-              <AccordionTrigger className="font-semibold hover:no-underline px-4 text-card-foreground">
+              <AccordionTrigger className="font-medium hover:no-underline px-4 text-card-foreground" disabled={enCours.length === 0}>
                 En cours
               </AccordionTrigger>
             </div>
