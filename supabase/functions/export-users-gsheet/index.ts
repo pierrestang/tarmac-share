@@ -264,7 +264,12 @@ Deno.serve(async (req) => {
         return "En attente d'évaluation";
       };
 
-      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Trajet accepteur (Gare → Destination)", "Date demande", "Dernière MAJ"];
+      const formatDateTime = (ts: number) => {
+        const d = new Date(Number(ts));
+        return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+      };
+
+      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Trajet accepteur (Gare → Destination)", "Date/heure demande", "Date/heure acceptation"];
       const rows = (demandes || []).map((d: any) => {
         const t1 = trajetMap.get(d.from_trajet_id);
         const t2 = trajetMap.get(d.to_trajet_id);
@@ -276,8 +281,8 @@ Deno.serve(async (req) => {
           t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
           profileMap.get(d.to_profile_id) || d.to_profile_id,
           t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
-          new Date(Number(d.created_at)).toLocaleDateString("fr-FR"),
-          new Date(Number(d.updated_at)).toLocaleDateString("fr-FR"),
+          formatDateTime(d.created_at),
+          formatDateTime(d.updated_at),
         ];
       });
 
