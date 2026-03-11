@@ -70,16 +70,16 @@ const ChatView = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#4E657A" }}>
-        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#F0EEE9" }}>
+      <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#F0EEE9" }}>
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#4E657A" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold flex-1" style={{ color: "#F0EEE9" }}>{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1" style={{ color: "#4E657A" }}>{otherProfile.firstName}</span>
         <button
           type="button"
           onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
           className="h-8 w-8 p-0 flex items-center justify-center"
-          style={{ color: "#F0EEE9" }}>
+          style={{ color: "#4E657A" }}>
             <MoreVertical className="h-5 w-5" />
           </button>
       </div>
