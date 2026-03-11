@@ -24,6 +24,7 @@ const TourDeControle = () => {
   const navigate = useNavigate();
   const [authorized, setAuthorized] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const { isFreeMode, toggleFreeMode } = useAppSettings();
 
   useEffect(() => {
