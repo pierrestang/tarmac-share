@@ -117,12 +117,17 @@ const TourDeControle = () => {
               try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-                const { data, error } = await supabase.functions.invoke("export-users-gsheet?type=annonces", {
-                  headers: { Authorization: `Bearer ${session.access_token}` },
+                const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=annonces`;
+                const res = await fetch(url, {
+                  headers: {
+                    Authorization: `Bearer ${session.access_token}`,
+                    apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                  },
                 });
-                if (error) throw error;
+                if (!res.ok) throw new Error("Export failed");
+                const result = await res.json();
                 toast({
-                  title: `${data.exported} annonces exportées vers Google Sheets`,
+                  title: `${result.exported} annonces exportées vers Google Sheets`,
                   className: "bg-transparent border-0 shadow-none",
                   style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
                 });
