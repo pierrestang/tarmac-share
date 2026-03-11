@@ -100,37 +100,113 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch all profiles
-    const { data: profiles, error: profilesError } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("created_at", { ascending: true });
+    // Determine export type
+    const url = new URL(req.url);
+    const exportType = url.searchParams.get("type") || "users";
+    const days = parseInt(url.searchParams.get("days") || "7");
 
-    if (profilesError) throw profilesError;
+    let values: any[][] = [];
+    let sheetTab = "";
+    let exportCount = 0;
 
-    // Fetch all auth users to get emails
-    const { data: { users: authUsers }, error: authError } =
-      await supabase.auth.admin.listUsers({ perPage: 1000 });
+    if (exportType === "stats") {
+      // --- Stats export ---
+      sheetTab = "Statistiques";
 
-    if (authError) throw authError;
+      const now = Date.now();
+      const periodStart = now - days * 24 * 60 * 60 * 1000;
 
-    // Build email map
-    const emailMap = new Map<string, string>();
-    for (const u of authUsers) {
-      emailMap.set(u.id, u.email || "");
+      const [trajetsRes, demandesRes, ratingsRes, convsRes] = await Promise.all([
+        supabase.from("trajets").select("*"),
+        supabase.from("demandes").select("*"),
+        supabase.from("conversation_ratings").select("conversation_id, was_useful"),
+        supabase.from("conversations").select("id, demande_id"),
+      ]);
+
+      const allTrajets = trajetsRes.data || [];
+      const allDemandes = demandesRes.data || [];
+      const allRatings = ratingsRes.data || [];
+      const allConvs = convsRes.data || [];
+
+      const negativeRatingConvIds = new Set(allRatings.filter((r: any) => !r.was_useful).map((r: any) => r.conversation_id));
+      const negativeDemandeIds = new Set(allConvs.filter((c: any) => negativeRatingConvIds.has(c.id)).map((c: any) => c.demande_id));
+
+      const ratingsByConv: Record<string, { useful: number; total: number }> = {};
+      for (const r of allRatings) {
+        if (!ratingsByConv[r.conversation_id]) ratingsByConv[r.conversation_id] = { useful: 0, total: 0 };
+        ratingsByConv[r.conversation_id].total++;
+        if (r.was_useful) ratingsByConv[r.conversation_id].useful++;
+      }
+      const fullyPositiveConvIds = new Set(
+        Object.entries(ratingsByConv).filter(([_, v]) => v.total >= 2 && v.useful >= 2).map(([id]) => id)
+      );
+      const fullyPositiveDemandeIds = new Set(allConvs.filter((c: any) => fullyPositiveConvIds.has(c.id)).map((c: any) => c.demande_id));
+
+      const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
+      const currentDemandes = allDemandes.filter((d: any) => d.created_at >= periodStart);
+
+      const annonces = currentTrajets.length;
+      const matchsConfirmes = currentDemandes.filter((d: any) => d.status === "accepted" || d.status === "completed").length;
+      const trajetsEffectues = currentDemandes.filter((d: any) => d.status === "completed").length;
+      const annulations = currentDemandes.filter((d: any) => d.status === "completed" && d.was_cancelled === true).length;
+      const nonRealises = currentDemandes.filter((d: any) => d.status === "completed" && negativeDemandeIds.has(d.id) && !d.was_cancelled).length;
+      const matchRate = annonces > 0 ? ((matchsConfirmes * 2) / annonces) * 100 : 0;
+      const tauxTrajetsEffectues = matchsConfirmes > 0 ? (trajetsEffectues / matchsConfirmes) * 100 : 0;
+      const tauxAnnulation = trajetsEffectues > 0 ? (annulations / trajetsEffectues) * 100 : 0;
+      const tauxNonRealises = trajetsEffectues > 0 ? (nonRealises / trajetsEffectues) * 100 : 0;
+      const trajetsRealises = currentDemandes.filter((d: any) => d.status === "completed" && fullyPositiveDemandeIds.has(d.id) && !d.was_cancelled).length;
+      const tauxRealises = trajetsEffectues > 0 ? (trajetsRealises / trajetsEffectues) * 100 : 0;
+
+      const round = (n: number) => Math.round(n);
+
+      values = [
+        ["Métrique", "Valeur", `Période: ${days} jours`, `Exporté le ${new Date().toLocaleDateString("fr-FR")}`],
+        ["Annonces publiées", annonces],
+        ["Nombre de matchs", matchsConfirmes],
+        ["Taux de match (%)", round(matchRate)],
+        ["Trajets complétés", trajetsEffectues],
+        ["Trajets complétés (%)", round(tauxTrajetsEffectues)],
+        ["Trajets réalisés", trajetsRealises],
+        ["Trajets réalisés (%)", round(tauxRealises)],
+        ["Nombre d'annulations", annulations],
+        ["Taux annulation (%)", round(tauxAnnulation)],
+        ["Non réalisés (hors annulation)", nonRealises],
+        ["Non réalisés (%)", round(tauxNonRealises)],
+      ];
+      exportCount = values.length - 1;
+    } else {
+      // --- Users export ---
+      sheetTab = "Feuille 1";
+
+      const { data: profiles, error: profilesError } = await supabase
+        .from("profiles")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      if (profilesError) throw profilesError;
+
+      const { data: { users: authUsers }, error: authError } =
+        await supabase.auth.admin.listUsers({ perPage: 1000 });
+
+      if (authError) throw authError;
+
+      const emailMap = new Map<string, string>();
+      for (const u of authUsers) {
+        emailMap.set(u.id, u.email || "");
+      }
+
+      const header = ["ID", "Prénom", "Nom", "Email", "Date de création"];
+      const rows = (profiles || []).map((p: any) => [
+        p.id,
+        p.first_name,
+        p.last_name,
+        emailMap.get(p.user_id) || "",
+        new Date(Number(p.created_at)).toLocaleDateString("fr-FR"),
+      ]);
+
+      values = [header, ...rows];
+      exportCount = rows.length;
     }
-
-    // Prepare sheet data
-    const header = ["ID", "Prénom", "Nom", "Email", "Date de création"];
-    const rows = (profiles || []).map((p: any) => [
-      p.id,
-      p.first_name,
-      p.last_name,
-      emailMap.get(p.user_id) || "",
-      new Date(Number(p.created_at)).toLocaleDateString("fr-FR"),
-    ]);
-
-    const values = [header, ...rows];
 
     // Google Sheets API
     const serviceAccountJson = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON");
