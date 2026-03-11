@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
