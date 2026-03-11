@@ -26,7 +26,12 @@ const GestionTrajet = () => {
         <ArrowLeft className="h-6 w-6" />
       </button>
 
-      <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Gestion du trajet.</h1>
+      <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Mon trajet.</h1>
+
+      <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
+        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Pilotez votre trajet</p>
+        <p className="text-[14px] italic" style={{ color: "#4E657A" }}>Consultez les détails, confirmez votre arrivée ou annulez en cas d'imprévu.</p>
+      </div>
 
       <div className="flex flex-col gap-3">
         {demandeId && (
@@ -45,7 +50,7 @@ const GestionTrajet = () => {
               }
                className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
               style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
-              <span>Clôturer le trajet</span>
+              <span>Terminer le trajet</span>
             </button>
 
             <button
