@@ -85,6 +85,7 @@ const Matches = () => {
             };
           });
           setMatches(enrichedMatches);
+          setMatchesLoaded(true);
         })();
       }
     }
