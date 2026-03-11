@@ -138,7 +138,8 @@ const DemandeConsulter = () => {
           }
         })()}
       </p>
-  const { isFreeMode } = useAppSettings();
+
+
 
       {/* Carte Mon trajet */}
       <Card className="w-full max-w-[42rem] border-0">
