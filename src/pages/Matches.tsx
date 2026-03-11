@@ -287,9 +287,11 @@ const Matches = () => {
             
             {/* Cartes voyageurs */}
             {!matchesLoaded ? null : matches.length === 0 ? (
-              <p className="text-center text-heading py-4">
-                Pas de passagers pour ce créneau... pour l'instant !
-              </p>
+              <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
+                <p className="text-center text-heading">
+                  Pas de passagers pour ce créneau... pour l'instant !
+                </p>
+              </div>
             ) : (
               <div className="flex flex-col gap-4">
                 {matches.map((match) => (
