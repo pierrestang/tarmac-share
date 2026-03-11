@@ -203,14 +203,14 @@ const GestionTrajet = () => {
       {/* End trip dialog */}
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
         <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
-          <AlertDialogHeader>
+          <AlertDialogHeader className="text-left">
             <div className="flex items-center gap-2">
               <button onClick={() => setShowEndDialog(false)} className="p-1">
                 <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
               </button>
-              <AlertDialogTitle style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
+              <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
             </div>
-            <AlertDialogDescription className="text-[14px]" style={{ color: "#F0EEE9" }}>
+            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
               Confirmez maintenant le bon déroulement de votre partage pour mettre à jour votre historique.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -236,9 +236,9 @@ const GestionTrajet = () => {
       {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
-          <AlertDialogHeader>
-            <AlertDialogTitle style={{ color: "#F0EEE9" }}>Annuler ce trajet ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[14px]" style={{ color: "#F0EEE9" }}>
+          <AlertDialogHeader className="text-left">
+            <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Annuler ce trajet ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
               Utilisez cette option uniquement si vous ne pouvez plus vous rendre disponible. Votre partenaire sera immédiatement prévenu de ce changement de programme.
             </AlertDialogDescription>
           </AlertDialogHeader>
