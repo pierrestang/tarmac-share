@@ -161,12 +161,6 @@ export function DemandeCard({
           )}
         </div>
 
-        {/* Status badges for refused */}
-        {isRefused && !isReceived && (
-          <span className="text-[12px] text-muted-foreground">
-            Remboursement effectué
-          </span>
-        )}
       </div>
 
       {/* Button attached to bottom */}
