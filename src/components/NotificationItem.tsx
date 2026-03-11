@@ -42,9 +42,9 @@ export function NotificationItem({ notification, onClick, muted = false, badge, 
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className={cn(
-            "text-[14px] font-medium text-card-foreground",
-            !notification.read && "font-semibold"
+          <span className={cn("font-medium text-card-foreground text-sm",
+
+          !notification.read && "font-semibold"
           )}>
             {notification.title}
           </span>
