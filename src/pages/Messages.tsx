@@ -320,8 +320,8 @@ const Messages = () => {
             getConversationStatus={(conversation) => {
               if (!isConversationFullyClosed(conversation)) return "active";
               const msgs = getMessages(conversation.id);
-              const hasCancelMessage = msgs.some(m => m.content === "Je dois annuler" && m.type !== "system");
-              return hasCancelMessage ? "cancelled" : "completed";
+              const hasCancelSystem = msgs.some(m => m.type === "system" && m.content.includes("[CANCELLED_BY:"));
+              return hasCancelSystem ? "cancelled" : "completed";
             }}
             getConversationDate={(conversation) => {
               const demande = getDemandeById(conversation.demandeId);

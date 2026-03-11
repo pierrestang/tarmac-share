@@ -129,16 +129,35 @@ const ChatView = ({
               const next = messages[index + 1];
               const isLastInGroup = !next || next.senderId !== message.senderId || next.type === "system";
               const isArrivalMessage = message.content === "Je suis arrivé au point de rencontre" && message.type !== "system";
+              const isCancelUserMessage = message.content === "Je dois annuler" && message.type !== "system";
               const currentArrived = messages.some((m) => m.senderId === currentProfileId && m.content === "Je suis arrivé au point de rencontre" && m.type !== "system");
               const otherArrived = messages.some((m) => m.senderId !== currentProfileId && m.type !== "system" && m.content === "Je suis arrivé au point de rencontre");
 
-              let arrivalStatus: string | null = null;
+              // Hide "Je dois annuler" user messages entirely (system cancel card handles display)
+              if (isCancelUserMessage) return null;
+
+              // For arrival messages, show only status card, no bubble
               if (isArrivalMessage) {
-                if (isOwn && currentArrived && !otherArrived) {
-                  arrivalStatus = "Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.";
-                } else if (!isOwn && otherArrived && !currentArrived) {
-                  arrivalStatus = `${otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.`;
+                let arrivalStatus: string | null = null;
+                if (isOwn) {
+                  arrivalStatus = otherArrived
+                    ? null // both-ready system message will show instead
+                    : "Vous êtes arrivé au point de rencontre ! En attente de votre partenaire pour générer le code.";
+                } else {
+                  arrivalStatus = currentArrived
+                    ? null
+                    : `${otherProfile.firstName} est arrivé au point de rencontre ! Confirmez votre présence pour générer le code.`;
                 }
+                if (!arrivalStatus) return null;
+                return (
+                  <div key={message.id} className="flex justify-center my-2">
+                    <div className="w-full px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
+                      <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                        {arrivalStatus}
+                      </p>
+                    </div>
+                  </div>
+                );
               }
 
               const isBothReadySystem = message.type === "system" && message.content.includes("Vous êtes tous les deux arrivés au point de rencontre");
@@ -184,24 +203,12 @@ const ChatView = ({
                       </div>
                     </div> :
 
-                  <>
-                      <ChatBubble
-                      message={message}
-                      isOwn={isOwn}
-                      showAvatar={showAvatar(index)}
-                      showTimestamp={isLastInGroup}
-                      senderProfile={isOwn ? undefined : otherProfile} />
-
-                      {arrivalStatus &&
-                    <div className="flex justify-center my-2">
-                          <div className="px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
-                            <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
-                              {arrivalStatus}
-                            </p>
-                          </div>
-                        </div>
-                    }
-                    </>
+                  <ChatBubble
+                    message={message}
+                    isOwn={isOwn}
+                    showAvatar={showAvatar(index)}
+                    showTimestamp={isLastInGroup}
+                    senderProfile={isOwn ? undefined : otherProfile} />
                   }
                 </div>);
 

@@ -1,4 +1,4 @@
-import { Briefcase, Clock, CircleCheck, XCircle } from "lucide-react";
+import { Briefcase, Clock } from "lucide-react";
 
 interface QuickMessagesProps {
   onSend: (message: string) => void;
@@ -7,10 +7,7 @@ interface QuickMessagesProps {
 
 const QUICK_MESSAGES = [
   { emoji: <Briefcase className="h-4 w-4" />, text: "J'attends mes bagages" },
-  
   { emoji: <Clock className="h-4 w-4" />, text: "J'arrive dans 5 minutes" },
-  { emoji: <CircleCheck className="h-4 w-4" />, text: "Je suis arrivé au point de rencontre", customBg: "bg-[#F0EEE9]", customText: "text-[#4E657A]" },
-  { emoji: <XCircle className="h-4 w-4" />, text: "Je dois annuler", customBg: "bg-[#e34454]", customText: "text-[#F0EEE9]" },
 ];
 
 const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
@@ -24,9 +21,7 @@ const QuickMessages = ({ onSend, disabled }: QuickMessagesProps) => {
           className={`
             flex items-center gap-3 w-full rounded-xl px-4 text-left transition-opacity whitespace-nowrap
             disabled:opacity-50 disabled:pointer-events-none
-            py-3 border-0 text-[14px]
-            ${msg.customBg ? msg.customBg : "bg-card"}
-            ${msg.customText ? msg.customText : "text-card-foreground"}
+            py-3 border-0 text-[14px] bg-card text-card-foreground
           `}
         >
           {msg.emoji}
