@@ -20,6 +20,7 @@ interface VoyageurCardProps {
   onRefuse?: () => void;
   myTrajetId?: string;
   messagesDemandeId?: string;
+  customBadge?: React.ReactNode;
 }
 
 function getInitials(firstName: string, lastName: string): string {
