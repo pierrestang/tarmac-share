@@ -2,7 +2,6 @@ import { NavLink } from "@/components/NavLink";
 import { useUnreadMessagesCount } from "@/hooks/use-messages";
 import { useNotificationsUnreadCount } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
-import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { MapPin, PlusCircle, MessageCircle, CircleUserRound } from "lucide-react";
 
@@ -19,18 +18,9 @@ export function BottomTabs() {
   const { count: messagesCount } = useUnreadMessagesCount(activeProfile?.id);
   const { count: notificationsCount } = useNotificationsUnreadCount(activeProfile?.id);
   const totalCount = messagesCount + notificationsCount;
-  const location = useLocation();
-  const isMessagesPage = location.pathname === "/messages";
 
   return (
-    <nav
-      aria-label="Navigation principale"
-      className={cn(
-        "fixed bottom-0 left-0 right-0 z-40 border-t border-border",
-        isMessagesPage ? "" : "bg-card"
-      )}
-      style={isMessagesPage ? { backgroundColor: "#F0EEE9" } : undefined}
-    >
+    <nav aria-label="Navigation principale" className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-card">
       <div className="grid h-16 w-full grid-cols-4">
         {tabs.map((t) => {
           const Icon = t.icon;
@@ -38,12 +28,8 @@ export function BottomTabs() {
             <NavLink
               key={t.to}
               to={t.to}
-              className={cn(
-                "flex h-full flex-col items-center justify-center gap-1 text-[12px] font-normal",
-                isMessagesPage ? "" : "text-muted-foreground"
-              )}
-              activeClassName={isMessagesPage ? "" : "text-card-foreground"}
-              style={isMessagesPage ? { color: "#4E657A" } : undefined}
+              className="flex h-full flex-col items-center justify-center gap-1 text-[12px] font-normal text-muted-foreground"
+              activeClassName="text-card-foreground"
             >
               <span className="relative">
                 <Icon size={20} strokeWidth={1.5} />

@@ -284,11 +284,11 @@ const Messages = () => {
   // List view
   return (
     <section aria-label="Messages" className="flex flex-col items-center">
-      <h1 className="text-[24px] font-semibold mb-4 w-full max-w-[42rem]" style={{ color: "#4E657A" }}>Mes messages.</h1>
+      <h1 className="text-[24px] font-semibold mb-4 w-full max-w-[42rem] text-heading">Mes messages.</h1>
       
       <Tabs defaultValue="messages" className="w-full max-w-[42rem]">
         <TabsList className="w-full grid grid-cols-2 mb-4 bg-transparent border-0 h-auto p-0">
-          <TabsTrigger value="messages" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-[#4E657A] data-[state=active]:opacity-100 rounded-none pb-2 opacity-50" style={{ color: "#4E657A" }}>
+          <TabsTrigger value="messages" className="relative text-[18px] font-semibold text-white/70 data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-white rounded-none pb-2">
             <span className="relative">
               Messages
               {unreadMessagesCount > 0 && (
@@ -298,7 +298,7 @@ const Messages = () => {
               )}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-[#4E657A] data-[state=active]:opacity-100 rounded-none pb-2 opacity-50" style={{ color: "#4E657A" }}>
+          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold text-white/70 data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-white rounded-none pb-2">
             <span className="relative">
               Notifications
               {unreadNotificationsCount > 0 && (
