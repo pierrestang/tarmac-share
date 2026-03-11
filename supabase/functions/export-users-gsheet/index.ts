@@ -281,7 +281,7 @@ Deno.serve(async (req) => {
           formatDateTime(d.created_at),
           t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
           profileMap.get(d.to_profile_id) || d.to_profile_id,
-          formatDateTime(d.updated_at),
+          (d.status === "accepted" || d.status === "completed") ? formatDateTime(d.updated_at) : "",
           t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
         ];
       });
