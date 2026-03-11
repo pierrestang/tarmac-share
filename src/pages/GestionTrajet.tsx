@@ -29,8 +29,8 @@ const GestionTrajet = () => {
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Mon trajet.</h1>
 
       <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Gérez votre trajet</p>
-        <p className="text-[14px]" style={{ color: "#4E657A" }}>Consultez les détails, confirmez votre arrivée ou annulez en cas d'imprévu.</p>
+        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Prenez la main sur votre trajet</p>
+        <p className="text-[14px]" style={{ color: "#4E657A" }}>Retrouvez toutes vos informations de voyage pour vous coordonner, confirmez votre trajet une fois terminé ou gérez une annulation si vos plans changent.</p>
       </div>
 
       <div className="flex flex-col gap-3">
