@@ -213,7 +213,7 @@ Deno.serve(async (req) => {
       exportCount = rows.length;
     } else {
       // --- Users export ---
-      sheetTab = "Feuille 1";
+      sheetTab = "Utilisateurs";
 
       const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
