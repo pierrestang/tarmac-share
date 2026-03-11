@@ -42,11 +42,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const url = new URL(req.url);
-    const days = parseInt(url.searchParams.get("days") || "7");
-    const now = Date.now();
-    const periodStart = now - days * 24 * 60 * 60 * 1000;
-
+    // No period filter — total stats
     // Fetch all data needed
     const [trajetsRes, demandesRes, ratingsRes] = await Promise.all([
       supabase.from("trajets").select("*"),
@@ -84,9 +80,9 @@ Deno.serve(async (req) => {
       allConvs.filter((c: any) => fullyPositiveConvIds.has(c.id)).map((c: any) => c.demande_id)
     );
 
-    // Period filters
-    const currentTrajets = allTrajets.filter((t: any) => t.created_at >= periodStart);
-    const currentDemandes = allDemandes.filter((d: any) => d.created_at >= periodStart);
+    // Use all data (no period filter)
+    const currentTrajets = allTrajets;
+    const currentDemandes = allDemandes;
 
     // --- KPIs ---
     const annonces = currentTrajets.length;
