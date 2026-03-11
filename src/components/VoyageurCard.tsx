@@ -65,7 +65,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
         <div className="flex-1 flex flex-col gap-1">
           {/* Name, companions and badge */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[16px] font-medium">{profile.firstName}</span>
+            <span className="text-[16px] font-semibold">{profile.firstName}</span>
             {trajet.companions > 1 && (
               <span className="text-[12px] text-muted-foreground">
                 et {trajet.companions - 1} voyageur{trajet.companions > 2 ? "s" : ""}
