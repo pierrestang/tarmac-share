@@ -27,6 +27,7 @@ const TourDeControle = () => {
   const [exporting, setExporting] = useState(false);
   const [exportingAnnonces, setExportingAnnonces] = useState(false);
   const [exportingTrajets, setExportingTrajets] = useState(false);
+  const [exportingStats, setExportingStats] = useState(false);
   const { isFreeMode, toggleFreeMode } = useAppSettings();
 
   useEffect(() => {
