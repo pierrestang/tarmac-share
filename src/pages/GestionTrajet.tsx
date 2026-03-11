@@ -231,22 +231,22 @@ const GestionTrajet = () => {
 
       {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent className="rounded-md">
+        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#4E657A" }}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Annuler ce trajet ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[14px]" style={{ color: "#4E657A" }}>
+            <AlertDialogTitle style={{ color: "#F0EEE9" }}>Annuler ce trajet ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px]" style={{ color: "#F0EEE9" }}>
               Utilisez cette option uniquement si vous ne pouvez plus vous rendre disponible. Votre partenaire sera immédiatement prévenu de ce changement de programme.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+          <AlertDialogFooter className="flex !flex-col gap-3 mt-2 w-full">
             <AlertDialogCancel
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
               style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
               Conserver le trajet
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCancel}
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
               style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
               Confirmer l'annulation
             </AlertDialogAction>
