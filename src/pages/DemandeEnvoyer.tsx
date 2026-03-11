@@ -196,7 +196,7 @@ const DemandeEnvoyer = () => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-[16px] font-medium">
+              <span className="text-[16px] font-semibold">
                 {myProfile.firstName}
                 {myTrajet.companions > 1 && (
                   <span className="text-muted-foreground font-normal">
