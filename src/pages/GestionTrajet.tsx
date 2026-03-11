@@ -231,7 +231,7 @@ const GestionTrajet = () => {
 
       {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#4E657A" }}>
+        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
           <AlertDialogHeader>
             <AlertDialogTitle style={{ color: "#F0EEE9" }}>Annuler ce trajet ?</AlertDialogTitle>
             <AlertDialogDescription className="text-[14px]" style={{ color: "#F0EEE9" }}>
