@@ -62,33 +62,7 @@ const GestionTrajet = () => {
         )}
       </div>
 
-      <AlertDialog open={showCloseDialog} onOpenChange={setShowCloseDialog}>
-        <AlertDialogContent className="rounded-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Terminer le trajet ?</AlertDialogTitle>
-            <AlertDialogDescription style={{ color: "#F0EEE9" }}>
-              Confirmer si votre trajet a bien eu lieu pour finaliser la mise en relation et mettre à jour votre historique, ou signalez tout imprévu.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
-            <AlertDialogAction
-              onClick={() =>
-              navigate(
-                `/messages?conversationId=${conversationId}&action=close`
-              )
-              }
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
-              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
-              Oui
-            </AlertDialogAction>
-            <AlertDialogCancel
-              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
-              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
-              Non
-            </AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
 
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md">
