@@ -229,7 +229,7 @@ const Statistiques = () => {
                 disabled={exporting}
                 className="w-full flex items-center gap-2 rounded-full"
               >
-                <Upload size={16} /> {exporting ? "Export en cours..." : "Exporter les statistiques"}
+                {exporting ? "Export en cours..." : "Exporter les statistiques"}
               </Button>
 
             </>
