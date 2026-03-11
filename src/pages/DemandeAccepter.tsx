@@ -137,7 +137,7 @@ const DemandeAccepter = () => {
       </div>
 
       {/* Date */}
-      <p className="text-[16px] font-medium w-full max-w-[42rem]">
+      <h2 className="text-[18px] font-semibold text-white w-full max-w-[42rem]">
         {(() => {
           try {
             const parsed = parse(myTrajet.date, "dd/MM/yyyy", new Date());
@@ -146,7 +146,7 @@ const DemandeAccepter = () => {
             return myTrajet.date;
           }
         })()}
-      </p>
+      </h2>
 
       {/* Mes informations Card */}
       <Card className="w-full max-w-[42rem] border-0">
