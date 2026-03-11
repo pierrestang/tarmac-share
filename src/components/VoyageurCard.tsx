@@ -35,7 +35,7 @@ function formatBaggage(baggage: { small: number; medium: number; large: number }
   return parts.length > 0 ? parts.join(", ") : "Aucun bagage";
 }
 
-export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId }: VoyageurCardProps) {
+export function VoyageurCard({ match, showButton = true, title, buttonLabel, onButtonClick, showDualButtons = false, onAccept, onRefuse, myTrajetId, messagesDemandeId, customBadge }: VoyageurCardProps) {
   const navigate = useNavigate();
   const { getConversationByDemandeId } = useMessages();
   const { trajet, profile, detourMin, compatibilityScore, receivedDemandeId, sentDemandeId } = match;
