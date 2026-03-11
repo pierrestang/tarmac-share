@@ -172,8 +172,8 @@ const GestionTrajet = () => {
       )}
 
       <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Prenez la main sur votre trajet</p>
-        <p className="text-[14px]" style={{ color: "#4E657A" }}>Retrouvez toutes vos informations de voyage pour vous coordonner, confirmez votre trajet une fois terminé ou gérez une annulation si vos plans changent.</p>
+        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Votre feuille de route</p>
+        <p className="text-[14px]" style={{ color: "#4E657A" }}>Retrouvez vos infos pour vous coordonner.{"\n"}Confirmez le bon déroulement du trajet à l'arrivée (ou signalez un rendez-vous manqué).{"\n"}Pour un changement de plan de dernière minute avant le départ, utilisez "Annuler le trajet".</p>
       </div>
 
       {!isClosed && (
