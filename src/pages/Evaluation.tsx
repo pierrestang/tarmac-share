@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,8 +26,13 @@ const Evaluation = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const hasRedirected = useRef(false);
 
+  useEffect(() => {
+    if (!conversationId || !ratedProfileId) {
+      navigate("/messages", { replace: true });
+    }
+  }, [conversationId, ratedProfileId, navigate]);
+
   if (!conversationId || !ratedProfileId) {
-    navigate("/messages", { replace: true });
     return null;
   }
 
