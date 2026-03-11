@@ -19,6 +19,7 @@ const GestionTrajet = () => {
   const demandeId = searchParams.get("demandeId") || "";
   const isClosed = searchParams.get("closed") === "true";
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
 
   return (
     <div className="p-4">
@@ -45,9 +46,7 @@ const GestionTrajet = () => {
         {!isClosed && (
           <>
             <button
-              onClick={() =>
-                navigate(`/messages?conversationId=${conversationId}&action=close`)
-              }
+              onClick={() => setShowCloseDialog(true)}
                className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
               style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
               <span>Terminer le trajet</span>
@@ -62,6 +61,33 @@ const GestionTrajet = () => {
           </>
         )}
       </div>
+
+      <AlertDialog open={showCloseDialog} onOpenChange={setShowCloseDialog}>
+        <AlertDialogContent className="rounded-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Terminer le trajet ?</AlertDialogTitle>
+            <AlertDialogDescription className="hidden">
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex !flex-row gap-3 items-center mt-0">
+            <AlertDialogAction
+              onClick={() =>
+              navigate(
+                `/messages?conversationId=${conversationId}&action=close`
+              )
+              }
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3"
+              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              Oui
+            </AlertDialogAction>
+            <AlertDialogCancel
+              className="flex-1 rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
+              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              Non
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md">
