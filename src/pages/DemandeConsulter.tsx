@@ -235,7 +235,7 @@ const DemandeConsulter = () => {
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Retirer ma demande ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
+            <AlertDialogDescription className="text-foreground">
               Êtes-vous sûr de vouloir retirer votre demande ? Aucun montant ne sera prélevé.
             </AlertDialogDescription>
           </AlertDialogHeader>

@@ -25,7 +25,7 @@ const ConversationList = ({
   if (conversations.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <p className="text-[16px] text-white">
+        <p className="text-[16px] text-foreground">
           Aucune conversation pour le moment
         </p>
       </div>

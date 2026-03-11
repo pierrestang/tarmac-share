@@ -298,7 +298,7 @@ const Messages = () => {
               )}
             </span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold text-white/70 data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-white rounded-none pb-2">
+          <TabsTrigger value="notifications" className="relative text-[18px] font-semibold text-foreground/70 data-[state=active]:text-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none border-0 border-b-2 border-transparent data-[state=active]:border-foreground rounded-none pb-2">
             <span className="relative">
               Notifications
               {unreadNotificationsCount > 0 && (

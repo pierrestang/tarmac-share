@@ -24,7 +24,7 @@ const Numero = () => {
       >
         <ArrowLeft className="h-8 w-8" />
       </button>
-      <span className="text-white font-bold" style={{ fontSize: "120px" }}>
+      <span className="text-foreground font-bold" style={{ fontSize: "120px" }}>
         {code}
       </span>
     </div>

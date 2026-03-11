@@ -280,7 +280,7 @@ const ChatView = ({
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmer l'annulation ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-white">
+            <AlertDialogDescription className="text-foreground">
               Êtes-vous sûr de vouloir annuler ce trajet ?
             </AlertDialogDescription>
           </AlertDialogHeader>
