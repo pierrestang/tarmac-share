@@ -209,6 +209,54 @@ Deno.serve(async (req) => {
 
       values = [header, ...rows];
       exportCount = rows.length;
+    } else if (exportType === "trajets") {
+      // --- Trajets (matchs) export ---
+      sheetTab = "Trajets";
+
+      const { data: demandes, error: demandesError } = await supabase
+        .from("demandes")
+        .select("*")
+        .in("status", ["accepted", "completed"])
+        .order("created_at", { ascending: false });
+
+      if (demandesError) throw demandesError;
+
+      // Fetch trajets and profiles
+      const trajetIds = new Set<string>();
+      const profileIds = new Set<string>();
+      for (const d of (demandes || []) as any[]) {
+        trajetIds.add(d.from_trajet_id);
+        trajetIds.add(d.to_trajet_id);
+        profileIds.add(d.from_profile_id);
+        profileIds.add(d.to_profile_id);
+      }
+
+      const { data: trajets } = await supabase.from("trajets").select("*").in("id", [...trajetIds]);
+      const trajetMap = new Map<string, any>();
+      for (const t of (trajets || []) as any[]) trajetMap.set(t.id, t);
+
+      const { data: profiles } = await supabase.from("profiles").select("id, first_name, last_name");
+      const profileMap = new Map<string, string>();
+      for (const p of (profiles || []) as any[]) profileMap.set(p.id, `${p.first_name} ${p.last_name}`);
+
+      const header = ["Statut", "Annulé", "Voyageur 1", "Trajet 1 (Gare → Destination)", "Voyageur 2", "Trajet 2 (Gare → Destination)", "Date demande", "Dernière MAJ"];
+      const rows = (demandes || []).map((d: any) => {
+        const t1 = trajetMap.get(d.from_trajet_id);
+        const t2 = trajetMap.get(d.to_trajet_id);
+        return [
+          d.status,
+          d.was_cancelled ? "Oui" : "Non",
+          profileMap.get(d.from_profile_id) || d.from_profile_id,
+          t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
+          profileMap.get(d.to_profile_id) || d.to_profile_id,
+          t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
+          new Date(Number(d.created_at)).toLocaleDateString("fr-FR"),
+          new Date(Number(d.updated_at)).toLocaleDateString("fr-FR"),
+        ];
+      });
+
+      values = [header, ...rows];
+      exportCount = rows.length;
     } else {
       // --- Users export ---
       sheetTab = "Utilisateurs";
