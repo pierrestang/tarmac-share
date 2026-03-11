@@ -197,7 +197,7 @@ const Trajets = () => {
             <AccordionContent className="pt-3">
               {enCours.length === 0 ? (
                 <div className="pb-2">
-                  <span className="text-[14px] text-white">
+                   <span className="text-[14px] text-foreground">
                     Aucune demande pour le moment
                   </span>
                 </div>
