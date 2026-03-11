@@ -25,7 +25,7 @@ import DemandeAccepter from "./pages/DemandeAccepter";
 import DemandeConsulter from "./pages/DemandeConsulter";
 import DemandeHistorique from "./pages/DemandeHistorique";
 import Paiement from "./pages/Paiement";
-import Evaluation from "./pages/Evaluation";
+
 import RepublierAnnonce from "./pages/RepublierAnnonce";
 import ConfirmAnnulation from "./pages/ConfirmAnnulation";
 import Numero from "./pages/Numero";
