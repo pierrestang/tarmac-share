@@ -269,7 +269,7 @@ Deno.serve(async (req) => {
         return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
       };
 
-      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Trajet accepteur (Gare → Destination)", "Date/heure demande", "Date/heure acceptation"];
+      const header = ["Statut", "Résultat", "Annulé", "Envoyeur (demande)", "Date/heure demande", "Trajet envoyeur (Gare → Destination)", "Accepteur (demande)", "Date/heure acceptation", "Trajet accepteur (Gare → Destination)"];
       const rows = (demandes || []).map((d: any) => {
         const t1 = trajetMap.get(d.from_trajet_id);
         const t2 = trajetMap.get(d.to_trajet_id);
@@ -278,11 +278,11 @@ Deno.serve(async (req) => {
           getResultat(d),
           d.was_cancelled ? "Oui" : "Non",
           profileMap.get(d.from_profile_id) || d.from_profile_id,
+          formatDateTime(d.created_at),
           t1 ? `${t1.departure_station} → ${t1.destination} (${t1.date} ${t1.departure_time})` : d.from_trajet_id,
           profileMap.get(d.to_profile_id) || d.to_profile_id,
-          t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
-          formatDateTime(d.created_at),
           formatDateTime(d.updated_at),
+          t2 ? `${t2.departure_station} → ${t2.destination} (${t2.date} ${t2.departure_time})` : d.to_trajet_id,
         ];
       });
 
