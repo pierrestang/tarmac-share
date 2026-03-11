@@ -1,10 +1,16 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/hooks/use-notifications";
 import { useProfiles } from "@/hooks/use-profiles";
 import { useMessages } from "@/hooks/use-messages";
 import { useDemandes } from "@/hooks/use-demandes";
+import { useTrajets } from "@/hooks/use-trajets";
+import { useRepublications } from "@/hooks/use-republications";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { NotificationItem } from "@/components/NotificationItem";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import type { Notification } from "@/types/notification";
 
 export function NotificationList() {
