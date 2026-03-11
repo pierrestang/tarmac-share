@@ -93,7 +93,7 @@ const Connexion = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-auto py-4 disabled:opacity-100 rounded-t-none rounded-b-md"
+              className="w-full h-auto py-4 disabled:opacity-100 !rounded-none"
             >
               {loading ? "Connexion..." : "Se connecter"}
             </Button>
