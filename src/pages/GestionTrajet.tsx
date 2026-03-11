@@ -210,6 +210,9 @@ const GestionTrajet = () => {
       {/* End trip dialog */}
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
         <AlertDialogContent className="rounded-md">
+          <button onClick={() => setShowEndDialog(false)} className="p-1 self-start">
+            <ArrowLeft className="h-6 w-6 text-heading" />
+          </button>
           <AlertDialogHeader>
             <AlertDialogTitle>Le trajet a-t-il eu lieu ?</AlertDialogTitle>
             <AlertDialogDescription className="hidden" />
