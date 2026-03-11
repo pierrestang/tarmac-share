@@ -43,11 +43,11 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
   if (isOwn) {
     return (
       <div className="flex flex-col items-end mb-1">
-        <div className="max-w-[85%] px-4 py-2 rounded-2xl" style={{ backgroundColor: "#4E657A" }}>
-          <p className="text-[14px]" style={{ color: "#F0EEE9" }}>{message.content}</p>
+        <div className="max-w-[85%] px-4 py-2 rounded-2xl" style={{ backgroundColor: "#F0EEE9" }}>
+          <p className="text-[14px]" style={{ color: "#4E657A" }}>{message.content}</p>
         </div>
         {showTimestamp && (
-          <p className="text-[11px] text-heading mt-0.5 mr-1">{timestamp}</p>
+          <p className="text-[11px] mt-0.5 mr-1" style={{ color: "#F0EEE9" }}>{timestamp}</p>
         )}
       </div>
     );
@@ -67,12 +67,12 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         ) : (
           <div className="w-8 flex-shrink-0" />
         )}
-        <div className="max-w-[85%] w-fit px-4 py-2 rounded-2xl" style={{ backgroundColor: "#4E657A" }}>
-          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#F0EEE9" }}>{message.content}</p>
+        <div className="max-w-[85%] w-fit px-4 py-2 rounded-2xl" style={{ backgroundColor: "#F0EEE9" }}>
+          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#4E657A" }}>{message.content}</p>
         </div>
       </div>
       {showTimestamp && (
-        <p className="text-[11px] text-heading mt-0.5 ml-10">{timestamp}</p>
+        <p className="text-[11px] mt-0.5 ml-10" style={{ color: "#F0EEE9" }}>{timestamp}</p>
       )}
     </div>
   );
