@@ -218,9 +218,11 @@ Deno.serve(async (req) => {
     const serviceAccount = JSON.parse(serviceAccountJson);
     const accessToken = await getGoogleAccessToken(serviceAccount);
 
-    // Clear existing data
+    const range = `${sheetTab}!A:Z`;
+
+    // Clear existing data in the tab
     await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:Z:clear`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}:clear`,
       {
         method: "POST",
         headers: {
@@ -231,15 +233,16 @@ Deno.serve(async (req) => {
     );
 
     // Write new data
+    const writeRange = `${sheetTab}!A1`;
     const writeRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1?valueInputOption=RAW`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(writeRange)}?valueInputOption=RAW`,
       {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ range: "A1", majorDimension: "ROWS", values }),
+        body: JSON.stringify({ range: writeRange, majorDimension: "ROWS", values }),
       }
     );
 
@@ -247,7 +250,7 @@ Deno.serve(async (req) => {
     if (!writeRes.ok) throw new Error(`Sheets API error: ${JSON.stringify(writeData)}`);
 
     return new Response(
-      JSON.stringify({ success: true, usersExported: rows.length }),
+      JSON.stringify({ success: true, exported: exportCount }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
