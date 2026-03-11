@@ -258,7 +258,7 @@ const Publier = () => {
            {/* Départ (fixe) */}
           <div className="flex items-center px-4 py-4 gap-3">
             <Circle className="h-4 w-4 flex-shrink-0 text-card-foreground" strokeWidth={3} />
-            <span className="text-base md:text-sm">Aéroport de Bordeaux</span>
+            <span className="text-sm">Aéroport de Bordeaux</span>
           </div>
 
           <div className="h-px bg-border mx-4" />
@@ -314,7 +314,7 @@ const Publier = () => {
               form.date ? "text-card-foreground" : "text-muted-foreground"
             )} />
             <div
-              className="flex flex-1 text-base cursor-pointer md:text-sm whitespace-nowrap"
+              className="flex flex-1 text-sm cursor-pointer whitespace-nowrap"
               onClick={() => setDateSheetOpen(true)}
             >
               {form.date ? (() => {
@@ -414,10 +414,10 @@ const Publier = () => {
               className="flex items-center gap-2 cursor-pointer flex-1"
               onClick={() => setTimeSheetOpen(true)}
             >
-              <span className={cn(
-                "text-base md:text-sm whitespace-nowrap",
-                !form.departureTime && "text-muted-foreground"
-              )}>
+               <span className={cn(
+                 "text-sm whitespace-nowrap",
+                 !form.departureTime && "text-muted-foreground"
+               )}>
                 {form.departureTime || "Heure"}
               </span>
             </div>
@@ -519,7 +519,7 @@ const Publier = () => {
             onClick={() => setCompanionsSheetOpen(true)}
           >
             <CircleUserRound className="h-4 w-4 flex-shrink-0 text-card-foreground" />
-            <span className="text-base md:text-sm">
+            <span className="text-sm">
               {form.companions === "1" ? "1 voyageur" : `${form.companions} voyageurs`}
             </span>
           </div>
@@ -577,10 +577,10 @@ const Publier = () => {
               "h-4 w-4 flex-shrink-0",
               currentCapacity > 0 ? "text-card-foreground" : "text-muted-foreground"
             )} />
-            <span className={cn(
-              "text-base md:text-sm",
-              currentCapacity === 0 && "text-muted-foreground"
-            )}>
+             <span className={cn(
+               "text-sm",
+               currentCapacity === 0 && "text-muted-foreground"
+             )}>
               {(() => {
                 const parts: string[] = [];
                 if (form.baggage.small > 0) parts.push(`${form.baggage.small} petit${form.baggage.small > 1 ? 's' : ''}`);
