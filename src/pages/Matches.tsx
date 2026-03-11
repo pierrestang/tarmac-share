@@ -245,7 +245,7 @@ const Matches = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-[16px] font-medium text-card-foreground">
+                  <span className="text-[16px] font-semibold text-card-foreground">
                     {profile.firstName}
                     {trajet.companions > 1 && (
                       <span className="text-muted-foreground font-normal">
