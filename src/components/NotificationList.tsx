@@ -94,7 +94,9 @@ export function NotificationList() {
         }
         break;
       case "cancellation":
-        navigate(`/republier-annonce?demandeId=${notification.demandeId}`);
+        setExpandedCancellationId(
+          expandedCancellationId === notification.id ? null : notification.id
+        );
         break;
     }
   };
