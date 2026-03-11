@@ -45,8 +45,7 @@ const ConversationItem = ({
         </div>
         
         <span className={cn(
-          "text-[16px] text-card-foreground",
-          isUnread ? "font-semibold" : "font-medium"
+          "text-[16px] font-semibold text-card-foreground"
         )}>
           {otherProfile.firstName}
         </span>
