@@ -42,11 +42,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const url = new URL(req.url);
-    const days = parseInt(url.searchParams.get("days") || "7");
-    const now = Date.now();
-    const periodStart = now - days * 24 * 60 * 60 * 1000;
-
+    // No period filter — total stats
     // Fetch all data needed
     const [trajetsRes, demandesRes, ratingsRes] = await Promise.all([
       supabase.from("trajets").select("*"),
