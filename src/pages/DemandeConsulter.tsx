@@ -154,7 +154,7 @@ const DemandeConsulter = () => {
             </Avatar>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-[16px] font-medium">
+                <span className="text-[16px] font-semibold">
                   {myProfile.firstName}
                 </span>
                 {demande.status === "refused" && isSender && (
