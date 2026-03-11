@@ -170,6 +170,7 @@ const Evaluation = () => {
     navigate("/messages", { replace: true });
   };
 
+  return (
     <div className="flex flex-col min-h-full">
       <div className="flex flex-col gap-2 pt-6 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 self-start">
