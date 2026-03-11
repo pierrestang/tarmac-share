@@ -28,7 +28,7 @@ const ScoreDeMatching = () => {
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
           <CardContent className="p-4 text-[14px] leading-relaxed" style={{ color: "#3D2B3D" }}>
-            <p className="text-[18px] font-semibold mb-2">Comment calculons-nous votre compatibilité ?</p>
+            <p className="text-[14px] font-semibold mb-2">Comment calculons-nous votre compatibilité ?</p>
             <p>
               Pour vous garantir un trajet fluide et économique, Tarmac analyse chaque demande en temps réel afin d'établir un score de compatibilité sur 100 points, basé sur deux piliers essentiels :
             </p>
