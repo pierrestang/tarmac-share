@@ -46,7 +46,7 @@ const ConversationList = ({
         return (
           <div key={conversation.id} className="flex flex-col gap-1">
             {date && (
-              <p className="text-[16px] font-semibold">{date}</p>
+              <p className="text-[18px] font-semibold">{date}</p>
             )}
             <ConversationItem
               conversation={conversation}
