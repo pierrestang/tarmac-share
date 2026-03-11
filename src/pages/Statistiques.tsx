@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, Upload } from "lucide-react";
+import { ArrowLeft, Upload } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
@@ -109,30 +109,6 @@ const Statistiques = () => {
     fetchStats();
   }, [authorized, days]);
 
-  const exportCsv = () => {
-    if (!data) return;
-    const rows = [
-      ["Métrique", "Valeur"],
-      ["Annonces publiées", data.kpis.trajetsPublies],
-      ["Nombre de matchs", data.kpis.matchsConfirmes],
-      ["Taux de match (%)", data.kpis.matchRate],
-      ["Trajets complétés", data.kpis.trajetsCompletes],
-      ["Trajets complétés (%)", data.kpis.trajetsCompletesPct],
-      ["Trajets réalisés", data.kpis.trajetsRealises],
-      ["Trajets réalisés (%)", data.kpis.tauxRealises],
-      ["Nombre d'annulations", data.kpis.annulations],
-      ["Taux annulation (%)", data.kpis.tauxAnnulation],
-      ["Non réalisés (hors annulation)", data.kpis.nonRealises],
-      ["Non réalisés (hors annulation) (%)", data.kpis.tauxNonRealises],
-    ];
-    const csv = rows.map(r => r.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `stats-${days}j.csv`;
-    a.click();
-  };
-
   if (!authorized) return null;
 
   return (
@@ -220,47 +196,41 @@ const Statistiques = () => {
 
 
               {/* Export */}
-              <div className="flex gap-2">
-                <Button onClick={exportCsv} className="flex-1 flex items-center gap-2 rounded-full">
-                  <Download size={16} /> CSV
-                </Button>
-                <Button
-                  onClick={async () => {
-                    setExporting(true);
-                    try {
-                      const { data: { session } } = await supabase.auth.getSession();
-                      if (!session) return;
-                      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=stats&days=${days}`;
-                      const res = await fetch(url, {
-                        headers: {
-                          Authorization: `Bearer ${session.access_token}`,
-                          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-                        },
-                      });
-                      if (!res.ok) throw new Error("Export failed");
-                      toast({
-                        title: "Statistiques exportées vers Google Sheets",
-                        className: "bg-transparent border-0 shadow-none",
-                        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
-                      });
-                    } catch (e) {
-                      toast({
-                        title: "Erreur lors de l'export",
-                        className: "bg-transparent border-0 shadow-none",
-                        style: { backgroundColor: '#E34454', color: '#F0EEE9' },
-                      });
-                      console.error(e);
-                    } finally {
-                      setExporting(false);
-                    }
-                  }}
-                  disabled={exporting}
-                  variant="outline"
-                  className="flex-1 flex items-center gap-2 rounded-full"
-                >
-                  <Upload size={16} /> {exporting ? "Export..." : "Google Sheets"}
-                </Button>
-              </div>
+              <Button
+                onClick={async () => {
+                  setExporting(true);
+                  try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) return;
+                    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/export-users-gsheet?type=stats&days=${days}`;
+                    const res = await fetch(url, {
+                      headers: {
+                        Authorization: `Bearer ${session.access_token}`,
+                        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+                      },
+                    });
+                    if (!res.ok) throw new Error("Export failed");
+                    toast({
+                      title: "Statistiques exportées vers Google Sheets",
+                      className: "bg-transparent border-0 shadow-none",
+                      style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+                    });
+                  } catch (e) {
+                    toast({
+                      title: "Erreur lors de l'export",
+                      className: "bg-transparent border-0 shadow-none",
+                      style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+                    });
+                    console.error(e);
+                  } finally {
+                    setExporting(false);
+                  }
+                }}
+                disabled={exporting}
+                className="w-full flex items-center gap-2 rounded-full"
+              >
+                <Upload size={16} /> {exporting ? "Export en cours..." : "Exporter les statistiques"}
+              </Button>
 
             </>
           ) : (
