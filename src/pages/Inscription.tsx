@@ -28,6 +28,7 @@ const Inscription = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [confirmationSent, setConfirmationSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   if (user) {
     navigate("/trajets", { replace: true });
