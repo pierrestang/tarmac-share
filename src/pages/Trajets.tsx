@@ -241,7 +241,7 @@ const Trajets = () => {
                 En attente
               </AccordionTrigger>
             </div>
-            <AccordionContent className="pt-3 pb-0">
+            <AccordionContent className="pt-4 pb-0">
               {!hasEnAttenteContent ? null : (
                 <div className="flex flex-col gap-2">
                   {/* Demandes en attente */}
