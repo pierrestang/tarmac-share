@@ -215,7 +215,7 @@ const Trajets = () => {
                     return (
                       <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
-                          <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                          <p className="text-[18px] font-semibold text-heading">{formattedDate}</p>
                         )}
                         <DemandeCard
                           demande={demande}
@@ -263,7 +263,7 @@ const Trajets = () => {
                     return (
                       <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
-                          <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                          <p className="text-[18px] font-semibold text-heading">{formattedDate}</p>
                         )}
                         <DemandeCard
                           demande={demande}
@@ -289,7 +289,7 @@ const Trajets = () => {
                     
                     return (
                       <div key={trajet.id} className="flex flex-col gap-3">
-                        <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                        <p className="text-[18px] font-semibold text-heading">{formattedDate}</p>
                         <MonTrajetCard
                           trajet={trajet}
                           profile={activeProfile!}
@@ -334,7 +334,7 @@ const Trajets = () => {
                     return (
                       <div key={demande.id} className="flex flex-col gap-3">
                         {formattedDate && (
-                          <p className="text-[16px] font-semibold text-heading">{formattedDate}</p>
+                          <p className="text-[18px] font-semibold text-heading">{formattedDate}</p>
                         )}
                         <DemandeCard
                           demande={demande}
