@@ -286,7 +286,7 @@ const Matches = () => {
             <h2 className="text-[18px] font-semibold text-heading">Voyageur(s)</h2>
             
             {/* Cartes voyageurs */}
-            {matches.length === 0 ? (
+            {!matchesLoaded ? null : matches.length === 0 ? (
               <p className="text-center text-heading py-4">
                 Pas de passagers pour ce créneau... pour l'instant !
               </p>
