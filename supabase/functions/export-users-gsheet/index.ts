@@ -216,7 +216,7 @@ Deno.serve(async (req) => {
       const { data: demandes, error: demandesError } = await supabase
         .from("demandes")
         .select("*")
-        .in("status", ["pending", "accepted", "completed"])
+        .in("status", ["pending", "accepted", "completed", "refused"])
         .order("created_at", { ascending: false });
 
       if (demandesError) throw demandesError;
