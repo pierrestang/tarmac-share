@@ -312,11 +312,10 @@ const Inscription = () => {
         </Card>
       </div>
 
-      {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -324,40 +323,6 @@ const Inscription = () => {
           e.target.value = "";
         }}
       />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        capture="user"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handlePhotoSelected(file);
-          e.target.value = "";
-        }}
-      />
-
-      {/* Photo choice dialog */}
-      <Dialog open={showPhotoDialog} onOpenChange={setShowPhotoDialog}>
-        <DialogContent className="max-w-[280px] rounded-xl p-0 gap-0">
-          <DialogTitle className="sr-only">Ajouter une photo</DialogTitle>
-          <button
-            type="button"
-            onClick={() => cameraInputRef.current?.click()}
-            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
-          >
-            Prendre une photo
-          </button>
-          <div className="h-px bg-border" />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
-          >
-            Importer une photo
-          </button>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };
