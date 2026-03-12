@@ -25,12 +25,12 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
+  const signUp = async (email: string, password: string, firstName: string, lastName: string, photo?: string) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { first_name: firstName, last_name: lastName },
+        data: { first_name: firstName, last_name: lastName, ...(photo ? { photo } : {}) },
         emailRedirectTo: `${window.location.origin}/comment-ca-marche`,
       },
     });
