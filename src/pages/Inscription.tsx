@@ -190,7 +190,7 @@ const Inscription = () => {
                 ) : (
                   <Camera size={28} className="text-muted-foreground" />
                 )}
-              </button>
+              </div>
             </div>
 
             <div className="h-px bg-border mx-4" />
