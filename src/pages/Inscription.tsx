@@ -33,9 +33,7 @@ const Inscription = () => {
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [showPhotoDialog, setShowPhotoDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   if (user) {
     navigate("/trajets", { replace: true });
