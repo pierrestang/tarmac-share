@@ -14,11 +14,6 @@ import {
 } from "@/lib/date-time-utils";
 import { parse, format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 const Inscription = () => {
   const navigate = useNavigate();
@@ -38,9 +33,7 @@ const Inscription = () => {
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [showPhotoDialog, setShowPhotoDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   if (user) {
     navigate("/trajets", { replace: true });
@@ -52,7 +45,6 @@ const Inscription = () => {
     const reader = new FileReader();
     reader.onload = (e) => setPhotoPreview(e.target?.result as string);
     reader.readAsDataURL(file);
-    setShowPhotoDialog(false);
   };
 
   const uploadPhoto = async (): Promise<string | null> => {
@@ -177,10 +169,9 @@ const Inscription = () => {
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             {/* Photo picker */}
             <div className="flex justify-center py-6">
-              <button
-                type="button"
-                onClick={() => setShowPhotoDialog(true)}
-                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors"
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors cursor-pointer"
               >
                 {photoPreview ? (
                   <img
@@ -191,7 +182,7 @@ const Inscription = () => {
                 ) : (
                   <Camera size={28} className="text-muted-foreground" />
                 )}
-              </button>
+              </div>
             </div>
 
             <div className="h-px bg-border mx-4" />
@@ -313,11 +304,10 @@ const Inscription = () => {
         </Card>
       </div>
 
-      {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -325,40 +315,6 @@ const Inscription = () => {
           e.target.value = "";
         }}
       />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        capture="user"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handlePhotoSelected(file);
-          e.target.value = "";
-        }}
-      />
-
-      {/* Photo choice dialog */}
-      <Dialog open={showPhotoDialog} onOpenChange={setShowPhotoDialog}>
-        <DialogContent className="max-w-[280px] rounded-xl p-0 gap-0">
-          <DialogTitle className="sr-only">Ajouter une photo</DialogTitle>
-          <button
-            type="button"
-            onClick={() => cameraInputRef.current?.click()}
-            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
-          >
-            Prendre une photo
-          </button>
-          <div className="h-px bg-border" />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
-          >
-            Importer une photo
-          </button>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };
