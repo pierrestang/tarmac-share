@@ -180,7 +180,7 @@ const Inscription = () => {
               <button
                 type="button"
                 onClick={() => setShowPhotoDialog(true)}
-                className="relative w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/30 hover:border-muted-foreground/50 transition-colors"
+                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors"
               >
                 {photoPreview ? (
                   <img
