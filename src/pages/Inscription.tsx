@@ -177,10 +177,9 @@ const Inscription = () => {
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             {/* Photo picker */}
             <div className="flex justify-center py-6">
-              <button
-                type="button"
-                onClick={() => setShowPhotoDialog(true)}
-                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors"
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors cursor-pointer"
               >
                 {photoPreview ? (
                   <img
