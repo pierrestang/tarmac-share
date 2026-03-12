@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Camera } from "lucide-react";
 import {
   formatBirthDateInput,
   birthDateInputToStorageFormat,
@@ -13,6 +14,11 @@ import {
 } from "@/lib/date-time-utils";
 import { parse, format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const Inscription = () => {
   const navigate = useNavigate();
@@ -30,14 +36,44 @@ const Inscription = () => {
   const [confirmationSent, setConfirmationSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [showPhotoDialog, setShowPhotoDialog] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+
   if (user) {
     navigate("/trajets", { replace: true });
     return null;
   }
 
+  const handlePhotoSelected = (file: File) => {
+    setPhotoFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => setPhotoPreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+    setShowPhotoDialog(false);
+  };
+
+  const uploadPhoto = async (): Promise<string | null> => {
+    if (!photoFile) return null;
+    const ext = photoFile.name.split(".").pop() || "jpg";
+    const fileName = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage
+      .from("profile-photos")
+      .upload(fileName, photoFile, { contentType: photoFile.type });
+    if (error) return null;
+    const { data } = supabase.storage.from("profile-photos").getPublicUrl(fileName);
+    return data.publicUrl;
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (!photoFile) {
+      setError("Veuillez ajouter une photo de profil.");
+      return;
+    }
     if (!firstName.trim()) {
       setError("Veuillez renseigner votre prénom.");
       return;
@@ -74,7 +110,15 @@ const Inscription = () => {
       return;
     }
     setLoading(true);
-    const { error } = await signUp(email, password, firstName.trim(), lastName.trim());
+
+    const photoUrl = await uploadPhoto();
+    if (!photoUrl) {
+      setError("Erreur lors de l'envoi de la photo. Veuillez réessayer.");
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(email, password, firstName.trim(), lastName.trim(), photoUrl);
     if (error) {
       setError(error.message);
     } else {
@@ -131,12 +175,32 @@ const Inscription = () => {
       <div className="flex justify-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
+            {/* Photo picker */}
+            <div className="flex justify-center py-6">
+              <button
+                type="button"
+                onClick={() => setShowPhotoDialog(true)}
+                className="relative w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-dashed border-muted-foreground/30 hover:border-muted-foreground/50 transition-colors"
+              >
+                {photoPreview ? (
+                  <img
+                    src={photoPreview}
+                    alt="Photo de profil"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Camera size={28} className="text-muted-foreground" />
+                )}
+              </button>
+            </div>
+
+            <div className="h-px bg-border mx-4" />
+
             <div className="px-4 py-4">
               <Input
                 placeholder="Prénom"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -148,7 +212,6 @@ const Inscription = () => {
                 placeholder="Nom"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -208,7 +271,6 @@ const Inscription = () => {
                 placeholder="Adresse email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
               />
             </div>
@@ -221,7 +283,6 @@ const Inscription = () => {
                 placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
               />
               {password && (
@@ -252,6 +313,52 @@ const Inscription = () => {
         </Card>
       </div>
 
+      {/* Hidden file inputs */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handlePhotoSelected(file);
+          e.target.value = "";
+        }}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        capture="user"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handlePhotoSelected(file);
+          e.target.value = "";
+        }}
+      />
+
+      {/* Photo choice dialog */}
+      <Dialog open={showPhotoDialog} onOpenChange={setShowPhotoDialog}>
+        <DialogContent className="max-w-[280px] rounded-xl p-0 gap-0">
+          <DialogTitle className="sr-only">Ajouter une photo</DialogTitle>
+          <button
+            type="button"
+            onClick={() => cameraInputRef.current?.click()}
+            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
+          >
+            Prendre une photo
+          </button>
+          <div className="h-px bg-border" />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full py-4 text-[14px] text-card-foreground hover:bg-muted transition-colors"
+          >
+            Importer une photo
+          </button>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
