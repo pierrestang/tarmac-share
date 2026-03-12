@@ -690,7 +690,7 @@ const Publier = () => {
           {/* Bouton Publier */}
           <Button
             onClick={handleSubmit}
-            className="w-full rounded-none h-auto py-4 disabled:opacity-100 bg-[#2563EB] border-[#2563EB] text-white hover:bg-[#1d4ed8]"
+            className="w-full rounded-none h-auto py-4 disabled:opacity-100"
             disabled={!isFormValid}
           >
             {editTrajetId ? "Mettre à jour" : "Publier"}
