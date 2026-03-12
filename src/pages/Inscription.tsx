@@ -14,11 +14,6 @@ import {
 } from "@/lib/date-time-utils";
 import { parse, format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 const Inscription = () => {
   const navigate = useNavigate();
