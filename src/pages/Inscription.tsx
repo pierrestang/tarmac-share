@@ -45,7 +45,6 @@ const Inscription = () => {
     const reader = new FileReader();
     reader.onload = (e) => setPhotoPreview(e.target?.result as string);
     reader.readAsDataURL(file);
-    setShowPhotoDialog(false);
   };
 
   const uploadPhoto = async (): Promise<string | null> => {
