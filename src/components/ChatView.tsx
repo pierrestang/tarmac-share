@@ -79,7 +79,7 @@ const ChatView = ({
           type="button"
           onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}&ratedProfileId=${otherProfile.id}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
           className="h-8 w-8 p-0 flex items-center justify-center"
-          style={{ color: "#5170F6" }}>
+          style={{ color: "#1F4591" }}>
             <MoreVertical className="h-5 w-5" />
           </button>
       </div>
