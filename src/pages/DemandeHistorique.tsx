@@ -33,18 +33,15 @@ const DemandeHistorique = () => {
   const { notifications } = useNotifications();
   const { getConversationByDemandeId } = useMessages();
 
-  // Ratings state: map of raterId -> wasUseful
   const [ratings, setRatings] = useState<Record<string, boolean>>({});
   const [ratingsLoaded, setRatingsLoaded] = useState(false);
 
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
-  // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
 
-  // Fetch ratings for this demande's conversation
   useEffect(() => {
     if (!demandeId) { setRatingsLoaded(true); return; }
     const conversation = getConversationByDemandeId(demandeId);
@@ -63,12 +60,9 @@ const DemandeHistorique = () => {
       });
   }, [demandeId, getConversationByDemandeId]);
 
-  // Determine if current user is sender or recipient
   const isSender = demande?.fromProfileId === currentProfileId;
-
   const hasSnapshot = demande?.snapshot != null;
 
-  // Helper to try loading trajet from localStorage or archive as fallback
   const getFallbackTrajet = (trajetId: string) => {
     const hookResult = getTrajetById(trajetId);
     if (hookResult) return hookResult;
@@ -122,7 +116,6 @@ const DemandeHistorique = () => {
     navigate("/trajets");
   };
 
-  // Determine who cancelled by checking cancellation notification
   const cancellerProfileId = (() => {
     if (!demande) return null;
     const cancellationNotif = notifications.find(
@@ -144,7 +137,6 @@ const DemandeHistorique = () => {
         <h1 className="text-[24px] font-semibold">Consulter le trajet.</h1>
       </div>
 
-      {/* Date */}
       <p className="text-[16px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
@@ -226,7 +218,6 @@ const DemandeHistorique = () => {
         </CardContent>
       </Card>
 
-      {/* Voyageur Card */}
       <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">Voyageur(s)</h2>
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
@@ -303,7 +294,7 @@ const DemandeHistorique = () => {
               navigate(`/messages?conversationId=${conversation.id}`);
             }
           }}
-          className="w-full py-3 text-center text-[16px] font-semibold rounded-b-xl border-t border-border/40" style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+          className="w-full py-3 text-center text-[16px] font-semibold rounded-b-xl border-t border-border/40" style={{ backgroundColor: "#1F4591", color: "#FFFFFF" }}
         >
           Voir les messages
         </button>

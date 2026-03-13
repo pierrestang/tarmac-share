@@ -8,61 +8,56 @@
 All colors MUST be HSL.
 
 DESIGN SYSTEM RULES (mobile-first):
-- Page background: #F9FAFB (gris très clair)
+- Page background: #5170F6 (bleu)
 - Headers (top/bottom): #FFFFFF (blanc)
 - Cards/Encarts: #FFFFFF (blanc), bordure fine (0.5px), coins arrondis md
-- Buttons: bg #DBEAFE, border #2563EB
-- Text: neutral colors only (black, gray)
+- Buttons: bg #1F4591
+- Text: #5170F6 for content text
 - Borders: thin (0.5px), subtle
-- Forbidden: green, unspecified colors
 */
 
 @layer base {
   :root {
-    /* Global background: #89B1D6 */
-    --background: 210 46% 69%;
-    /* Texte #F0EEE9 pour lisibilité sur fond bleu */
-    --foreground: 40 18% 93%;
+    /* Global background: #5170F6 */
+    --background: 228 91% 64%;
+    /* Texte #FFFFFF pour lisibilité sur fond bleu */
+    --foreground: 0 0% 100%;
 
-    /* Cards: #F0EEE9 (beige clair) */
-    --card: 40 18% 93%;
+    /* Cards: #FFFFFF (blanc) */
+    --card: 0 0% 100%;
     
-    /* Headings: #F2F5F9 */
-    --heading: 40 18% 93%;
-    --card-foreground: 207 22% 39%;
+    /* Headings: #FFFFFF */
+    --heading: 0 0% 100%;
+    --card-foreground: 228 91% 64%;
 
-    --popover: 40 18% 93%;
-    --popover-foreground: 207 22% 39%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 91% 64%;
 
-    /* Button border: #2563EB */
-    --primary: 221 83% 53%;
-    --primary-foreground: 222 47% 11%;
+    /* Primary */
+    --primary: 228 91% 64%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 20% 96%;
-    --secondary-foreground: 207 22% 39%;
+    --secondary-foreground: 228 91% 64%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 207 22% 39%;
+    --muted-foreground: 228 91% 64%;
 
     --accent: 210 20% 96%;
-    --accent-foreground: 207 22% 39%;
+    --accent-foreground: 228 91% 64%;
 
     --destructive: 354 74% 58%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --ring: 228 91% 64%;
 
-    /* Buttons: #4E657A avec texte blanc */
-    --button-bg: 207 22% 39%;
-    --button-border: 207 22% 39%;
-    --button-fg: 40 18% 93%;
+    /* Buttons: #1F4591 avec texte blanc */
+    --button-bg: 222 65% 35%;
+    --button-border: 222 65% 35%;
+    --button-fg: 0 0% 100%;
     
-    /* Primary aussi pour cohérence */
-    --primary: 207 22% 39%;
-    --primary-foreground: 0 0% 100%;
-
     /* Rating star color: amber */
     --star: 38 92% 50%;
     

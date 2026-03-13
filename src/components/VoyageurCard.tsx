@@ -127,10 +127,10 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
       {/* Dual buttons for accept/refuse */}
       {showDualButtons && (
         <div className="flex gap-3 px-4 pb-4">
-          <button onClick={onAccept} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+          <button onClick={onAccept} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
             Accepter
           </button>
-          <button onClick={onRefuse} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+          <button onClick={onRefuse} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
             Refuser
           </button>
         </div>
@@ -162,7 +162,7 @@ export function VoyageurCard({ match, showButton = true, title, buttonLabel, onB
             }
           }}
           className="w-full py-3 text-center text-[16px] font-semibold rounded-b-xl border-t border-border/40"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}
+          style={{ backgroundColor: "#1F4591", color: "#FFFFFF" }}
         >
           Voir les messages
         </button>

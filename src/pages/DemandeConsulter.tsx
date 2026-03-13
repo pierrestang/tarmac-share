@@ -52,21 +52,17 @@ const DemandeConsulter = () => {
 
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
-  // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
   const activeProfile = getActiveProfile();
   const currentProfileId = activeProfile?.id || "";
 
-  // Determine if current user is sender or recipient
   const isSender = demande?.fromProfileId === currentProfileId;
 
-  // Get my data (current user's perspective)
   const myTrajet = demande 
     ? getTrajetById(isSender ? demande.fromTrajetId : demande.toTrajetId) 
     : null;
   const myProfile = activeProfile;
 
-  // Get voyageur data (the other person)
   const voyageurTrajet = demande 
     ? getTrajetById(isSender ? demande.toTrajetId : demande.fromTrajetId) 
     : null;
@@ -74,7 +70,6 @@ const DemandeConsulter = () => {
     ? getProfileById(isSender ? demande.toProfileId : demande.fromProfileId) 
     : null;
 
-  // Calculate score (detourMin not available here, use 0 as fallback)
   const compatibilityScore = myTrajet && voyageurTrajet
     ? calculateMatchScore(myTrajet, voyageurTrajet, 0)
     : 0;
@@ -100,7 +95,6 @@ const DemandeConsulter = () => {
         console.error("Erreur notification:", e);
       }
     }
-    // Always redirect to /trajets after withdraw attempt
     navigate("/trajets");
   };
 
@@ -108,7 +102,6 @@ const DemandeConsulter = () => {
     return null;
   }
 
-  // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler = {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
@@ -127,7 +120,6 @@ const DemandeConsulter = () => {
         <h1 className="text-[24px] font-semibold w-full">Consulter le trajet.</h1>
       </div>
 
-      {/* Date */}
       <p className="text-[18px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
@@ -139,12 +131,8 @@ const DemandeConsulter = () => {
         })()}
       </p>
 
-
-
-      {/* Carte Mon trajet */}
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
-          {/* Profile row */}
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {myProfile.photo ? (
@@ -184,7 +172,6 @@ const DemandeConsulter = () => {
             </div>
           </div>
 
-          {/* Details */}
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
@@ -208,7 +195,6 @@ const DemandeConsulter = () => {
         </CardContent>
       </Card>
 
-      {/* Voyageur(s) section */}
       <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">Voyageur(s)</h2>
       <VoyageurCard 
         match={voyageurMatch} 
@@ -233,7 +219,6 @@ const DemandeConsulter = () => {
         ) : undefined}
       />
 
-      {/* Withdraw Confirmation Dialog */}
       <AlertDialog open={showWithdrawDialog} onOpenChange={setShowWithdrawDialog}>
         <AlertDialogContent className="rounded-md">
           <AlertDialogHeader>
@@ -245,10 +230,10 @@ const DemandeConsulter = () => {
             )}
           </AlertDialogHeader>
           <div className="flex gap-3 pt-2">
-            <button onClick={() => { handleWithdraw(); setShowWithdrawDialog(false); }} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+            <button onClick={() => { handleWithdraw(); setShowWithdrawDialog(false); }} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
               Oui
             </button>
-            <button onClick={() => setShowWithdrawDialog(false)} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+            <button onClick={() => setShowWithdrawDialog(false)} className="flex-1 rounded-md px-4 py-3 text-[16px] font-semibold border-0" style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
               Non
             </button>
           </div>
