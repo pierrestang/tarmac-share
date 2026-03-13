@@ -259,7 +259,7 @@ const Inscription = () => {
             <div className="px-4 py-4">
               <Input
                 type="email"
-                placeholder="Adresse email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
