@@ -92,10 +92,10 @@ const ChatView = ({
           <HelpCircle className="h-4 w-4" style={{ color: "#1F4591" }} />
         </button>
         <CardContent className="p-4 pr-8">
-          <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>
+           <p className="text-[14px] font-semibold mb-1" style={{ color: "#1F4591" }}>
             Point de rencontre recommandé 📍
           </p>
-          <p className="text-[14px] italic" style={{ color: "#5170F6" }}>
+          <p className="text-[14px] italic" style={{ color: "#1F4591" }}>
             En face du Hall B, au niveau de la station de Tram A (passage piéton central).
           </p>
         </CardContent>
