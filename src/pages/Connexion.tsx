@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -12,7 +13,6 @@ const Connexion = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   if (user) {
@@ -20,17 +20,37 @@ const Connexion = () => {
     return null;
   }
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+  const handleLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!email.trim()) {
+      toast({
+        title: "Veuillez renseigner votre email.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
+      return;
+    }
+    if (!password) {
+      toast({
+        title: "Veuillez renseigner votre mot de passe.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
+      return;
+    }
     setLoading(true);
     const { error } = await signIn(email, password);
     if (error) {
-      setError(
-        error.message === "Invalid login credentials"
-          ? "Email ou mot de passe incorrect."
-          : error.message
-      );
+      const msg = error.message === "Invalid login credentials"
+        ? "Email ou mot de passe incorrect."
+        : error.message === "missing email or phone"
+          ? "Veuillez renseigner votre email."
+          : error.message;
+      toast({
+        title: msg,
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
     } else {
       navigate("/comment-ca-marche", { replace: true });
     }
@@ -86,9 +106,6 @@ const Connexion = () => {
               )}
             </div>
 
-            {error && (
-              <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
-            )}
 
           </form>
         </Card>
