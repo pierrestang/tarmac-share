@@ -69,7 +69,7 @@ const TourDeControle = () => {
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
           {/* Statistiques */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             onClick={() => navigate("/statistiques")}
           >
             Statistiques
