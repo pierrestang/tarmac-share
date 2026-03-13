@@ -104,7 +104,6 @@ const Connexion = () => {
           {loading ? "Connexion..." : "Se connecter"}
         </Button>
       </div>
-      </div>
 
       <button
         type="button"

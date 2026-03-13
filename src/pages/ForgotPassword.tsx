@@ -101,7 +101,6 @@ const ForgotPassword = () => {
           {loading ? "Envoi..." : "Envoyer le lien"}
         </Button>
       </div>
-      </div>
     </section>
   );
 };

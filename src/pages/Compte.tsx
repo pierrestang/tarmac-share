@@ -157,7 +157,6 @@ const Compte = () => {
           Enregistrer
         </Button>
       </div>
-      </div>
 
       {isAdmin && (
         <div className="flex justify-center">
