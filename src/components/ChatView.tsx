@@ -89,7 +89,7 @@ const ChatView = ({
       {/* Meeting point card - always visible */}
       <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#FFFFFF" }}>
         <button type="button" onClick={() => navigate("/retrouvez-vous")} className="absolute top-3 right-3">
-          <HelpCircle className="h-4 w-4" style={{ color: "#5170F6" }} />
+          <HelpCircle className="h-4 w-4" style={{ color: "#1F4591" }} />
         </button>
         <CardContent className="p-4 pr-8">
           <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>
