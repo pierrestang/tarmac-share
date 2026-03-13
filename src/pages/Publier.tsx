@@ -687,16 +687,18 @@ const Publier = () => {
             </SheetContent>
           </Sheet>
 
-          {/* Bouton Publier */}
-          <Button
-            onClick={handleSubmit}
-            className="w-full rounded-none h-auto py-4 disabled:opacity-100"
-            disabled={!isFormValid}
-          >
-            {editTrajetId ? "Mettre à jour" : "Publier"}
-          </Button>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100"
+          disabled={!isFormValid}
+        >
+          {editTrajetId ? "Mettre à jour" : "Publier"}
+        </Button>
       </div>
 
     </section>
