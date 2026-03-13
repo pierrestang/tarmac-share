@@ -519,7 +519,7 @@ const Publier = () => {
             onClick={() => setCompanionsSheetOpen(true)}
           >
             <CircleUserRound className="h-4 w-4 flex-shrink-0 text-card-foreground" />
-            <span className="text-sm">
+            <span className="text-sm font-semibold">
               {form.companions === "1" ? "1 voyageur" : `${form.companions} voyageurs`}
             </span>
           </div>
