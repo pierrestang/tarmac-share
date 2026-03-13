@@ -21,17 +21,37 @@ const Connexion = () => {
     return null;
   }
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+  const handleLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!email.trim()) {
+      toast({
+        title: "Veuillez renseigner votre email.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
+      return;
+    }
+    if (!password) {
+      toast({
+        title: "Veuillez renseigner votre mot de passe.",
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
+      return;
+    }
     setLoading(true);
     const { error } = await signIn(email, password);
     if (error) {
-      setError(
-        error.message === "Invalid login credentials"
-          ? "Email ou mot de passe incorrect."
-          : error.message
-      );
+      const msg = error.message === "Invalid login credentials"
+        ? "Email ou mot de passe incorrect."
+        : error.message === "missing email or phone"
+          ? "Veuillez renseigner votre email."
+          : error.message;
+      toast({
+        title: msg,
+        className: "bg-transparent border-0 shadow-none",
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
+      });
     } else {
       navigate("/comment-ca-marche", { replace: true });
     }
