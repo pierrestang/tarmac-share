@@ -111,7 +111,7 @@ const TourDeControle = () => {
 
           {/* Export annonces */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exportingAnnonces}
             onClick={async () => {
