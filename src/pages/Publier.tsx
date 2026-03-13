@@ -300,7 +300,7 @@ const Publier = () => {
                   setForm((prev) => ({ ...prev, destination: value, destinationCoords: coords }));
                 }}
                 placeholder="Destination"
-                className="border-0 h-auto p-0 bg-transparent"
+                className="border-0 h-auto p-0 bg-transparent font-semibold"
               />
             </div>
           </div>
