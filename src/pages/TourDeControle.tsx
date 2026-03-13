@@ -77,7 +77,7 @@ const TourDeControle = () => {
 
           {/* Export Google Sheets */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exporting}
             onClick={async () => {
