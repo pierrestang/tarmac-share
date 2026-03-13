@@ -297,7 +297,7 @@ const Inscription = () => {
               type="submit"
               disabled={loading}
               className="w-full rounded-none h-auto py-4 disabled:opacity-100 border-0"
-              style={{ backgroundColor: '#15346B', color: '#F0EEE9' }}
+              style={{ backgroundColor: '#1F4591', color: '#F0EEE9' }}
             >
               {loading ? "Création..." : "Créer mon compte"}
             </Button>
