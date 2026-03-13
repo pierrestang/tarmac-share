@@ -231,7 +231,7 @@ const Inscription = () => {
                     if (birthDate) setIsEditingBirth(false);
                   }}
                   placeholder="Date de naissance"
-                  className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                  className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
                 />
               ) : (
                 <div
