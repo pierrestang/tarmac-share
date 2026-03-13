@@ -168,7 +168,7 @@ const Inscription = () => {
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             {/* Photo picker */}
-            <div className="px-4 py-4 flex items-center justify-center">
+            <div className="px-4 py-2 flex items-center justify-center">
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer"
@@ -259,7 +259,7 @@ const Inscription = () => {
             <div className="px-4 py-4">
               <Input
                 type="email"
-                placeholder="Adresse email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
