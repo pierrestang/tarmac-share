@@ -71,15 +71,15 @@ const ChatView = ({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#FFFFFF" }}>
-        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#5170F6" }}>
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#1F4591" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold flex-1" style={{ color: "#5170F6" }}>{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1" style={{ color: "#1F4591" }}>{otherProfile.firstName}</span>
         <button
           type="button"
           onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}&ratedProfileId=${otherProfile.id}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
           className="h-8 w-8 p-0 flex items-center justify-center"
-          style={{ color: "#5170F6" }}>
+          style={{ color: "#1F4591" }}>
             <MoreVertical className="h-5 w-5" />
           </button>
       </div>
@@ -89,13 +89,13 @@ const ChatView = ({
       {/* Meeting point card - always visible */}
       <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#FFFFFF" }}>
         <button type="button" onClick={() => navigate("/retrouvez-vous")} className="absolute top-3 right-3">
-          <HelpCircle className="h-4 w-4" style={{ color: "#5170F6" }} />
+          <HelpCircle className="h-4 w-4" style={{ color: "#1F4591" }} />
         </button>
         <CardContent className="p-4 pr-8">
-          <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>
+           <p className="text-[14px] font-semibold mb-1" style={{ color: "#1F4591" }}>
             Point de rencontre recommandé 📍
           </p>
-          <p className="text-[14px] italic" style={{ color: "#5170F6" }}>
+          <p className="text-[14px] italic" style={{ color: "#1F4591" }}>
             En face du Hall B, au niveau de la station de Tram A (passage piéton central).
           </p>
         </CardContent>
@@ -151,7 +151,7 @@ const ChatView = ({
                 return (
                   <div key={message.id} className="flex justify-center my-2">
                     <div className="w-full px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
-                      <p className="text-[14px] italic text-left" style={{ color: "#5170F6" }}>
+                       <p className="text-[14px] italic text-left" style={{ color: "#1F4591" }}>
                         {arrivalStatus}
                       </p>
                     </div>
@@ -178,7 +178,7 @@ const ChatView = ({
                   <div className="flex justify-center my-2">
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#FFFFFF" }}>
                         <div className="px-4 py-3">
-                          <p className="text-[14px] italic text-left" style={{ color: "#5170F6" }}>
+                          <p className="text-[14px] italic text-left" style={{ color: "#1F4591" }}>
                             {message.content}
                           </p>
                         </div>
@@ -269,13 +269,13 @@ const ChatView = ({
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Écrire un message..."
-              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#5170F6]"
-              style={{ backgroundColor: "#FFFFFF", color: "#5170F6" }} />
+              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#1F4591]"
+              style={{ backgroundColor: "#FFFFFF", color: "#1F4591" }} />
             <button
               type="submit"
               disabled={!inputText.trim()}
               className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
-              style={{ backgroundColor: "#FFFFFF", color: "#5170F6" }}>
+              style={{ backgroundColor: "#FFFFFF", color: "#1F4591" }}>
               <SendHorizontal className="h-4 w-4" />
             </button>
           </form>

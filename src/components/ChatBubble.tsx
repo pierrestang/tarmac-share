@@ -28,7 +28,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
             "text-[14px] font-normal",
             isBothReady ? "text-left italic" : "text-center",
             isBothReady ? "text-left" : isCancellation ? "text-[#A25B5B]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
-          )} style={isBothReady ? { color: "#5170F6" } : undefined}>
+          )} style={isBothReady ? { color: "#1F4591" } : undefined}>
             {message.content}
           </p>
         </div>
@@ -44,7 +44,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
     return (
       <div className="flex flex-col items-end mb-1">
         <div className="max-w-[85%] px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
-          <p className="text-[14px]" style={{ color: "#5170F6" }}>{message.content}</p>
+          <p className="text-[14px]" style={{ color: "#1F4591" }}>{message.content}</p>
         </div>
         {showTimestamp && (
           <p className="text-[11px] mt-0.5 mr-1" style={{ color: "#FFFFFF" }}>{timestamp}</p>
@@ -68,7 +68,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
           <div className="w-8 flex-shrink-0" />
         )}
         <div className="max-w-[85%] w-fit px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
-          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#5170F6" }}>{message.content}</p>
+          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#1F4591" }}>{message.content}</p>
         </div>
       </div>
       {showTimestamp && (
