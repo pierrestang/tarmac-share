@@ -151,7 +151,7 @@ const ChatView = ({
                 return (
                   <div key={message.id} className="flex justify-center my-2">
                     <div className="w-full px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
-                      <p className="text-[14px] italic text-left" style={{ color: "#5170F6" }}>
+                       <p className="text-[14px] italic text-left" style={{ color: "#1F4591" }}>
                         {arrivalStatus}
                       </p>
                     </div>
