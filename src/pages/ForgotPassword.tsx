@@ -83,19 +83,23 @@ const ForgotPassword = () => {
                 placeholder="Adresse email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-auto py-4 disabled:opacity-100"
-            >
-              {loading ? "Envoi..." : "Envoyer le lien"}
-            </Button>
           </form>
         </Card>
+      </div>
+
+      <div className="flex justify-center px-4">
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+        >
+          {loading ? "Envoi..." : "Envoyer le lien"}
+        </Button>
       </div>
     </section>
   );

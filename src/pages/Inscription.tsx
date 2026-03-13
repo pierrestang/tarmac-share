@@ -192,7 +192,7 @@ const Inscription = () => {
                 placeholder="Prénom"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
@@ -203,7 +203,7 @@ const Inscription = () => {
                 placeholder="Nom"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
@@ -231,7 +231,7 @@ const Inscription = () => {
                     if (birthDate) setIsEditingBirth(false);
                   }}
                   placeholder="Date de naissance"
-                  className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                  className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
                 />
               ) : (
                 <div
@@ -240,7 +240,7 @@ const Inscription = () => {
                     setIsEditingBirth(true);
                     setTimeout(() => birthInputRef.current?.focus(), 0);
                   }}
-                  className="text-[14px] cursor-pointer text-card-foreground"
+                  className="text-[14px] font-semibold cursor-pointer text-card-foreground"
                 >
                   {(() => {
                     try {
@@ -262,7 +262,7 @@ const Inscription = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
@@ -274,7 +274,7 @@ const Inscription = () => {
                 placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0 flex-1"
               />
               {password && (
                 <button

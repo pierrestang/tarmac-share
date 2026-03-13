@@ -129,7 +129,7 @@ const Compte = () => {
                 placeholder="Prénom"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
@@ -140,19 +140,22 @@ const Compte = () => {
                 placeholder="Nom"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0"
               />
             </div>
 
-            <Button
-              onClick={handleSubmit}
-              disabled={!isFormValid || isSubmitting}
-              className="w-full rounded-none h-auto py-4 disabled:opacity-100"
-            >
-              Enregistrer
-            </Button>
           </div>
         </Card>
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          disabled={!isFormValid || isSubmitting}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+        >
+          Enregistrer
+        </Button>
       </div>
 
       {isAdmin && (

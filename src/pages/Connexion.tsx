@@ -59,7 +59,7 @@ const Connexion = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0 flex-1"
               />
               {email && (
                 <button type="button" onClick={() => setEmail("")} className="text-muted-foreground">
@@ -77,7 +77,7 @@ const Connexion = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0 flex-1"
               />
               {password && (
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-muted-foreground">
@@ -90,15 +90,19 @@ const Connexion = () => {
               <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
             )}
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-auto py-4 disabled:opacity-100 !rounded-none"
-            >
-              {loading ? "Connexion..." : "Se connecter"}
-            </Button>
           </form>
         </Card>
+      </div>
+
+      <div className="flex justify-center px-4">
+        <Button
+          type="button"
+          onClick={handleLogin}
+          disabled={loading}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+        >
+          {loading ? "Connexion..." : "Se connecter"}
+        </Button>
       </div>
 
       <button
