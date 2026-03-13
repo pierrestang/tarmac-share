@@ -28,10 +28,10 @@ DESIGN SYSTEM RULES (mobile-first):
     
     /* Headings: #FFFFFF */
     --heading: 0 0% 100%;
-    --card-foreground: 228 91% 64%;
+    --card-foreground: 222 65% 35%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 228 91% 64%;
+    --popover-foreground: 222 65% 35%;
 
     /* Primary */
     --primary: 228 91% 64%;
