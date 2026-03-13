@@ -168,10 +168,10 @@ const Inscription = () => {
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             {/* Photo picker */}
-            <div className="flex justify-center py-6">
+            <div className="px-4 py-4 flex items-center gap-3">
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="relative w-16 h-16 rounded-full bg-muted flex items-center justify-center overflow-hidden transition-colors cursor-pointer"
+                className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer"
               >
                 {photoPreview ? (
                   <img
@@ -180,9 +180,12 @@ const Inscription = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <Camera size={28} className="text-muted-foreground" />
+                  <Camera size={18} className="text-muted-foreground" />
                 )}
               </div>
+              <span className="text-[14px] text-muted-foreground">
+                {photoPreview ? "Modifier la photo" : "Ajouter une photo"}
+              </span>
             </div>
 
             <div className="h-px bg-border mx-4" />
