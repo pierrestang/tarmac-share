@@ -24,8 +24,8 @@ const ConversationList = ({
 }: ConversationListProps) => {
   if (conversations.length === 0) {
     return (
-      <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <p className="text-center text-[14px] italic" style={{ color: "#4E657A" }}>
+      <div className="rounded-md p-4" style={{ backgroundColor: "#FFFFFF" }}>
+        <p className="text-center text-[14px] italic" style={{ color: "#5170F6" }}>
           Aucune conversation pour le moment
         </p>
       </div>

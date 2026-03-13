@@ -39,7 +39,6 @@ const Matches = () => {
 
   const activeProfile = getActiveProfile();
   
-  // Trajets "en cours" de l'utilisateur actif (pour la liste sans trajetId)
   const userTrajets = trajets.filter((t) => {
     if (t.profileId !== activeProfile?.id) return false;
     const hasCompletedDemande = demandes.some(
@@ -55,7 +54,6 @@ const Matches = () => {
       setTrajet(t);
       if (t) {
         (async () => {
-          // Récupérer les trajet IDs déjà matchés (toutes demandes, pas seulement celles de l'utilisateur)
           const { data: matchedIds } = await supabase.rpc("get_matched_trajet_ids");
           const matchedTrajetIds = new Set((matchedIds || []).map((id: string) => id));
 
@@ -65,7 +63,6 @@ const Matches = () => {
             profile: getProfileById(match.trajet.profileId) || match.profile,
           }));
           
-          // Filtrer les trajets qui sont déjà matchés (accepted/completed)
           const filteredMatches = allMatches.filter((match) => {
             return !matchedTrajetIds.has(match.trajet.id);
           });
@@ -92,7 +89,6 @@ const Matches = () => {
     setProfile(getActiveProfile());
   }, [trajetId, trajets, profilesLoaded, getTrajetById, findMatches, getActiveProfile, getProfileById, demandes]);
 
-  // Affichage de la liste des trajets si pas de trajetId
   if (!trajetId) {
     return (
       <section className="flex flex-col gap-4 pb-6 items-center">
@@ -110,7 +106,6 @@ const Matches = () => {
           <div className="flex flex-col gap-4 w-full max-w-[42rem]">
             {userTrajets.map((t) => (
               <div key={t.id} className="flex flex-col gap-4">
-                {/* Date au-dessus de la carte */}
                 <p className="text-[16px] font-medium">
                   {(() => {
                     try {
@@ -124,7 +119,6 @@ const Matches = () => {
 
                 <Card className="w-full border-0 overflow-hidden">
                   <CardContent className="flex flex-col gap-3 p-4 relative">
-                    {/* Edit/Delete buttons - top right */}
                     <div className="absolute top-4 right-4 flex gap-2">
                       <button
                         type="button"
@@ -143,9 +137,6 @@ const Matches = () => {
                       </button>
                     </div>
 
-                    
-                    
-                    {/* Profile row */}
                     <div className="flex items-center gap-3">
                        <Avatar className="h-12 w-12">
                         {activeProfile?.photo ? (
@@ -168,7 +159,6 @@ const Matches = () => {
                       </div>
                     </div>
 
-                    {/* Details */}
                     <div className="flex flex-col gap-1 text-[14px]">
                       <p>
                         <span className="text-muted-foreground">Départ : </span>
@@ -223,7 +213,6 @@ const Matches = () => {
     <section className="flex flex-col gap-4 pb-6 items-center">
       <h1 className="text-[24px] font-semibold w-full max-w-[42rem] text-heading">Matches.</h1>
 
-      {/* Accordion principal avec la date */}
       <Accordion type="multiple" defaultValue={["date-section"]} className="w-full max-w-[42rem]">
         <AccordionItem value="date-section" className="border-0">
           <AccordionTrigger className="text-[18px] font-semibold hover:no-underline text-heading">
@@ -231,12 +220,7 @@ const Matches = () => {
           </AccordionTrigger>
           <AccordionContent className="pt-1 flex flex-col gap-4">
             
-            {/* Titre Mon trajet (blanc sur fond bleu) */}
-            
-            
-            {/* Carte Mon trajet */}
             <div className="bg-card rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-4 flex flex-col gap-3">
-              {/* Profile row */}
               <div className="flex items-center gap-3">
                <Avatar className="h-12 w-12">
                   {profile.photo ? (
@@ -259,7 +243,6 @@ const Matches = () => {
                 </div>
               </div>
 
-              {/* Details */}
               <div className="flex flex-col gap-1 text-[14px] text-card-foreground">
                 <p>
                   <span className="text-muted-foreground">Départ : </span>
@@ -282,13 +265,11 @@ const Matches = () => {
               </div>
             </div>
             
-            {/* Titre Voyageur(s) (blanc sur fond bleu) */}
             <h2 className="text-[18px] font-semibold text-heading">Voyageur(s)</h2>
             
-            {/* Cartes voyageurs */}
             {!matchesLoaded ? null : matches.length === 0 ? (
-              <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
-                <p className="text-center text-[14px] italic" style={{ color: "#4E657A" }}>
+              <div className="rounded-md p-4" style={{ backgroundColor: "#FFFFFF" }}>
+                <p className="text-center text-[14px] italic" style={{ color: "#5170F6" }}>
                   Pas de passagers pour ce créneau... pour l'instant !
                 </p>
               </div>

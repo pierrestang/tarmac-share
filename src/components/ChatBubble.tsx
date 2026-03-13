@@ -23,12 +23,12 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         <div className={cn(
           "px-4 py-2 rounded-md",
           isBothReady ? "" : isCancellation ? "bg-[#f0d0d0]" : isCompleted ? "bg-success" : "bg-muted"
-        )} style={isBothReady ? { backgroundColor: "#F0EEE9" } : undefined}>
+        )} style={isBothReady ? { backgroundColor: "#FFFFFF" } : undefined}>
           <p className={cn(
             "text-[14px] font-normal",
             isBothReady ? "text-left italic" : "text-center",
             isBothReady ? "text-left" : isCancellation ? "text-[#A25B5B]" : isCompleted ? "text-success-foreground" : "text-muted-foreground"
-          )} style={isBothReady ? { color: "#4E657A" } : undefined}>
+          )} style={isBothReady ? { color: "#5170F6" } : undefined}>
             {message.content}
           </p>
         </div>
@@ -43,11 +43,11 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
   if (isOwn) {
     return (
       <div className="flex flex-col items-end mb-1">
-        <div className="max-w-[85%] px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
-          <p className="text-[14px]" style={{ color: "#4E657A" }}>{message.content}</p>
+        <div className="max-w-[85%] px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
+          <p className="text-[14px]" style={{ color: "#5170F6" }}>{message.content}</p>
         </div>
         {showTimestamp && (
-          <p className="text-[11px] mt-0.5 mr-1" style={{ color: "#F0EEE9" }}>{timestamp}</p>
+          <p className="text-[11px] mt-0.5 mr-1" style={{ color: "#FFFFFF" }}>{timestamp}</p>
         )}
       </div>
     );
@@ -67,12 +67,12 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
         ) : (
           <div className="w-8 flex-shrink-0" />
         )}
-        <div className="max-w-[85%] w-fit px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
-          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#4E657A" }}>{message.content}</p>
+        <div className="max-w-[85%] w-fit px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
+          <p className="text-[14px] whitespace-pre-wrap" style={{ color: "#5170F6" }}>{message.content}</p>
         </div>
       </div>
       {showTimestamp && (
-        <p className="text-[11px] mt-0.5 ml-10" style={{ color: "#F0EEE9" }}>{timestamp}</p>
+        <p className="text-[11px] mt-0.5 ml-10" style={{ color: "#FFFFFF" }}>{timestamp}</p>
       )}
     </div>
   );

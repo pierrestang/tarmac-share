@@ -6,7 +6,7 @@ const RetrouvezVous = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed inset-0 overflow-auto" style={{ backgroundColor: "#A291A9" }}>
+    <div className="fixed inset-0 overflow-auto" style={{ backgroundColor: "#5170F6" }}>
     <section
       className="flex flex-col flex-1 px-3 pt-6 pb-6"
       style={{ minHeight: "100dvh" }}
@@ -14,11 +14,11 @@ const RetrouvezVous = () => {
       <div className="flex flex-col gap-3 items-center px-4 pb-4">
         <div className="w-full max-w-[42rem] flex flex-col gap-2">
           <button onClick={() => navigate(-1)} className="p-1 self-start">
-            <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
+            <ArrowLeft className="h-6 w-6" style={{ color: "#FFFFFF" }} />
           </button>
           <h1
             className="text-[24px] font-semibold"
-            style={{ color: "#F0EEE9" }}
+            style={{ color: "#FFFFFF" }}
           >
             Comment se retrouver ?
           </h1>
@@ -27,7 +27,7 @@ const RetrouvezVous = () => {
 
       <div className="flex flex-col gap-3 items-center px-4">
         <Card className="w-full max-w-[42rem] border-0 rounded-md">
-          <CardContent className="p-4 text-[14px] leading-relaxed flex flex-col gap-2" style={{ color: "#3D2B3D" }}>
+          <CardContent className="p-4 text-[14px] leading-relaxed flex flex-col gap-2" style={{ color: "#5170F6" }}>
             <div>
               <p className="font-semibold mb-1">1. Rejoignez le lieu de rencontre</p>
               <p>Dirigez-vous vers le point recommandé ou celui convenu lors de vos échanges.</p>

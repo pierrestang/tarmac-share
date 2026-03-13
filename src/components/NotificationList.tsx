@@ -36,7 +36,6 @@ export function NotificationList() {
 
   const notifications = profileId && notificationsLoaded && profilesLoaded ? getNotifications(profileId) : [];
 
-  // Check if a notification is still actionable
   const isNotificationActionable = useCallback((notification: Notification): boolean => {
     if (notification.type === "demande_withdrawn" || notification.type === "demande_refused") {
       return false;
@@ -66,7 +65,6 @@ export function NotificationList() {
     return demande !== null;
   }, [getConversationByDemandeId, getDemandeById]);
 
-  // Auto-mark muted (non-actionable) unread notifications as read
   useEffect(() => {
     notifications.forEach((n) => {
       if (!n.read && !isNotificationActionable(n)) {
@@ -78,22 +76,18 @@ export function NotificationList() {
   if (!notificationsLoaded || !profilesLoaded) return null;
 
   const handleClick = async (notification: Notification) => {
-    // Mark as read
     await markAsRead(notification.id);
 
-    // Check if actionable
     if (!isNotificationActionable(notification)) {
-      return; // Just mark as read, don't navigate
+      return;
     }
 
-    // Navigate based on type
     switch (notification.type) {
       case "demande_received":
         navigate(`/demande-accepter?demandeId=${notification.demandeId}`);
         break;
       case "demande_accepted":
       case "conversation_closing":
-        // Navigate to messages with conversationId param to open directly
         const conversation = getConversationByDemandeId(notification.demandeId);
         if (conversation) {
           navigate(`/messages?conversationId=${conversation.id}`);
@@ -111,22 +105,20 @@ export function NotificationList() {
 
   if (notifications.length === 0) {
     return (
-      <div className="rounded-md p-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <p className="text-center text-[14px] italic" style={{ color: "#4E657A" }}>
+      <div className="rounded-md p-4" style={{ backgroundColor: "#FFFFFF" }}>
+        <p className="text-center text-[14px] italic" style={{ color: "#5170F6" }}>
           Aucune notification pour le moment
         </p>
       </div>
     );
   }
 
-  // Check if a cancellation notification was declined (user chose "Non")
   const isDeclinedRepublish = (notification: Notification): boolean => {
     if (notification.type !== "cancellation") return false;
     const declined: string[] = JSON.parse(localStorage.getItem("declinedRepublishDemandeIds") || "[]");
     return declined.includes(notification.demandeId);
   };
 
-  // Check if a cancellation notification was already republished
   const isAlreadyRepublished = (notification: Notification): boolean => {
     if (notification.type !== "cancellation") return false;
     const republished: string[] = JSON.parse(localStorage.getItem("republishedDemandeIds") || "[]");
@@ -179,7 +171,7 @@ export function NotificationList() {
       toast({
         title: "Trajet republié ! Votre annonce est de nouveau visible.",
         className: "bg-transparent border-0 shadow-none",
-        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+        style: { backgroundColor: '#7BA87B', color: '#FFFFFF' },
       });
     };
 
@@ -213,12 +205,12 @@ export function NotificationList() {
         </div>
 
         <AlertDialog open={!!expandedNotification} onOpenChange={(open) => { if (!open) setExpandedCancellationId(null); }}>
-          <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
+          <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#5170F6" }}>
             <AlertDialogHeader className="text-left">
-              <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>
+              <AlertDialogTitle className="text-left" style={{ color: "#FFFFFF" }}>
                 Republier cette annonce ?
               </AlertDialogTitle>
-              <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
+              <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#FFFFFF" }}>
                 Vous pouvez republier immédiatement pour retrouver un partenaire.
                 {!isFreeMode && (
                   <> Nous vous offrons <span className="font-bold">2 actions gratuites</span> valables sur ce trajet.</>
@@ -229,13 +221,13 @@ export function NotificationList() {
               <AlertDialogAction
                 onClick={() => expandedNotification && handleRepublish(expandedNotification.demandeId)}
                 className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
-                style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+                style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
                 Republier
               </AlertDialogAction>
               <AlertDialogCancel
                 onClick={() => expandedNotification && handleDeclineRepublish(expandedNotification.demandeId)}
                 className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
-                style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+                style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
                 Non merci
               </AlertDialogCancel>
             </AlertDialogFooter>

@@ -264,7 +264,7 @@ const Messages = () => {
   // Chat view
   if (selectedConversation && otherProfile) {
     return (
-      <section aria-label="Conversation" className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: "#4E657A" }}>
+      <section aria-label="Conversation" className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: "#5170F6" }}>
         <ChatView
           conversation={selectedConversation}
           messages={currentMessages}

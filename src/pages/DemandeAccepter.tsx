@@ -39,23 +39,16 @@ const DemandeAccepter = () => {
 
   const isLoaded = trajetsLoaded && profilesLoaded && demandesLoaded;
 
-  // Get demande data
   const demande = demandeId ? getDemandeById(demandeId) : null;
-
-  // Get voyageur (demandeur) data
   const voyageurTrajet = demande ? getTrajetById(demande.fromTrajetId) : null;
   const voyageurProfile = demande ? getProfileById(demande.fromProfileId) : null;
-
-  // Get current user (destinataire) data
   const myTrajet = demande ? getTrajetById(demande.toTrajetId) : null;
   const myProfile = getActiveProfile();
 
-  // Calculate score (detourMin not available here, use 0 as fallback)
   const compatibilityScore = myTrajet && voyageurTrajet
     ? calculateMatchScore(myTrajet, voyageurTrajet, 0)
     : 0;
 
-  // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
@@ -88,7 +81,7 @@ const DemandeAccepter = () => {
         toast({
           title: `Super ! Vous partagez désormais ce trajet avec ${voyageurProfile.firstName}.`,
           className: "bg-transparent border-0 shadow-none",
-          style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+          style: { backgroundColor: '#7BA87B', color: '#FFFFFF' },
         });
         navigate("/messages");
       } catch (error: any) {
@@ -104,8 +97,6 @@ const DemandeAccepter = () => {
   const handleRefuse = async () => {
     if (demandeId && demande && myProfile) {
       await refuseDemande(demandeId);
-      
-      // Create notification for the requester (demandeur A)
       try {
         await createNotification({
           profileId: demande.fromProfileId,
@@ -118,7 +109,6 @@ const DemandeAccepter = () => {
       } catch (e) {
         console.error("Erreur notification:", e);
       }
-      
       navigate("/trajets");
     }
   };
@@ -136,7 +126,6 @@ const DemandeAccepter = () => {
         <h1 className="text-[24px] font-semibold w-full">Accepter la demande.</h1>
       </div>
 
-      {/* Date */}
       <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">
         {(() => {
           try {
@@ -148,12 +137,8 @@ const DemandeAccepter = () => {
         })()}
       </h2>
 
-      {/* Mes informations Card */}
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
-          
-          
-          {/* Profile row */}
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {myProfile.photo ? (
@@ -176,7 +161,6 @@ const DemandeAccepter = () => {
             </div>
           </div>
 
-          {/* Details */}
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
@@ -200,7 +184,6 @@ const DemandeAccepter = () => {
         </CardContent>
       </Card>
 
-      {/* Voyageur(s) section */}
       {voyageurMatch && (
         <>
           <h2 className="text-[18px] font-semibold text-foreground w-full max-w-[42rem]">Voyageur(s)</h2>

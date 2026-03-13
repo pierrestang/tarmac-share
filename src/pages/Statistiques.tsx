@@ -113,7 +113,6 @@ const Statistiques = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-6">
-      {/* Header */}
       <div className="flex justify-center">
         <div className="w-full max-w-[42rem] flex flex-col gap-2">
           <button onClick={() => navigate("/tour-de-controle")} className="text-foreground self-start">
@@ -126,13 +125,11 @@ const Statistiques = () => {
       <div className="flex justify-center">
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
 
-
           {loading ? (
             <Card className="p-8 text-center text-muted-foreground">Chargement...</Card>
           ) : data ? (
             <>
-              {/* Matching */}
-              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Matching.</p>
+              <p className="text-base font-semibold" style={{ color: '#FFFFFF' }}>Matching.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <KpiRow label="Annonces" value={data.kpis.trajetsPublies} unit="" tooltip="Nombre total d'annonces" />
@@ -147,8 +144,7 @@ const Statistiques = () => {
                 </div>
               </Card>
 
-              {/* Trajets complétés */}
-              <p className="text-base font-semibold" style={{ color: '#F0EEE9' }}>Trajets complétés.</p>
+              <p className="text-base font-semibold" style={{ color: '#FFFFFF' }}>Trajets complétés.</p>
               <Card className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <KpiRow label="Complétés" value={data.kpis.trajetsCompletes} unit="" tooltip="Demandes avec le statut complété" />
@@ -182,8 +178,6 @@ const Statistiques = () => {
                   <KpiRow label="Réalisés %" value={data.kpis.tauxRealises} unit="%" tooltip="Réalisés / Complétés" bold />
                 </div>
               </Card>
-
-
 
             </>
           ) : (

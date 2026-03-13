@@ -35,24 +35,20 @@ const DemandeEnvoyer = () => {
   const { createNotification } = useNotifications();
   const { isFreeMode } = useAppSettings();
 
-  // Get voyageur data
   const voyageurTrajet = voyageurId ? getTrajetById(voyageurId) : null;
   const voyageurProfile = voyageurTrajet ? getProfileById(voyageurTrajet.profileId) : null;
 
-  // Get current user data
   const myProfile = getActiveProfile();
   const myTrajetIdParam = searchParams.get("myTrajetId");
   const lastTrajetId = myTrajetIdParam || localStorage.getItem("lastPublishedTrajetId");
   let myTrajet = lastTrajetId ? getTrajetById(lastTrajetId) : null;
   
-  // Fallback: find user's trajet that matches the voyageur's date & station
   if (!myTrajet && myProfile && voyageurTrajet) {
     myTrajet = trajets.find(
       (t) => t.profileId === myProfile.id && t.date === voyageurTrajet.date && t.departureStation.toLowerCase() === voyageurTrajet.departureStation.toLowerCase()
     ) || null;
   }
 
-  // Use detour times for consistency with /matches
   const [detourMin, setDetourMin] = useState<number | null>(null);
   const [detourLoaded, setDetourLoaded] = useState(false);
 
@@ -80,7 +76,6 @@ const DemandeEnvoyer = () => {
     ? calculateMatchScore(myTrajet, voyageurTrajet, detourMin) 
     : null;
 
-  // Build EnrichedMatchedTraveler for VoyageurCard
   const voyageurMatch: EnrichedMatchedTraveler | null = voyageurTrajet && voyageurProfile ? {
     trajet: voyageurTrajet,
     profile: voyageurProfile,
@@ -126,7 +121,7 @@ const DemandeEnvoyer = () => {
         toast({
           title: `Demande envoyée ! ${voyageurProfile.firstName} a été notifié.`,
           className: "bg-transparent border-0 shadow-none",
-          style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+          style: { backgroundColor: '#7BA87B', color: '#FFFFFF' },
         });
         navigate("/trajets");
       } catch (error: any) {
@@ -170,7 +165,6 @@ const DemandeEnvoyer = () => {
         <h1 className="text-[24px] font-semibold w-full">Envoyer la demande.</h1>
       </div>
 
-      {/* Date */}
       <p className="text-[18px] font-semibold w-full max-w-[42rem]">
         {(() => {
           try {
@@ -184,7 +178,6 @@ const DemandeEnvoyer = () => {
 
       <Card className="w-full max-w-[42rem] border-0">
         <CardContent className="flex flex-col gap-3 p-4">
-          {/* Profile row */}
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               {myProfile.photo ? (
@@ -207,7 +200,6 @@ const DemandeEnvoyer = () => {
             </div>
           </div>
 
-          {/* Details */}
           <div className="flex flex-col gap-1 text-[14px]">
             <p>
               <span className="text-muted-foreground">Départ : </span>
@@ -231,7 +223,6 @@ const DemandeEnvoyer = () => {
         </CardContent>
       </Card>
 
-      {/* Voyageur(s) section */}
       {voyageurMatch && (
         <>
           <h2 className="text-[18px] font-semibold text-heading w-full max-w-[42rem]">Voyageur(s)</h2>

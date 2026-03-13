@@ -92,13 +92,13 @@ const GestionTrajet = () => {
       toast({
         title: "Super ! Ravi que vous ayez pu partager ce trajet.",
         className: "bg-transparent border-0 shadow-none",
-        style: { backgroundColor: '#7BA87B', color: '#F0EEE9' },
+        style: { backgroundColor: '#7BA87B', color: '#FFFFFF' },
       });
     } else {
       toast({
         title: "Retour enregistré. Nous sommes désolés que ce trajet n'ait pas abouti.",
         className: "bg-transparent border-0 shadow-none",
-        style: { backgroundColor: '#E34454', color: '#F0EEE9' },
+        style: { backgroundColor: '#E34454', color: '#FFFFFF' },
       });
     }
 
@@ -162,9 +162,9 @@ const GestionTrajet = () => {
 
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Mon trajet.</h1>
 
-      <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#F0EEE9" }}>
-        <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>Votre feuille de route</p>
-        <ul className="text-[14px] list-disc pl-4 space-y-3" style={{ color: "#4E657A" }}>
+      <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#FFFFFF" }}>
+        <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>Votre feuille de route</p>
+        <ul className="text-[14px] list-disc pl-4 space-y-3" style={{ color: "#5170F6" }}>
           <li>Retrouvez vos informations de trajet pour vous coordonner.</li>
           <li>Une fois à destination, cliquez sur <span className="font-bold">Terminer le trajet</span> pour confirmer son bon déroulement (ou signaler un rendez-vous manqué).</li>
           <li>Pour un empêchement avant le départ, cliquez sur <span className="font-bold">Annuler le trajet</span>.</li>
@@ -175,7 +175,7 @@ const GestionTrajet = () => {
         <button
           onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
           className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mb-4"
-          style={{ backgroundColor: "#4E657A", color: "#F0EEE9" }}>
+          style={{ backgroundColor: "#1F4591", color: "#FFFFFF" }}>
           <span>Voir le trajet</span>
         </button>
       )}
@@ -186,7 +186,7 @@ const GestionTrajet = () => {
             onClick={() => setShowEndDialog(true)}
             disabled={isSubmitting}
             className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
-            style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+            style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
             <span>Terminer le trajet</span>
           </button>
 
@@ -194,7 +194,7 @@ const GestionTrajet = () => {
             onClick={() => setShowCancelDialog(true)}
             disabled={isSubmitting}
             className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0"
-            style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+            style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
             <span>Annuler le trajet</span>
           </button>
         </div>
@@ -202,13 +202,13 @@ const GestionTrajet = () => {
 
       {/* End trip dialog */}
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
-        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
+        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#5170F6" }}>
           <button onClick={() => setShowEndDialog(false)} className="p-1 self-start">
-            <ArrowLeft className="h-6 w-6" style={{ color: "#F0EEE9" }} />
+            <ArrowLeft className="h-6 w-6" style={{ color: "#FFFFFF" }} />
           </button>
           <AlertDialogHeader className="text-left">
-            <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Bien arrivé ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
+            <AlertDialogTitle className="text-left" style={{ color: "#FFFFFF" }}>Bien arrivé ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#FFFFFF" }}>
               Confirmez maintenant le bon déroulement de votre partage pour mettre à jour votre historique.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -217,14 +217,14 @@ const GestionTrajet = () => {
               onClick={() => handleAnswer(true)}
               disabled={isSubmitting}
               className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
-              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
               {isSubmitting ? "Envoi..." : "Oui, terminé !"}
             </AlertDialogAction>
             <AlertDialogCancel
               onClick={() => handleAnswer(false)}
               disabled={isSubmitting}
               className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
-              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
               Non, échec du RDV
             </AlertDialogCancel>
           </AlertDialogFooter>
@@ -233,23 +233,23 @@ const GestionTrajet = () => {
 
       {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#89B1D6" }}>
+        <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#5170F6" }}>
           <AlertDialogHeader className="text-left">
-            <AlertDialogTitle className="text-left" style={{ color: "#F0EEE9" }}>Annuler ce trajet ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#F0EEE9" }}>
+            <AlertDialogTitle className="text-left" style={{ color: "#FFFFFF" }}>Annuler ce trajet ?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#FFFFFF" }}>
               Utilisez cette option uniquement si vous ne pouvez plus vous rendre disponible. Votre partenaire sera immédiatement prévenu de ce changement de programme.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex !flex-col gap-3 mt-2 w-full">
             <AlertDialogCancel
               className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
-              style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+              style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
               Conserver le trajet
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCancel}
               className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
-              style={{ backgroundColor: "#E34454", color: "#F0EEE9" }}>
+              style={{ backgroundColor: "#E34454", color: "#FFFFFF" }}>
               Confirmer l'annulation
             </AlertDialogAction>
           </AlertDialogFooter>

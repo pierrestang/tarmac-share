@@ -70,16 +70,16 @@ const ChatView = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#F0EEE9" }}>
-        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#4E657A" }}>
+      <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#FFFFFF" }}>
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#5170F6" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold flex-1" style={{ color: "#4E657A" }}>{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1" style={{ color: "#5170F6" }}>{otherProfile.firstName}</span>
         <button
           type="button"
           onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}&ratedProfileId=${otherProfile.id}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
           className="h-8 w-8 p-0 flex items-center justify-center"
-          style={{ color: "#4E657A" }}>
+          style={{ color: "#5170F6" }}>
             <MoreVertical className="h-5 w-5" />
           </button>
       </div>
@@ -87,20 +87,19 @@ const ChatView = ({
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto px-4 pt-4 bg-background">
       {/* Meeting point card - always visible */}
-      <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#F0EEE9" }}>
+      <Card className="border-0 rounded-md mb-4 relative" style={{ backgroundColor: "#FFFFFF" }}>
         <button type="button" onClick={() => navigate("/retrouvez-vous")} className="absolute top-3 right-3">
-          <HelpCircle className="h-4 w-4" style={{ color: "#4E657A" }} />
+          <HelpCircle className="h-4 w-4" style={{ color: "#5170F6" }} />
         </button>
         <CardContent className="p-4 pr-8">
-          <p className="text-[14px] font-semibold mb-1" style={{ color: "#4E657A" }}>
+          <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>
             Point de rencontre recommandé 📍
           </p>
-          <p className="text-[14px] italic" style={{ color: "#4E657A" }}>
+          <p className="text-[14px] italic" style={{ color: "#5170F6" }}>
             En face du Hall B, au niveau de la station de Tram A (passage piéton central).
           </p>
         </CardContent>
       </Card>
-
 
 
 
@@ -151,8 +150,8 @@ const ChatView = ({
                 if (!arrivalStatus) return null;
                 return (
                   <div key={message.id} className="flex justify-center my-2">
-                    <div className="w-full px-4 py-2 rounded-md" style={{ backgroundColor: "#F0EEE9" }}>
-                      <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                    <div className="w-full px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
+                      <p className="text-[14px] italic text-left" style={{ color: "#5170F6" }}>
                         {arrivalStatus}
                       </p>
                     </div>
@@ -169,7 +168,7 @@ const ChatView = ({
                   <div className="flex justify-center my-2">
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#E34454" }}>
                         <div className="px-4 py-3 text-center">
-                          <p className="text-[14px] font-semibold" style={{ color: "#F0EEE9" }}>
+                          <p className="text-[14px] font-semibold" style={{ color: "#FFFFFF" }}>
                             {message.content}
                           </p>
                         </div>
@@ -177,16 +176,16 @@ const ChatView = ({
                     </div> :
                   isBothReadySystem ?
                   <div className="flex justify-center my-2">
-                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#F0EEE9" }}>
+                      <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#FFFFFF" }}>
                         <div className="px-4 py-3">
-                          <p className="text-[14px] italic text-left" style={{ color: "#4E657A" }}>
+                          <p className="text-[14px] italic text-left" style={{ color: "#5170F6" }}>
                             {message.content}
                           </p>
                         </div>
                         <button
                         onClick={() => navigate(`/numero?conversationId=${conversation.id}`)}
                         className="w-full py-3 text-[14px] font-semibold border-0"
-                        style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+                        style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
 
                           Afficher le code
                         </button>
@@ -196,7 +195,7 @@ const ChatView = ({
                   <div className="flex justify-center my-2">
                       <div className="w-full rounded-md overflow-hidden" style={{ backgroundColor: "#7BA87B" }}>
                         <div className="px-4 py-3">
-                          <p className="text-[14px] font-semibold text-center" style={{ color: "#F0EEE9" }}>
+                          <p className="text-[14px] font-semibold text-center" style={{ color: "#FFFFFF" }}>
                             Le trajet est terminé
                           </p>
                         </div>
@@ -233,11 +232,11 @@ const ChatView = ({
                 description: otherAlreadyArrived ?
                 "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver." :
                 "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
-                style: { backgroundColor: "#7BA87B", color: "#F0EEE9" }
+                style: { backgroundColor: "#7BA87B", color: "#FFFFFF" }
               });
             }}
             className="w-full rounded-md px-4 py-3 text-[14px] font-semibold border-0"
-            style={{ backgroundColor: "#7BA87B", color: "#F0EEE9" }}>
+            style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
             Je suis arrivé au point de rencontre 📍
           </button>
         </div>
@@ -245,7 +244,7 @@ const ChatView = ({
 
       {/* Input - fixed at bottom */}
       {!isFullyClosed && !isClosedByUser && (
-        <div className="px-4 py-3" style={{ backgroundColor: "#F0EEE9" }}>
+        <div className="px-4 py-3" style={{ backgroundColor: "#FFFFFF" }}>
           <form
             className="flex items-center gap-2"
             onSubmit={(e) => {
@@ -262,7 +261,7 @@ const ChatView = ({
                   description: otherAlreadyArrived ?
                   "Tout le monde est là ! Cliquez sur 'Afficher le code' pour vous retrouver." :
                   "C'est noté ! Nous attendons que votre partenaire signale aussi son arrivée pour générer votre code de rencontre.",
-                  style: { backgroundColor: "#7BA87B", color: "#F0EEE9" }
+                  style: { backgroundColor: "#7BA87B", color: "#FFFFFF" }
                 });
               }
             }}>
@@ -270,13 +269,13 @@ const ChatView = ({
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Écrire un message..."
-              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#4E657A]"
-              style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }} />
+              className="flex-1 rounded-full border-0 text-[14px] placeholder:text-[#5170F6]"
+              style={{ backgroundColor: "#FFFFFF", color: "#5170F6" }} />
             <button
               type="submit"
               disabled={!inputText.trim()}
               className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
-              style={{ backgroundColor: "#F0EEE9", color: "#4E657A" }}>
+              style={{ backgroundColor: "#FFFFFF", color: "#5170F6" }}>
               <SendHorizontal className="h-4 w-4" />
             </button>
           </form>
