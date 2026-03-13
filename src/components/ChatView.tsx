@@ -275,7 +275,7 @@ const ChatView = ({
               type="submit"
               disabled={!inputText.trim()}
               className="h-10 w-10 flex items-center justify-center rounded-full disabled:opacity-40"
-              style={{ backgroundColor: "#FFFFFF", color: "#5170F6" }}>
+              style={{ backgroundColor: "#FFFFFF", color: "#1F4591" }}>
               <SendHorizontal className="h-4 w-4" />
             </button>
           </form>
