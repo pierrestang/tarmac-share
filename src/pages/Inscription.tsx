@@ -274,7 +274,7 @@ const Inscription = () => {
                 placeholder="Mot de passe (8 caractères min.)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-0 h-auto p-0 bg-transparent text-[14px] text-card-foreground placeholder:text-muted-foreground focus-visible:ring-0 flex-1"
+                className="border-0 h-auto p-0 bg-transparent text-[14px] font-semibold text-card-foreground placeholder:text-muted-foreground placeholder:font-semibold focus-visible:ring-0 flex-1"
               />
               {password && (
                 <button

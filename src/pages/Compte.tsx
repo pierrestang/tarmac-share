@@ -144,15 +144,19 @@ const Compte = () => {
               />
             </div>
 
-            <Button
-              onClick={handleSubmit}
-              disabled={!isFormValid || isSubmitting}
-              className="w-full rounded-none h-auto py-4 disabled:opacity-100"
-            >
-              Enregistrer
-            </Button>
           </div>
         </Card>
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          disabled={!isFormValid || isSubmitting}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+        >
+          Enregistrer
+        </Button>
+      </div>
       </div>
 
       {isAdmin && (

@@ -90,15 +90,20 @@ const Connexion = () => {
               <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
             )}
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-auto py-4 disabled:opacity-100 !rounded-none"
-            >
-              {loading ? "Connexion..." : "Se connecter"}
-            </Button>
           </form>
         </Card>
+      </div>
+
+      <div className="flex justify-center px-4">
+        <Button
+          type="button"
+          onClick={handleLogin}
+          disabled={loading}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+        >
+          {loading ? "Connexion..." : "Se connecter"}
+        </Button>
+      </div>
       </div>
 
       <button
