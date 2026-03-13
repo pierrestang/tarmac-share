@@ -74,7 +74,7 @@ const ChatView = ({
         <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#5170F6" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <span className="text-[18px] font-semibold flex-1" style={{ color: "#5170F6" }}>{otherProfile.firstName}</span>
+        <span className="text-[18px] font-semibold flex-1" style={{ color: "#1F4591" }}>{otherProfile.firstName}</span>
         <button
           type="button"
           onClick={() => navigate(`/gestion-trajet?conversationId=${conversation.id}&demandeId=${conversation.demandeId}&ratedProfileId=${otherProfile.id}${isFullyClosed || isClosedByUser ? '&closed=true' : ''}`)}
