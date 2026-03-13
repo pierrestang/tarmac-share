@@ -189,7 +189,7 @@ const TourDeControle = () => {
 
           {/* Export stats */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             disabled={exportingStats}
             onClick={async () => {
               setExportingStats(true);
