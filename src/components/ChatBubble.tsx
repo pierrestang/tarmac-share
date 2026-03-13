@@ -44,7 +44,7 @@ const ChatBubble = ({ message, isOwn, showAvatar, showTimestamp, senderProfile }
     return (
       <div className="flex flex-col items-end mb-1">
         <div className="max-w-[85%] px-4 py-2 rounded-md" style={{ backgroundColor: "#FFFFFF" }}>
-          <p className="text-[14px]" style={{ color: "#5170F6" }}>{message.content}</p>
+          <p className="text-[14px]" style={{ color: "#1F4591" }}>{message.content}</p>
         </div>
         {showTimestamp && (
           <p className="text-[11px] mt-0.5 mr-1" style={{ color: "#FFFFFF" }}>{timestamp}</p>
