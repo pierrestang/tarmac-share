@@ -69,7 +69,7 @@ const TourDeControle = () => {
         <div className="w-full max-w-[42rem] flex flex-col gap-4">
           {/* Statistiques */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             onClick={() => navigate("/statistiques")}
           >
             Statistiques
@@ -77,7 +77,7 @@ const TourDeControle = () => {
 
           {/* Export Google Sheets */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exporting}
             onClick={async () => {
@@ -111,7 +111,7 @@ const TourDeControle = () => {
 
           {/* Export annonces */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exportingAnnonces}
             onClick={async () => {
@@ -150,7 +150,7 @@ const TourDeControle = () => {
 
           {/* Export trajets */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exportingTrajets}
             onClick={async () => {
@@ -189,7 +189,7 @@ const TourDeControle = () => {
 
           {/* Export stats */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             disabled={exportingStats}
             onClick={async () => {
               setExportingStats(true);
@@ -226,7 +226,7 @@ const TourDeControle = () => {
 
           {/* Reset */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             onClick={() => setShowResetConfirm(true)}
           >
