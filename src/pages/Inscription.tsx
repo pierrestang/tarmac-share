@@ -153,7 +153,7 @@ const Inscription = () => {
   }
 
   return (
-    <section className="flex flex-col gap-6 px-3 pt-6 pb-6">
+    <section className="flex flex-col gap-6 px-3 pt-6 pb-6" style={{ backgroundColor: '#2563EB', minHeight: '100dvh' }}>
       <div className="px-4">
         <button onClick={() => navigate("/auth")} className="text-heading">
           <ArrowLeft size={24} />
@@ -296,7 +296,8 @@ const Inscription = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full rounded-none h-auto py-4 disabled:opacity-100"
+              className="w-full rounded-none h-auto py-4 disabled:opacity-100 border-0"
+              style={{ backgroundColor: '#5170FF', color: '#F0EEE9' }}
             >
               {loading ? "Création..." : "Créer mon compte"}
             </Button>
