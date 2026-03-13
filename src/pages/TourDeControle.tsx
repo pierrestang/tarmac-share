@@ -226,7 +226,7 @@ const TourDeControle = () => {
 
           {/* Reset */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             onClick={() => setShowResetConfirm(true)}
           >
