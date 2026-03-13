@@ -153,7 +153,7 @@ const Inscription = () => {
   }
 
   return (
-    <section className="flex flex-col gap-6 px-3 pt-6 pb-6" style={{ backgroundColor: '#2E6CD6', minHeight: '100dvh' }}>
+    <section className="flex flex-col gap-6 px-3 pt-6 pb-6" style={{ backgroundColor: '#265CB8', minHeight: '100dvh' }}>
       <div className="px-4">
         <button onClick={() => navigate("/auth")} className="text-heading">
           <ArrowLeft size={24} />
