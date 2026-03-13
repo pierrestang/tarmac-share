@@ -106,9 +106,6 @@ const Connexion = () => {
               )}
             </div>
 
-            {error && (
-              <p className="px-4 pb-2 text-sm text-destructive">{error}</p>
-            )}
 
           </form>
         </Card>
