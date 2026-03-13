@@ -25,7 +25,7 @@ const ConversationList = ({
   if (conversations.length === 0) {
     return (
       <div className="rounded-md p-4" style={{ backgroundColor: "#FFFFFF" }}>
-        <p className="text-center text-[14px] italic" style={{ color: "#5170F6" }}>
+        <p className="text-center text-[14px] italic" style={{ color: "#1F4591" }}>
           Aucune conversation pour le moment
         </p>
       </div>

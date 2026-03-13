@@ -163,8 +163,8 @@ const GestionTrajet = () => {
       <h1 className="text-[24px] font-semibold mb-4 w-full text-heading">Mon trajet.</h1>
 
       <div className="rounded-md p-4 mb-4" style={{ backgroundColor: "#FFFFFF" }}>
-        <p className="text-[14px] font-semibold mb-1" style={{ color: "#5170F6" }}>Votre feuille de route</p>
-        <ul className="text-[14px] list-disc pl-4 space-y-3" style={{ color: "#5170F6" }}>
+        <p className="text-[14px] font-semibold mb-1" style={{ color: "#1F4591" }}>Votre feuille de route</p>
+        <ul className="text-[14px] list-disc pl-4 space-y-3" style={{ color: "#1F4591" }}>
           <li>Retrouvez vos informations de trajet pour vous coordonner.</li>
           <li>Une fois à destination, cliquez sur <span className="font-bold">Terminer le trajet</span> pour confirmer son bon déroulement (ou signaler un rendez-vous manqué).</li>
           <li>Pour un empêchement avant le départ, cliquez sur <span className="font-bold">Annuler le trajet</span>.</li>

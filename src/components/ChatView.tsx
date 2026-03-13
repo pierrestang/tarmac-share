@@ -71,7 +71,7 @@ const ChatView = ({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: "#FFFFFF" }}>
-        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#5170F6" }}>
+        <button onClick={onBack} className="h-8 w-8 p-0 flex items-center justify-center" style={{ color: "#1F4591" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
         <span className="text-[18px] font-semibold flex-1" style={{ color: "#1F4591" }}>{otherProfile.firstName}</span>

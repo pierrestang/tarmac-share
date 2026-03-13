@@ -38,13 +38,13 @@ DESIGN SYSTEM RULES (mobile-first):
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 20% 96%;
-    --secondary-foreground: 228 91% 64%;
+    --secondary-foreground: 222 65% 35%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 228 91% 64%;
+    --muted-foreground: 222 65% 35%;
 
     --accent: 210 20% 96%;
-    --accent-foreground: 228 91% 64%;
+    --accent-foreground: 222 65% 35%;
 
     --destructive: 354 74% 58%;
     --destructive-foreground: 0 0% 100%;
