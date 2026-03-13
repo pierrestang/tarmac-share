@@ -240,7 +240,7 @@ const Inscription = () => {
                     setIsEditingBirth(true);
                     setTimeout(() => birthInputRef.current?.focus(), 0);
                   }}
-                  className="text-[14px] cursor-pointer text-card-foreground"
+                  className="text-[14px] font-semibold cursor-pointer text-card-foreground"
                 >
                   {(() => {
                     try {
