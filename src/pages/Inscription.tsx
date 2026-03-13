@@ -168,7 +168,7 @@ const Inscription = () => {
         <Card className="w-full max-w-[42rem] border-0 rounded-md overflow-hidden">
           <form onSubmit={handleSignUp} noValidate className="flex flex-col">
             {/* Photo picker */}
-            <div className="px-4 py-4 flex items-center gap-3">
+            <div className="px-4 py-4 flex items-center justify-center">
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className="relative w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer"
@@ -183,9 +183,6 @@ const Inscription = () => {
                   <Camera size={18} className="text-muted-foreground" />
                 )}
               </div>
-              <span className="text-[14px] text-muted-foreground">
-                {photoPreview ? "Modifier la photo" : "Ajouter une photo"}
-              </span>
             </div>
 
             <div className="h-px bg-border mx-4" />
@@ -295,17 +292,19 @@ const Inscription = () => {
                 {error}
               </div>
             )}
-
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-none h-auto py-4 disabled:opacity-100 border-0"
-              style={{ backgroundColor: '#1F4591', color: '#FFFFFF' }}
-            >
-              {loading ? "Création..." : "Créer mon compte"}
-            </Button>
           </form>
         </Card>
+      </div>
+
+      <div className="flex justify-center px-4">
+        <Button
+          onClick={handleSignUp}
+          disabled={loading}
+          className="w-full max-w-[42rem] rounded-md h-auto py-4 disabled:opacity-100 border-0"
+          style={{ backgroundColor: '#1F4591', color: '#FFFFFF' }}
+        >
+          {loading ? "Création..." : "Créer mon compte"}
+        </Button>
       </div>
 
       <input
