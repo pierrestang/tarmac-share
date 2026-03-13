@@ -150,7 +150,7 @@ const TourDeControle = () => {
 
           {/* Export trajets */}
           <Button
-            className="w-full rounded-full"
+            className="w-full rounded-md"
             variant="outline"
             disabled={exportingTrajets}
             onClick={async () => {
