@@ -314,7 +314,7 @@ const Publier = () => {
               form.date ? "text-card-foreground" : "text-muted-foreground"
             )} />
             <div
-              className="flex flex-1 text-sm cursor-pointer whitespace-nowrap"
+              className="flex flex-1 text-sm font-semibold cursor-pointer whitespace-nowrap"
               onClick={() => setDateSheetOpen(true)}
             >
               {form.date ? (() => {
