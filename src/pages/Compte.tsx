@@ -182,6 +182,21 @@ const Compte = () => {
         </Button>
       </div>
 
+      {/* Liens légaux */}
+      <div className="flex justify-center">
+        <div className="w-full max-w-[42rem] flex flex-col items-center gap-2 pt-2">
+          <a href="/docs/cgu_tarmac.pdf" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground underline">
+            Conditions Générales d'Utilisation
+          </a>
+          <a href="/docs/mentions_legales_tarmac.pdf" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground underline">
+            Mentions Légales
+          </a>
+          <a href="/docs/politique_confidentialite_tarmac.pdf" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground underline">
+            Politique de Confidentialité
+          </a>
+        </div>
+      </div>
+
     </section>
   );
 };
