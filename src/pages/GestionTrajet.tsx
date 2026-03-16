@@ -174,7 +174,7 @@ const GestionTrajet = () => {
       {demandeId && (
         <button
           onClick={() => navigate(`/demande-consulter?demandeId=${demandeId}`)}
-          className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mb-4"
+          className="flex items-center justify-center gap-2 w-full rounded-md px-4 py-3 text-[16px] font-semibold border-0 mb-3"
           style={{ backgroundColor: "#1F4591", color: "#FFFFFF" }}>
           <span>Voir le trajet</span>
         </button>
