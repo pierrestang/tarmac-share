@@ -234,6 +234,9 @@ const GestionTrajet = () => {
       {/* Cancel trip dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent className="rounded-md" style={{ backgroundColor: "#5170F6" }}>
+          <button onClick={() => setShowCancelDialog(false)} className="p-1 self-start">
+            <ArrowLeft className="h-6 w-6" style={{ color: "#FFFFFF" }} />
+          </button>
           <AlertDialogHeader className="text-left">
             <AlertDialogTitle className="text-left" style={{ color: "#FFFFFF" }}>Annuler ce trajet ?</AlertDialogTitle>
             <AlertDialogDescription className="text-[14px] text-left" style={{ color: "#FFFFFF" }}>
@@ -241,11 +244,6 @@ const GestionTrajet = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex !flex-col gap-3 mt-2 w-full">
-            <AlertDialogCancel
-              className="w-full rounded-md border-0 text-[16px] font-semibold py-3 mt-0"
-              style={{ backgroundColor: "#7BA87B", color: "#FFFFFF" }}>
-              Conserver le trajet
-            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCancel}
               className="w-full rounded-md border-0 text-[16px] font-semibold py-3"
