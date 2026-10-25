@@ -64,7 +64,9 @@ async function computeRouteMatrix(
   );
   const data = await res.json();
   if (!res.ok || !Array.isArray(data)) {
-    throw new Error(`Google Routes API error: ${data?.error?.status ?? res.status} - ${data?.error?.message ?? ""}`);
+    // Errors come back either as an object or wrapped in a one-element array
+    const err = Array.isArray(data) ? data[0]?.error : data?.error;
+    throw new Error(`Google Routes API error: ${err?.status ?? res.status} - ${err?.message ?? ""}`);
   }
 
   const matrix: MatrixCell[][] = origins.map(() =>
