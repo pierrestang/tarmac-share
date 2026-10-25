@@ -26,25 +26,89 @@ interface DetourResult {
   bestOrder: "AB" | "BA";
 }
 
+// Google Routes API (replaces the legacy Directions / Distance Matrix APIs,
+// which can no longer be enabled on new Google Cloud projects).
+const toWaypoint = (p: LatLng) => ({
+  location: { latLng: { latitude: p.lat, longitude: p.lng } },
+});
+
+// Durations come back as strings like "1234s"
+const parseSeconds = (d: string | undefined): number | null =>
+  d ? parseInt(d.replace("s", ""), 10) : null;
+
+interface MatrixCell {
+  distanceKm: number | null;
+  durationMin: number | null;
+}
+
+async function computeRouteMatrix(
+  origins: LatLng[],
+  destinations: LatLng[],
+  apiKey: string
+): Promise<MatrixCell[][]> {
+  const res = await fetch(
+    "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "originIndex,destinationIndex,duration,distanceMeters,condition",
+      },
+      body: JSON.stringify({
+        origins: origins.map((o) => ({ waypoint: toWaypoint(o) })),
+        destinations: destinations.map((d) => ({ waypoint: toWaypoint(d) })),
+        travelMode: "DRIVE",
+      }),
+    }
+  );
+  const data = await res.json();
+  if (!res.ok || !Array.isArray(data)) {
+    throw new Error(`Google Routes API error: ${data?.error?.status ?? res.status} - ${data?.error?.message ?? ""}`);
+  }
+
+  const matrix: MatrixCell[][] = origins.map(() =>
+    destinations.map(() => ({ distanceKm: null, durationMin: null }))
+  );
+  for (const el of data) {
+    const sec = parseSeconds(el.duration);
+    if (el.condition !== "ROUTE_EXISTS" || sec === null) continue;
+    matrix[el.originIndex ?? 0][el.destinationIndex ?? 0] = {
+      distanceKm: (el.distanceMeters ?? 0) / 1000,
+      durationMin: Math.round(sec / 60),
+    };
+  }
+  return matrix;
+}
+
 async function getDirectionsDuration(
   origin: LatLng,
   destination: LatLng,
   waypoint: LatLng | null,
   apiKey: string
 ): Promise<number | null> {
-  let url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&mode=driving&key=${apiKey}`;
-  if (waypoint) {
-    url += `&waypoints=${waypoint.lat},${waypoint.lng}`;
-  }
-  const res = await fetch(url);
+  const res = await fetch(
+    "https://routes.googleapis.com/directions/v2:computeRoutes",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "routes.duration",
+      },
+      body: JSON.stringify({
+        origin: toWaypoint(origin),
+        destination: toWaypoint(destination),
+        intermediates: waypoint ? [toWaypoint(waypoint)] : [],
+        travelMode: "DRIVE",
+      }),
+    }
+  );
+  if (!res.ok) return null;
   const data = await res.json();
-  if (data.status !== "OK" || !data.routes?.length) return null;
-  // Sum all legs
-  let totalSec = 0;
-  for (const leg of data.routes[0].legs) {
-    totalSec += leg.duration.value;
-  }
-  return Math.round(totalSec / 60);
+  // Route duration already covers all legs
+  const sec = parseSeconds(data.routes?.[0]?.duration);
+  return sec === null ? null : Math.round(sec / 60);
 }
 
 serve(async (req) => {
@@ -89,24 +153,15 @@ serve(async (req) => {
         }
       }
 
-      // 2. Batch direct times via Distance Matrix
-      const destinationsParam = allDestinations
-        .map((d) => `${d.lat},${d.lng}`)
-        .join("|");
-      const dmUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${departureStation.lat},${departureStation.lng}&destinations=${encodeURIComponent(destinationsParam)}&mode=driving&key=${GOOGLE_MAPS_API_KEY}`;
-      const dmRes = await fetch(dmUrl);
-      const dmData = await dmRes.json();
-
-      const directTimes: (number | null)[] = [];
-      if (dmData.status === "OK" && dmData.rows?.[0]) {
-        for (const el of dmData.rows[0].elements) {
-          directTimes.push(
-            el.status === "OK" ? Math.round(el.duration.value / 60) : null
-          );
-        }
-      } else {
+      // 2. Batch direct times via the route matrix
+      let directTimes: (number | null)[];
+      try {
+        const matrix = await computeRouteMatrix([departureStation], allDestinations, GOOGLE_MAPS_API_KEY);
+        directTimes = matrix[0].map((cell) => cell.durationMin);
+      } catch (e) {
+        console.error("route matrix error:", e instanceof Error ? e.message : e);
         // Fill with nulls
-        for (let i = 0; i < allDestinations.length; i++) directTimes.push(null);
+        directTimes = allDestinations.map(() => null);
       }
 
       // 3. For each pair, calculate shared routes in parallel
@@ -196,38 +251,7 @@ serve(async (req) => {
       throw new Error("origins and destinations are required arrays of {lat, lng}");
     }
 
-    const originsParam = origins
-      .map((o: LatLng) => `${o.lat},${o.lng}`)
-      .join("|");
-    const destinationsParam = destinations
-      .map((d: LatLng) => `${d.lat},${d.lng}`)
-      .join("|");
-
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(originsParam)}&destinations=${encodeURIComponent(destinationsParam)}&mode=driving&key=${GOOGLE_MAPS_API_KEY}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.status !== "OK") {
-      throw new Error(`Google Maps API error: ${data.status} - ${data.error_message || ""}`);
-    }
-
-    const results: { distanceKm: number | null; durationMin: number | null }[][] = [];
-
-    for (const row of data.rows) {
-      const rowResults: { distanceKm: number | null; durationMin: number | null }[] = [];
-      for (const element of row.elements) {
-        if (element.status === "OK") {
-          rowResults.push({
-            distanceKm: element.distance.value / 1000,
-            durationMin: Math.round(element.duration.value / 60),
-          });
-        } else {
-          rowResults.push({ distanceKm: null, durationMin: null });
-        }
-      }
-      results.push(rowResults);
-    }
+    const results = await computeRouteMatrix(origins, destinations, GOOGLE_MAPS_API_KEY);
 
     return new Response(JSON.stringify({ results }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
