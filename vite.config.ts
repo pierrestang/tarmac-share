@@ -6,6 +6,8 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages sert le site sous /tarmac-share/ ; Lovable et le dev local restent à la racine
+  base: process.env.GITHUB_PAGES === "true" ? "/tarmac-share/" : "/",
   server: {
     host: "::",
     port: 8080,
